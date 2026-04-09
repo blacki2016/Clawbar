@@ -645,7 +645,28 @@ final class UsageStore {
 
         do {
             let status: ProviderStatus
-            if let urlString = meta.statusPageURL, let baseURL = URL(string: urlString) {
+            if provider == .theclawbay {
+                // TheClawBay uses a custom HTML status page that requires scraping
+                let probe = TheClawBayStatusProbe()
+                let snapshot = try await probe.fetch()
+                let indicator: ProviderStatusIndicator
+                switch snapshot.overallStatus {
+                case .operational:
+                    indicator = .none
+                case .degraded:
+                    indicator = .minor
+                case .partial:
+                    indicator = .minor
+                case .major:
+                    indicator = .major
+                case .unknown:
+                    indicator = .unknown
+                }
+                status = ProviderStatus(
+                    indicator: indicator,
+                    description: snapshot.overallStatus.displayName,
+                    updatedAt: snapshot.checkedAt)
+            } else if let urlString = meta.statusPageURL, let baseURL = URL(string: urlString) {
                 status = try await Self.fetchStatus(from: baseURL)
             } else if let productID = meta.statusWorkspaceProductID {
                 status = try await Self.fetchWorkspaceStatus(productID: productID)
@@ -824,6 +845,11 @@ extension UsageStore {
                     let hasAny = resolution != nil
                     let source = resolution?.source.rawValue ?? "none"
                     return "WARP_API_KEY=\(hasAny ? "present" : "missing") source=\(source)"
+                case .theclawbay:
+                    let resolution = ProviderTokenResolver.theClawBayResolution()
+                    let hasAny = resolution != nil
+                    let source = resolution?.source.rawValue ?? "none"
+                    return "THECLAWBAY_API_KEY=\(hasAny ? "present" : "missing") source=\(source)"
                 case .gemini, .antigravity, .opencode, .opencodego, .factory, .copilot, .vertexai, .kilo, .kiro, .kimi,
                      .kimik2, .jetbrains, .perplexity:
                     return unimplementedDebugLogMessages[provider] ?? "Debug log not yet implemented"

@@ -71,6 +71,30 @@ extension CodexBarCLI {
         """
     }
 
+    static func modelsHelp(version: String) -> String {
+        """
+        CodexBar \(version)
+
+        Usage:
+          codexbar models [--provider theclawbay]
+                         [--format text|json]
+                         [--json]
+                         [--json-only]
+                         [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
+                         [-v|--verbose]
+                         [--pretty]
+
+        Description:
+          List available models for a provider. Currently supports The Claw Bay.
+          Reads the API key from ~/.codexbar/config.json.
+
+        Examples:
+          codexbar models
+          codexbar models --provider theclawbay
+          codexbar models --format json --pretty
+        """
+    }
+
     static func configHelp(version: String) -> String {
         """
         CodexBar \(version)
@@ -116,6 +140,13 @@ extension CodexBarCLI {
                        [--json-only]
                        [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
                        [--provider \(ProviderHelp.list)] [--no-color] [--pretty] [--refresh]
+          codexbar models [--provider theclawbay]
+                         [--format text|json]
+                         [--json]
+                         [--json-only]
+                         [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
+                         [-v|--verbose]
+                         [--pretty]
           codexbar config <validate|dump> [--format text|json]
                                         [--json]
                                         [--json-only]
@@ -137,6 +168,7 @@ extension CodexBarCLI {
           codexbar --provider all --json
           codexbar --provider gemini
           codexbar cost --provider claude --format json --pretty
+          codexbar models --format json --pretty
           codexbar config validate --format json --pretty
         """
     }

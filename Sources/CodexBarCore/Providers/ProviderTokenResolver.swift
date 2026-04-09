@@ -71,6 +71,12 @@ public enum ProviderTokenResolver {
         self.perplexityResolution(environment: environment)?.token
     }
 
+    public static func theClawBayToken(
+        environment: [String: String] = ProcessInfo.processInfo.environment) -> String?
+    {
+        self.theClawBayResolution(environment: environment)?.token
+    }
+
     public static func zaiResolution(
         environment: [String: String] = ProcessInfo.processInfo.environment) -> ProviderTokenResolution?
     {
@@ -174,6 +180,12 @@ public enum ProviderTokenResolver {
         }
         #endif
         return nil
+    }
+
+    public static func theClawBayResolution(
+        environment: [String: String] = ProcessInfo.processInfo.environment) -> ProviderTokenResolution?
+    {
+        self.resolveEnv(TheClawBaySettingsReader.apiKey(environment: environment))
     }
 
     private static func cleaned(_ raw: String?) -> String? {

@@ -64,7 +64,7 @@ Das Menüleisten-Symbol ist ein kleines Zwei-Leisten-Meter:
 - Anbieter-Status-Abfrage mit Vorfall-Badges im Menü und Symbol-Overlay.
 - Modus „Icons zusammenführen" zum Kombinieren von Anbietern in ein Status-Item + Wechsler, mit optionaler Übersicht für bis zu drei Anbieter.
 - Aktualisierungsintervalle (Manuell, 1 Min., 2 Min., 5 Min., 15 Min.).
-- Gebündelte CLI (`codexbar`) für Skripte und CI (inkl. `codexbar cost --provider codex|claude` für lokale Kosten); Linux-CLI-Builds verfügbar.
+- Gebündelte CLI (`codexbar`) für Skripte und CI (inkl. `codexbar cost --provider codex|claude` für lokale Kosten und `codexbar models` für verfügbare Provider-Modelle); Linux-CLI-Builds verfügbar.
 - WidgetKit-Widget bildet die Menükarten-Schnappschüsse ab.
 - Privatsphäre zuerst: Verarbeitung standardmäßig auf dem Gerät; Browser-Cookies sind Opt-in und werden wiederverwendet (keine Passwörter gespeichert).
 

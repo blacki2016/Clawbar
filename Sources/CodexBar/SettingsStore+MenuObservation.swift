@@ -68,6 +68,7 @@ extension SettingsStore {
         _ = self.ollamaCookieHeader
         _ = self.copilotAPIToken
         _ = self.warpAPIToken
+        _ = self.theClawBayAPIToken
         _ = self.tokenAccountsByProvider
         _ = self.debugLoadingPattern
         _ = self.selectedMenuProvider

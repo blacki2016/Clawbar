@@ -15,6 +15,7 @@ enum ProviderChoice: String, AppEnum {
     case kilo
     case opencode
     case opencodego
+    case theclawbay
 
     static let typeDisplayRepresentation = TypeDisplayRepresentation(name: "Provider")
 
@@ -30,6 +31,7 @@ enum ProviderChoice: String, AppEnum {
         .kilo: DisplayRepresentation(title: "Kilo"),
         .opencode: DisplayRepresentation(title: "OpenCode"),
         .opencodego: DisplayRepresentation(title: "OpenCode Go"),
+        .theclawbay: DisplayRepresentation(title: "The Claw Bay"),
     ]
 
     var provider: UsageProvider {
@@ -45,6 +47,7 @@ enum ProviderChoice: String, AppEnum {
         case .kilo: .kilo
         case .opencode: .opencode
         case .opencodego: .opencodego
+        case .theclawbay: .theclawbay
         }
     }
 
@@ -76,6 +79,7 @@ enum ProviderChoice: String, AppEnum {
         case .openrouter: return nil // OpenRouter not yet supported in widgets
         case .warp: return nil // Warp not yet supported in widgets
         case .perplexity: return nil // Perplexity not yet supported in widgets
+        case .theclawbay: self = .theclawbay
         }
     }
 }

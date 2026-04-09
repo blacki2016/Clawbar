@@ -168,6 +168,14 @@ until the session is invalid, to avoid repeated Keychain prompts.
 - Status: none yet.
 - Details: `docs/amp.md`.
 
+## The Claw Bay
+- API token from `~/.codexbar/config.json` (`providers[].apiKey`) or `THECLAWBAY_API_KEY` env var.
+- Quota endpoint: `https://api.theclawbay.com/api/codex-auth/v1/quota`.
+- Supports `?format=legacy_codex` for Codex-compatible output.
+- Shows 5-hour rolling window (primary) and weekly window (secondary) with reset timestamps.
+- Status: `https://theclawbay.com/status`.
+- Details: `docs/theclawbay.md`.
+
 ## Ollama
 - Web settings page (`https://ollama.com/settings`) via browser cookies.
 - Parses Cloud Usage plan badge, session/weekly usage, and reset timestamps.

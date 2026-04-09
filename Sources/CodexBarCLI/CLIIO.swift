@@ -27,6 +27,8 @@ extension CodexBarCLI {
             print(Self.usageHelp(version: version))
         case "cost":
             print(Self.costHelp(version: version))
+        case "models":
+            print(Self.modelsHelp(version: version))
         case "config", "validate", "dump":
             print(Self.configHelp(version: version))
         default:

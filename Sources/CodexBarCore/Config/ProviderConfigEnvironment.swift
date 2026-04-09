@@ -31,6 +31,10 @@ public enum ProviderConfigEnvironment {
             }
         case .openrouter:
             env[OpenRouterSettingsReader.envKey] = apiKey
+        case .theclawbay:
+            if let key = TheClawBaySettingsReader.apiKeyEnvironmentKeys.first {
+                env[key] = apiKey
+            }
         default:
             break
         }

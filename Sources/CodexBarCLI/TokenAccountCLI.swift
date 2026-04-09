@@ -186,7 +186,8 @@ struct TokenAccountCLIContext {
                 perplexity: ProviderSettingsSnapshot.PerplexityProviderSettings(
                     cookieSource: cookieSource,
                     manualCookieHeader: cookieHeader))
-        case .gemini, .antigravity, .copilot, .kiro, .vertexai, .kimik2, .synthetic, .openrouter, .warp:
+        case .gemini, .antigravity, .copilot, .kiro, .vertexai, .kimik2, .synthetic, .openrouter, .warp,
+             .theclawbay:
             return nil
         }
     }
@@ -286,13 +287,17 @@ struct TokenAccountCLIContext {
         provider: UsageProvider,
         account: ProviderTokenAccount?) -> ProviderSourceMode
     {
-        guard base == .auto,
-              provider == .claude
-        else {
-            return base
+        guard base == .auto else { return base }
+        switch provider {
+        case .claude:
+            let config = self.providerConfig(for: provider)
+            return self.claudeCredentialRouting(account: account, config: config).isOAuth ? .oauth : .auto
+        case .theclawbay:
+            // TheClawBay only supports API token — no web, CLI, or OAuth
+            return .api
+        default:
+            return .auto
         }
-        let config = self.providerConfig(for: provider)
-        return self.claudeCredentialRouting(account: account, config: config).isOAuth ? .oauth : base
     }
 
     func preferredSourceMode(for provider: UsageProvider) -> ProviderSourceMode {
