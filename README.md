@@ -1,12 +1,12 @@
-# CodexBar 🎚️ - May your tokens never run out.
+# CodexBar 🎚️ – Mögen deine Tokens niemals ausgehen.
 
-Tiny macOS 14+ menu bar app that keeps your Codex, Claude, Cursor, Gemini, Antigravity, Droid (Factory), Copilot, z.ai, Kiro, Vertex AI, Augment, Amp, JetBrains AI, OpenRouter, Perplexity, and The Claw Bay limits visible (session + weekly where available) and shows when each window resets. One status item per provider (or Merge Icons mode with a provider switcher and optional Overview tab); enable what you use from Settings. No Dock icon, minimal UI, dynamic bar icons in the menu bar.
+Schlanke macOS 14+ Menüleisten-App, die deine Limits für Codex, Claude, Cursor, Gemini, Antigravity, Droid (Factory), Copilot, z.ai, Kiro, Vertex AI, Augment, Amp, JetBrains AI, OpenRouter, Perplexity und The Claw Bay im Blick behält (Sitzung + wöchentlich, wo verfügbar) und anzeigt, wann jedes Fenster zurückgesetzt wird. Ein Status-Item pro Anbieter (oder der Modus „Icons zusammenführen" mit einem Anbieter-Wechsler und optionaler Übersicht); aktiviere in den Einstellungen, was du nutzt. Kein Dock-Symbol, minimale UI, dynamische Menüleisten-Symbole.
 
-<img src="codexbar.png" alt="CodexBar menu screenshot" width="520" />
+<img src="codexbar.png" alt="CodexBar Menü-Screenshot" width="520" />
 
-## Install
+## Installation
 
-### Requirements
+### Voraussetzungen
 - macOS 14+ (Sonoma)
 
 ### GitHub Releases
@@ -17,119 +17,119 @@ Download: <https://github.com/steipete/CodexBar/releases>
 brew install --cask steipete/tap/codexbar
 ```
 
-### Linux (CLI only)
+### Linux (nur CLI)
 ```bash
 brew install steipete/tap/codexbar
 ```
-Or download `CodexBarCLI-v<tag>-linux-<arch>.tar.gz` from GitHub Releases.
-Linux support via Omarchy: community Waybar module and TUI, driven by the `codexbar` executable.
+Alternativ `CodexBarCLI-v<tag>-linux-<arch>.tar.gz` von den GitHub Releases herunterladen.
+Linux-Unterstützung über Omarchy: Community Waybar-Modul und TUI, gesteuert durch die `codexbar`-CLI.
 
-### First run
-- Open Settings → Providers and enable what you use.
-- Install/sign in to the provider sources you rely on (e.g. `codex`, `claude`, `gemini`, browser cookies, or OAuth; Antigravity requires the Antigravity app running).
-- Optional: Settings → Providers → Codex → OpenAI cookies (Automatic or Manual) to add dashboard extras.
+### Erste Schritte
+- Öffne Einstellungen → Anbieter und aktiviere, was du nutzt.
+- Installiere bzw. melde dich bei den Anbieter-Quellen an, auf die du angewiesen bist (z. B. `codex`, `claude`, `gemini`, Browser-Cookies oder OAuth; Antigravity erfordert die Antigravity-App).
+- Optional: Einstellungen → Anbieter → Codex → OpenAI-Cookies (Automatisch oder Manuell), um Dashboard-Ergänzungen hinzuzufügen.
 
-## Providers
+## Anbieter
 
-- [Codex](docs/codex.md) — Local Codex CLI RPC (+ PTY fallback) and optional OpenAI web dashboard extras.
-- [Claude](docs/claude.md) — OAuth API or browser cookies (+ CLI PTY fallback); session + weekly usage.
-- [Cursor](docs/cursor.md) — Browser session cookies for plan + usage + billing resets.
-- [Gemini](docs/gemini.md) — OAuth-backed quota API using Gemini CLI credentials (no browser cookies).
-- [Antigravity](docs/antigravity.md) — Local language server probe (experimental); no external auth.
-- [Droid](docs/factory.md) — Browser cookies + WorkOS token flows for Factory usage + billing.
-- [Copilot](docs/copilot.md) — GitHub device flow + Copilot internal usage API.
-- [z.ai](docs/zai.md) — API token (Keychain) for quota + MCP windows.
-- [Kimi](docs/kimi.md) — Auth token (JWT from `kimi-auth` cookie) for weekly quota + 5‑hour rate limit.
-- [Kimi K2](docs/kimi-k2.md) — API key for credit-based usage totals.
-- [Kiro](docs/kiro.md) — CLI-based usage via `kiro-cli /usage` command; monthly credits + bonus credits.
-- [Vertex AI](docs/vertexai.md) — Google Cloud gcloud OAuth with token cost tracking from local Claude logs.
-- [Augment](docs/augment.md) — Browser cookie-based authentication with automatic session keepalive; credits tracking and usage monitoring.
-- [Amp](docs/amp.md) — Browser cookie-based authentication with Amp Free usage tracking.
-- [JetBrains AI](docs/jetbrains.md) — Local XML-based quota from JetBrains IDE configuration; monthly credits tracking.
-- [OpenRouter](docs/openrouter.md) — API token for credit-based usage tracking across multiple AI providers.
-- [The Claw Bay](docs/theclawbay.md) — API token for unified usage tracking across multiple AI providers via a single proxy endpoint (5h + weekly windows).
-- Open to new providers: [provider authoring guide](docs/provider.md).
+- [Codex](docs/codex.md) — Lokale Codex-CLI-RPC (+ PTY-Fallback) und optionale OpenAI-Web-Dashboard-Ergänzungen.
+- [Claude](docs/claude.md) — OAuth-API oder Browser-Cookies (+ CLI-PTY-Fallback); Sitzungs- und Wochen-Nutzung.
+- [Cursor](docs/cursor.md) — Browser-Sitzungs-Cookies für Plan, Nutzung und Abrechnungsresets.
+- [Gemini](docs/gemini.md) — OAuth-gestützte Kontingent-API unter Verwendung von Gemini-CLI-Anmeldedaten (keine Browser-Cookies).
+- [Antigravity](docs/antigravity.md) — Lokaler Language-Server-Probe (experimentell); keine externe Authentifizierung.
+- [Droid](docs/factory.md) — Browser-Cookies + WorkOS-Token-Flows für Factory-Nutzung und Abrechnung.
+- [Copilot](docs/copilot.md) — GitHub-Device-Flow + interne Copilot-Nutzungs-API.
+- [z.ai](docs/zai.md) — API-Token (Keychain) für Kontingent + MCP-Fenster.
+- [Kimi](docs/kimi.md) — Auth-Token (JWT aus `kimi-auth`-Cookie) für Wochenkontingent + 5-Stunden-Ratenlimit.
+- [Kimi K2](docs/kimi-k2.md) — API-Schlüssel für kreditbasierte Nutzungsgesamte.
+- [Kiro](docs/kiro.md) — CLI-basierte Nutzung via `kiro-cli /usage`-Befehl; monatliche Credits + Bonus-Credits.
+- [Vertex AI](docs/vertexai.md) — Google Cloud gcloud OAuth mit Token-Kostenverfolgung aus lokalen Claude-Logs.
+- [Augment](docs/augment.md) — Browser-Cookie-basierte Authentifizierung mit automatischem Sitzungs-Keepalive; Credits-Verfolgung und Nutzungsüberwachung.
+- [Amp](docs/amp.md) — Browser-Cookie-basierte Authentifizierung mit Amp-Free-Nutzungsverfolgung.
+- [JetBrains AI](docs/jetbrains.md) — Lokales XML-basiertes Kontingent aus der JetBrains-IDE-Konfiguration; monatliche Credits-Verfolgung.
+- [OpenRouter](docs/openrouter.md) — API-Token für kreditbasierte Nutzungsverfolgung über mehrere KI-Anbieter.
+- [The Claw Bay](docs/theclawbay.md) — API-Token für einheitliche Nutzungsverfolgung über mehrere KI-Anbieter über einen einzigen Proxy-Endpunkt (5h + Wochenfenster).
+- Neue Anbieter willkommen: [Anbieter-Autorenanleitung](docs/provider.md).
 
-## Icon & Screenshot
-The menu bar icon is a tiny two-bar meter:
-- Top bar: 5‑hour/session window. If weekly is missing/exhausted and credits are available, it becomes a thicker credits bar.
-- Bottom bar: weekly window (hairline).
-- Errors/stale data dim the icon; status overlays indicate incidents.
+## Symbol & Screenshot
+Das Menüleisten-Symbol ist ein kleines Zwei-Leisten-Meter:
+- Obere Leiste: 5-Stunden-/Sitzungsfenster. Falls wöchentlich fehlt/aufgebraucht und Credits verfügbar sind, wird es zu einer dickeren Credit-Leiste.
+- Untere Leiste: Wöchentliches Fenster (Haarstrich).
+- Fehler/veraltete Daten dimmen das Symbol; Status-Overlays zeigen Vorfälle an.
 
-## Features
-- Multi-provider menu bar with per-provider toggles (Settings → Providers).
-- Session + weekly meters with reset countdowns.
-- Optional Codex web dashboard enrichments (code review remaining, usage breakdown, credits history).
-- Local cost-usage scan for Codex + Claude (last 30 days).
-- Provider status polling with incident badges in the menu and icon overlay.
-- Merge Icons mode to combine providers into one status item + switcher, with an optional Overview tab for up to three providers.
-- Refresh cadence presets (manual, 1m, 2m, 5m, 15m).
-- Bundled CLI (`codexbar`) for scripts and CI (including `codexbar cost --provider codex|claude` for local cost usage); Linux CLI builds available.
-- WidgetKit widget mirrors the menu card snapshot.
-- Privacy-first: on-device parsing by default; browser cookies are opt-in and reused (no passwords stored).
+## Funktionen
+- Multi-Anbieter-Menüleiste mit Anbieter-spezifischen Toggles (Einstellungen → Anbieter).
+- Sitzungs- und Wochen-Meter mit Reset-Countdowns.
+- Optionale Codex-Web-Dashboard-Ergänzungen (Code-Review verbleibend, Nutzungsaufschlüsselung, Credit-Verlauf).
+- Lokale Kosten-Nutzungsanalyse für Codex + Claude (letzte 30 Tage).
+- Anbieter-Status-Abfrage mit Vorfall-Badges im Menü und Symbol-Overlay.
+- Modus „Icons zusammenführen" zum Kombinieren von Anbietern in ein Status-Item + Wechsler, mit optionaler Übersicht für bis zu drei Anbieter.
+- Aktualisierungsintervalle (Manuell, 1 Min., 2 Min., 5 Min., 15 Min.).
+- Gebündelte CLI (`codexbar`) für Skripte und CI (inkl. `codexbar cost --provider codex|claude` für lokale Kosten); Linux-CLI-Builds verfügbar.
+- WidgetKit-Widget bildet die Menükarten-Schnappschüsse ab.
+- Privatsphäre zuerst: Verarbeitung standardmäßig auf dem Gerät; Browser-Cookies sind Opt-in und werden wiederverwendet (keine Passwörter gespeichert).
 
-## Privacy note
-Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it reads a small set of known locations (browser cookies/local storage, local JSONL logs) when the related features are enabled. See the discussion and audit notes in [issue #12](https://github.com/steipete/CodexBar/issues/12).
+## Hinweis zum Datenschutz
+Fragt sich, ob CodexBar deine Festplatte durchsucht? Es durchkriecht nicht dein Dateisystem; es liest nur eine kleine Anzahl bekannter Speicherorte (Browser-Cookies/lokaler Speicher, lokale JSONL-Logs), wenn die entsprechenden Funktionen aktiviert sind. Siehe Diskussion und Prüfnotizen in [Issue #12](https://github.com/steipete/CodexBar/issues/12).
 
-## macOS permissions (why they’re needed)
-- **Full Disk Access (optional)**: only required to read Safari cookies/local storage for web-based providers (Codex web, Claude web, Cursor, Droid/Factory). If you don’t grant it, use Chrome/Firefox cookies or CLI-only sources instead.
-- **Keychain access (prompted by macOS)**:
-  - Chrome cookie import needs the “Chrome Safe Storage” key to decrypt cookies.
-  - Claude OAuth credentials (written by the Claude CLI) are read from Keychain when present.
-  - z.ai API token is stored in Keychain from Preferences → Providers; Copilot stores its API token in Keychain during device flow.
-  - **How do I prevent those keychain alerts?**
-    - Open **Keychain Access.app** → login keychain → search the item (e.g., “Claude Code-credentials”).
-    - Open the item → **Access Control** → add `CodexBar.app` under “Always allow access by these applications”.
-    - Prefer adding just CodexBar (avoid “Allow all applications” unless you want it wide open).
-    - Relaunch CodexBar after saving.
-    - Reference screenshot: ![Keychain access control](docs/keychain-allow.png)
-  - **How to do the same for the browser?**
-    - Find the browser’s “Safe Storage” key (e.g., “Chrome Safe Storage”, “Brave Safe Storage”, “Firefox”, “Microsoft Edge Safe Storage”).
-    - Open the item → **Access Control** → add `CodexBar.app` under “Always allow access by these applications”.
-    - This removes the prompt when CodexBar decrypts cookies for that browser.
-- **Files & Folders prompts (folder/volume access)**: CodexBar launches provider CLIs (codex/claude/gemini/antigravity). If those CLIs read a project directory or external drive, macOS may ask CodexBar for that folder/volume (e.g., Desktop or an external volume). This is driven by the CLI’s working directory, not background disk scanning.
-- **What we do not request**: no Screen Recording, Accessibility, or Automation permissions; no passwords are stored (browser cookies are reused when you opt in).
+## macOS-Berechtigungen (warum sie benötigt werden)
+- **Voller Festplattenzugriff (optional)**: nur erforderlich zum Lesen von Safari-Cookies/lokalem Speicher für webbasierte Anbieter (Codex Web, Claude Web, Cursor, Droid/Factory). Falls du ihn nicht gewährst, nutze Chrome/Firefox-Cookies oder nur CLI-Quellen.
+- **Keychain-Zugriff (von macOS angefordert)**:
+  - Chrome-Cookie-Import benötigt den „Chrome Safe Storage"-Schlüssel zum Entschlüsseln von Cookies.
+  - Claude-OAuth-Anmeldedaten (von der Claude-CLI geschrieben) werden aus dem Keychain gelesen, wenn vorhanden.
+  - z.ai-API-Token wird im Keychain über Einstellungen → Anbieter gespeichert; Copilot speichert seinen API-Token während des Device-Flows im Keychain.
+  - **Wie verhindere ich diese Keychain-Warnungen?**
+    - Öffne **Keychain-Zugriff.app** → Anmeldungsschlüsselbund → suche nach dem Eintrag (z. B. „Claude Code-credentials").
+    - Öffne den Eintrag → **Zugriffskontrolle** → füge `CodexBar.app` unter „Immer den Zugriff durch diese Programme erlauben" hinzu.
+    - Bevorzuge, nur CodexBar hinzuzufügen (vermeide „Allen Anwendungen erlauben", es sei denn, du willst es weit öffnen).
+    - Starte CodexBar nach dem Speichern neu.
+    - Referenz-Screenshot: ![Keychain-Zugriffskontrolle](docs/keychain-allow.png)
+  - **Wie mache ich dasselbe für den Browser?**
+    - Finde den „Safe Storage"-Schlüssel des Browsers (z. B. „Chrome Safe Storage", „Brave Safe Storage", „Firefox", „Microsoft Edge Safe Storage").
+    - Öffne den Eintrag → **Zugriffskontrolle** → füge `CodexBar.app` unter „Immer den Zugriff durch diese Programme erlauben" hinzu.
+    - Dadurch wird die Eingabeaufforderung entfernt, wenn CodexBar Cookies für diesen Browser entschlüsselt.
+- **Dateien & Ordner-Eingabeaufforderungen (Ordner-/Volume-Zugriff)**: CodexBar startet Anbieter-CLIs (codex/claude/gemini/antigravity). Wenn diese CLIs ein Projektverzeichnis oder ein externes Laufwerk lesen, fragt macOS möglicherweise nach diesem Ordner/Volume (z. B. Desktop oder ein externes Volume). Dies wird durch das Arbeitsverzeichnis der CLI gesteuert, nicht durch Hintergrundausführung.
+- **Was wir nicht anfordern**: Keine Bildschirmaufzeichnung, Barrierefreiheit oder Automatisierungsrechte; keine Passwörter werden gespeichert (Browser-Cookies werden auf Wunsch wiederverwendet).
 
-## Docs
-- Providers overview: [docs/providers.md](docs/providers.md)
-- Provider authoring: [docs/provider.md](docs/provider.md)
-- UI & icon notes: [docs/ui.md](docs/ui.md)
-- CLI reference: [docs/cli.md](docs/cli.md)
-- Architecture: [docs/architecture.md](docs/architecture.md)
-- Refresh loop: [docs/refresh-loop.md](docs/refresh-loop.md)
-- Status polling: [docs/status.md](docs/status.md)
-- Sparkle updates: [docs/sparkle.md](docs/sparkle.md)
-- Release checklist: [docs/RELEASING.md](docs/RELEASING.md)
+## Dokumentation
+- Anbieter-Übersicht: [docs/providers.md](docs/providers.md)
+- Anbieter-Erstellung: [docs/provider.md](docs/provider.md)
+- UI- & Symbol-Hinweise: [docs/ui.md](docs/ui.md)
+- CLI-Referenz: [docs/cli.md](docs/cli.md)
+- Architektur: [docs/architecture.md](docs/architecture.md)
+- Aktualisierungsschleife: [docs/refresh-loop.md](docs/refresh-loop.md)
+- Status-Abfrage: [docs/status.md](docs/status.md)
+- Sparkle-Updates: [docs/sparkle.md](docs/sparkle.md)
+- Release-Checkliste: [docs/RELEASING.md](docs/RELEASING.md)
 
-## Getting started (dev)
-- Clone the repo and open it in Xcode or run the scripts directly.
-- Launch once, then toggle providers in Settings → Providers.
-- Install/sign in to provider sources you rely on (CLIs, browser cookies, or OAuth).
-- Optional: set OpenAI cookies (Automatic or Manual) for Codex dashboard extras.
+## Erste Schritte (Entwicklung)
+- Klone das Repo und öffne es in Xcode oder führe die Skripte direkt aus.
+- Starte einmal, aktiviere dann Anbieter in Einstellungen → Anbieter.
+- Installiere bzw. melde dich bei den Anbieter-Quellen an, auf die du angewiesen bist (CLIs, Browser-Cookies oder OAuth).
+- Optional: Setze OpenAI-Cookies (Automatisch oder Manuell) für Codex-Dashboard-Ergänzungen.
 
-## Build from source
+## Aus Quellcode bauen
 ```bash
-swift build -c release          # or debug for development
-./Scripts/package_app.sh        # builds CodexBar.app in-place
-CODEXBAR_SIGNING=adhoc ./Scripts/package_app.sh  # ad-hoc signing (no Apple Developer account)
+swift build -c release          # oder debug für Entwicklung
+./Scripts/package_app.sh        # baut CodexBar.app an Ort und Stelle
+CODEXBAR_SIGNING=adhoc ./Scripts/package_app.sh  # Ad-hoc-Signatur (kein Apple-Entwicklerkonto)
 open CodexBar.app
 ```
 
-Dev loop:
+Entwicklungszyklus:
 ```bash
 ./Scripts/compile_and_run.sh
 ```
 
-## Related
-- ✂️ [Trimmy](https://github.com/steipete/Trimmy) — “Paste once, run once.” Flatten multi-line shell snippets so they paste and run.
-- 🧳 [MCPorter](https://mcporter.dev) — TypeScript toolkit + CLI for Model Context Protocol servers.
-- 🧿 [oracle](https://askoracle.dev) — Ask the oracle when you're stuck. Invoke GPT-5 Pro with a custom context and files.
+## Verwandte Projekte
+- ✂️ [Trimmy](https://github.com/steipete/Trimmy) — „Einmal einfügen, einmal ausführen." Mehrzeilige Shell-Snippets glattziehen, damit sie eingefügt und ausgeführt werden.
+- 🧳 [MCPorter](https://mcporter.dev) — TypeScript-Toolkit + CLI für Model Context Protocol Server.
+- 🧿 [oracle](https://askoracle.dev) — Frag das Orakel, wenn du nicht weiterkommst. Rufe GPT-5 Pro mit individuellem Kontext und Dateien auf.
 
-## Looking for a Windows version?
+## Suchst du eine Windows-Version?
 - [Win-CodexBar](https://github.com/Finesssee/Win-CodexBar)
 
-## Credits
-Inspired by [ccusage](https://github.com/ryoppippi/ccusage) (MIT), specifically the cost usage tracking.
+## Danksagung
+Inspiriert von [ccusage](https://github.com/ryoppippi/ccusage) (MIT), insbesondere der Kosten-Nutzungsverfolgung.
 
-## License
+## Lizenz
 MIT • Peter Steinberger ([steipete](https://twitter.com/steipete))
