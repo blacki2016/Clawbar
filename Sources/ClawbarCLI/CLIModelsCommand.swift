@@ -72,7 +72,7 @@ extension ClawbarCLI {
         else {
             Self.exit(
                 code: .failure,
-                message: "Error: theclawbay API key not found in ~/.codexbar/config.json.",
+                message: "Error: theclawbay API key not found in ~/.clawbar/config.json.",
                 output: output,
                 kind: .config)
         }
