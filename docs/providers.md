@@ -13,7 +13,7 @@ Legend: web (browser cookies/WebView), cli (RPC/PTy), oauth (API), api token, lo
 Source labels (CLI/header): `openai-web`, `web`, `oauth`, `api`, `local`, plus provider-specific CLI labels (e.g. `codex-cli`, `claude`).
 
 Cookie-based providers expose a Cookie source picker (Automatic or Manual) in Settings → Providers.
-Browser cookie imports are cached in Keychain (`com.steipete.codexbar.cache`, account `cookie.<provider>`) and reused
+Browser cookie imports are cached in Keychain (`com.steipete.clawbar.cache`, account `cookie.<provider>`) and reused
 until the session is invalid, to avoid repeated Keychain prompts.
 
 | Provider | Strategies (ordered for auto) |
@@ -168,7 +168,7 @@ until the session is invalid, to avoid repeated Keychain prompts.
 - Status: none yet.
 - Details: `docs/amp.md`.
 
-## The Claw Bay
+## theclawbay
 - API token from `~/.codexbar/config.json` (`providers[].apiKey`) or `THECLAWBAY_API_KEY` env var.
 - Quota endpoint: `https://api.theclawbay.com/api/codex-auth/v1/quota`.
 - Supports `?format=legacy_codex` for Codex-compatible output.

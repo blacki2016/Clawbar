@@ -18,7 +18,7 @@ Alibaba Coding Plan supports both browser-session and API-key paths, but the sup
 When the RPC endpoint returns `ConsoleNeedLogin`, CodexBar treats that as a console-session requirement. In API mode it is surfaced as an explicit API-path limitation; in `auto` mode fallback remains observable through the fetch-attempt chain.
 
 ## Token sources (fallback order)
-1) Config token (`~/.codexbar/config.json` -> `providers[].apiKey` for provider `alibaba`).
+1) Config token (`~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json)` -> `providers[].apiKey` for provider `alibaba`).
 2) Environment variable `ALIBABA_CODING_PLAN_API_KEY`.
 
 ## Region + endpoint behavior

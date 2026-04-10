@@ -48,7 +48,7 @@ struct AdvancedPane: View {
                                 .lineLimit(2)
                         }
                     }
-                    Text("Symlink CodexBarCLI to /usr/local/bin and /opt/homebrew/bin as codexbar.")
+                    Text("Symlink the bundled clawbar helper to /usr/local/bin and /opt/homebrew/bin.")
                         .font(.footnote)
                         .foregroundStyle(.tertiary)
                 }
@@ -102,10 +102,10 @@ extension AdvancedPane {
         self.isInstallingCLI = true
         defer { self.isInstallingCLI = false }
 
-        let helperURL = Bundle.main.bundleURL.appendingPathComponent("Contents/Helpers/CodexBarCLI")
+        let helperURL = Bundle.main.bundleURL.appendingPathComponent("Contents/Helpers/clawbar")
         let fm = FileManager.default
         guard fm.fileExists(atPath: helperURL.path) else {
-            self.cliStatus = "CodexBarCLI not found in app bundle."
+            self.cliStatus = "clawbar helper not found in app bundle."
             return
         }
 

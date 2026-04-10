@@ -1,45 +1,45 @@
 ---
-summary: "CodexBar CLI for fetching usage from the command line."
+summary: "Clawbar CLI for fetching usage from the command line."
 read_when:
-  - "You want to call CodexBar data from scripts or a terminal."
+  - "You want to call Clawbar data from scripts or a terminal."
   - "Adding or modifying Commander-based CLI commands."
   - "Aligning menubar and CLI output/behavior."
 ---
 
-# CodexBar CLI
+# Clawbar CLI
 
 A lightweight Commander-based CLI that mirrors the menubar app’s data paths (Codex web/RPC → PTY fallback; Claude web by default with CLI fallback and OAuth debug).
 Use it when you need usage numbers in scripts, CI, or dashboards without UI.
 
 ## Install
-- In the app: **Preferences → Advanced → Install CLI**. This symlinks `CodexBarCLI` to `/usr/local/bin/codexbar` and `/opt/homebrew/bin/codexbar`.
+- In the app: **Preferences → Advanced → Install CLI**. This symlinks the bundled `clawbar` helper to `/usr/local/bin/clawbar` and `/opt/homebrew/bin/clawbar`.
 - From the repo: `./bin/install-codexbar-cli.sh` (same symlink targets).
-- Manual: `ln -sf "/Applications/CodexBar.app/Contents/Helpers/CodexBarCLI" /usr/local/bin/codexbar`.
+- Manual: `ln -sf "/Applications/Clawbar.app/Contents/Helpers/clawbar" /usr/local/bin/clawbar`.
 
 ### Linux install
 - Homebrew (Linuxbrew, Linux only): `brew install steipete/tap/codexbar`.
-- Download `CodexBarCLI-v<tag>-linux-<arch>.tar.gz` from GitHub Releases (x86_64 + aarch64).
-- Extract; run `./codexbar` (symlink) or `./CodexBarCLI`.
+- Download `ClawbarCLI-v<tag>-linux-<arch>.tar.gz` from GitHub Releases (x86_64 + aarch64).
+- Extract; run `./clawbar` (symlink) or `./CodexBarCLI`.
 
 ```
-tar -xzf CodexBarCLI-v0.17.0-linux-x86_64.tar.gz
-./codexbar --version
-./codexbar usage --format json --pretty
+tar -xzf ClawbarCLI-v0.17.0-linux-x86_64.tar.gz
+./clawbar --version
+./clawbar usage --format json --pretty
 ```
 
 ## Build
-- `./Scripts/package_app.sh` (or `./Scripts/compile_and_run.sh`) bundles `CodexBarCLI` into `CodexBar.app/Contents/Helpers/CodexBarCLI`.
+- `./Scripts/package_app.sh` (or `./Scripts/compile_and_run.sh`) bundles the `clawbar` helper into `Clawbar.app/Contents/Helpers/clawbar`.
 - Standalone: `swift build -c release --product CodexBarCLI` (binary at `./.build/release/CodexBarCLI`).
 - Dependencies: Swift 6.2+, Commander package (`https://github.com/steipete/Commander`).
 
 ## Configuration
-CodexBar reads `~/.codexbar/config.json` for provider settings, secrets, and ordering.
+Clawbar reads `~/.clawbar/config.json` for provider settings, secrets, and ordering, with legacy fallback to `~/.codexbar/config.json`.
 See `docs/configuration.md` for the schema.
 
 ## Command
-- `codexbar` defaults to the `usage` command.
+- `clawbar` defaults to the `usage` command.
   - `--format text|json` (default: text).
-- `codexbar cost` prints local token cost usage (Claude + Codex) without web/CLI access.
+- `clawbar cost` prints local token cost usage (Claude + Codex) without web/CLI access.
   - `--format text|json` (default: text).
   - `--refresh` ignores cached scans.
 - `--provider <id|both|all>` (default: enabled providers in config; falls back to defaults when missing).
@@ -65,13 +65,13 @@ See `docs/configuration.md` for the schema.
 - Global flags: `-h/--help`, `-V/--version`, `-v/--verbose`, `--no-color`, `--log-level <trace|verbose|debug|info|warning|error|critical>`, `--json-output`, `--json-only`.
   - `--json-output`: JSONL logs on stderr (machine-readable).
   - `--json-only`: suppress non-JSON output; errors become JSON payloads.
-- `codexbar config validate` checks `~/.codexbar/config.json` for invalid fields.
+- `clawbar config validate` checks `~/.clawbar/config.json` (legacy fallback: `~/.codexbar/config.json`) for invalid fields.
   - `--format text|json`, `--pretty`, and `--json-only` are supported.
   - Warnings keep exit code 0; errors exit non-zero.
-- `codexbar config dump` prints the normalized config JSON.
+- `clawbar config dump` prints the normalized config JSON.
 
 ### Token accounts
-The CLI reads multi-account tokens from `~/.codexbar/config.json` (same file as the app).
+The CLI reads multi-account tokens from `~/.clawbar/config.json` (same file as the app, with legacy fallback to `~/.codexbar/config.json`).
 - Select a specific account: `--account <label>` (matches the label/email in the file).
 - Select by index (1-based): `--account-index <n>`.
 - Fetch all accounts for the provider: `--all-accounts`.
@@ -80,7 +80,7 @@ For Claude, token accounts accept either `sessionKey` cookies or OAuth access to
 OAuth usage requires the `user:profile` scope; inference-only tokens will return an error.
 
 ### Cost JSON payload
-`codexbar cost --format json` emits an array of payloads (one per provider).
+`clawbar cost --format json` emits an array of payloads (one per provider).
 - `provider`, `source`, `updatedAt`
 - `sessionTokens`, `sessionCostUSD`
 - `last30DaysTokens`, `last30DaysCostUSD`
@@ -89,23 +89,23 @@ OAuth usage requires the `user:profile` scope; inference-only tokens will return
 
 ## Example usage
 ```
-codexbar                          # text, respects app toggles
-codexbar --provider claude        # force Claude
-codexbar --provider all           # query all providers (honors your logins/toggles)
-codexbar --format json --pretty   # machine output
-codexbar --format json --provider both
-codexbar cost                     # local cost usage (last 30 days + today)
-codexbar cost --provider claude --format json --pretty
-COPILOT_API_TOKEN=... codexbar --provider copilot --format json --pretty
-codexbar --status                 # include status page indicator/description
-codexbar --provider codex --source web --format json --pretty
-codexbar --provider claude --account steipete@gmail.com
-codexbar --provider claude --all-accounts --format json --pretty
-codexbar --json-only --format json --pretty
-codexbar --provider gemini --source api --format json --pretty
-KILO_API_KEY=... codexbar --provider kilo --source api --format json --pretty
-codexbar config validate --format json --pretty
-codexbar config dump --pretty
+clawbar                          # text, respects app toggles
+clawbar --provider claude        # force Claude
+clawbar --provider all           # query all providers (honors your logins/toggles)
+clawbar --format json --pretty   # machine output
+clawbar --format json --provider both
+clawbar cost                     # local cost usage (last 30 days + today)
+clawbar cost --provider claude --format json --pretty
+COPILOT_API_TOKEN=... clawbar --provider copilot --format json --pretty
+clawbar --status                 # include status page indicator/description
+clawbar --provider codex --source web --format json --pretty
+clawbar --provider claude --account steipete@gmail.com
+clawbar --provider claude --all-accounts --format json --pretty
+clawbar --json-only --format json --pretty
+clawbar --provider gemini --source api --format json --pretty
+KILO_API_KEY=... clawbar --provider kilo --source api --format json --pretty
+clawbar config validate --format json --pretty
+clawbar config dump --pretty
 ```
 
 ### Sample output (text)

@@ -13,9 +13,9 @@ extension CodexBarCLI {
 
     static func printVersion() -> Never {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            print("CodexBar \(version)")
+            print("Clawbar \(version)")
         } else {
-            print("CodexBar")
+            print("Clawbar")
         }
         Self.platformExit(0)
     }

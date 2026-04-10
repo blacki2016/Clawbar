@@ -4,17 +4,17 @@ import Foundation
 extension CodexBarCLI {
     static func usageHelp(version: String) -> String {
         """
-        CodexBar \(version)
+        Clawbar \(version)
 
         Usage:
-          codexbar usage [--format text|json]
-                       [--json]
-                       [--json-only]
-                       [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
-                       [--provider \(ProviderHelp.list)]
-                       [--account <label>] [--account-index <index>] [--all-accounts]
-                       [--no-credits] [--no-color] [--pretty] [--status] [--source <auto|web|cli|oauth|api>]
-                       [--web-timeout <seconds>] [--web-debug-dump-html] [--antigravity-plan-debug] [--augment-debug]
+          clawbar usage [--format text|json]
+                        [--json]
+                        [--json-only]
+                        [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
+                        [--provider \(ProviderHelp.list)]
+                        [--account <label>] [--account-index <index>] [--all-accounts]
+                        [--no-credits] [--no-color] [--pretty] [--status] [--source <auto|web|cli|oauth|api>]
+                        [--web-timeout <seconds>] [--web-debug-dump-html] [--antigravity-plan-debug] [--augment-debug]
 
         Description:
           Print usage from enabled providers as text (default) or JSON. Honors your in-app toggles.
@@ -26,7 +26,7 @@ extension CodexBarCLI {
             Auto falls back to Claude CLI only when cookies are missing.
           - Kilo: app.kilo.ai API.
             Auto falls back to Kilo CLI when API credentials are missing or unauthorized.
-          Token accounts are loaded from ~/.codexbar/config.json.
+          Token accounts are loaded from ~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json).
           Use --account or --account-index to select a specific token account, or --all-accounts to fetch all.
           Account selection requires a single provider.
 
@@ -39,22 +39,22 @@ extension CodexBarCLI {
           --json-output   Emit machine-readable logs (JSONL) to stderr
 
         Examples:
-          codexbar usage
-          codexbar usage --provider claude
-          codexbar usage --provider gemini
-          codexbar usage --format json --provider all --pretty
-          codexbar usage --provider all --json
-          codexbar usage --status
-          codexbar usage --provider codex --source web --format json --pretty
+          clawbar usage
+          clawbar usage --provider claude
+          clawbar usage --provider gemini
+          clawbar usage --format json --provider all --pretty
+          clawbar usage --provider all --json
+          clawbar usage --status
+          clawbar usage --provider codex --source web --format json --pretty
         """
     }
 
     static func costHelp(version: String) -> String {
         """
-        CodexBar \(version)
+        Clawbar \(version)
 
         Usage:
-          codexbar cost [--format text|json]
+          clawbar cost [--format text|json]
                        [--json]
                        [--json-only]
                        [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
@@ -66,17 +66,17 @@ extension CodexBarCLI {
           This does not require web or CLI access and uses cached scan results unless --refresh is provided.
 
         Examples:
-          codexbar cost
-          codexbar cost --provider claude --format json --pretty
+          clawbar cost
+          clawbar cost --provider claude --format json --pretty
         """
     }
 
     static func modelsHelp(version: String) -> String {
         """
-        CodexBar \(version)
+        Clawbar \(version)
 
         Usage:
-          codexbar models [--provider theclawbay]
+          clawbar models [--provider theclawbay]
                          [--format text|json]
                          [--json]
                          [--json-only]
@@ -85,74 +85,74 @@ extension CodexBarCLI {
                          [--pretty]
 
         Description:
-          List available models for a provider. Currently supports The Claw Bay.
-          Reads the API key from ~/.codexbar/config.json.
+          List available models for a provider. Currently supports theclawbay.
+          Reads the API key from ~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json).
 
         Examples:
-          codexbar models
-          codexbar models --provider theclawbay
-          codexbar models --format json --pretty
+          clawbar models
+          clawbar models --provider theclawbay
+          clawbar models --format json --pretty
         """
     }
 
     static func configHelp(version: String) -> String {
         """
-        CodexBar \(version)
+        Clawbar \(version)
 
         Usage:
-          codexbar config validate [--format text|json]
-                                 [--json]
-                                 [--json-only]
-                                 [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
-                                 [-v|--verbose]
-                                 [--pretty]
-          codexbar config dump [--format text|json]
-                             [--json]
-                             [--json-only]
-                             [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
-                             [-v|--verbose]
-                             [--pretty]
+          clawbar config validate [--format text|json]
+                                  [--json]
+                                  [--json-only]
+                                  [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
+                                  [-v|--verbose]
+                                  [--pretty]
+          clawbar config dump [--format text|json]
+                              [--json]
+                              [--json-only]
+                              [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
+                              [-v|--verbose]
+                              [--pretty]
 
         Description:
-          Validate or print the CodexBar config file (default: validate).
+          Validate or print the Clawbar config file (default: validate).
 
         Examples:
-          codexbar config validate --format json --pretty
-          codexbar config dump --pretty
+          clawbar config validate --format json --pretty
+          clawbar config dump --pretty
         """
     }
 
     static func rootHelp(version: String) -> String {
         """
-        CodexBar \(version)
+        Clawbar \(version)
 
         Usage:
-          codexbar [--format text|json]
-                  [--json]
-                  [--json-only]
-                  [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
-                  [--provider \(ProviderHelp.list)]
-                  [--account <label>] [--account-index <index>] [--all-accounts]
-                  [--no-credits] [--no-color] [--pretty] [--status] [--source <auto|web|cli|oauth|api>]
-                  [--web-timeout <seconds>] [--web-debug-dump-html] [--antigravity-plan-debug] [--augment-debug]
-          codexbar cost [--format text|json]
-                       [--json]
-                       [--json-only]
-                       [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
-                       [--provider \(ProviderHelp.list)] [--no-color] [--pretty] [--refresh]
-          codexbar models [--provider theclawbay]
-                         [--format text|json]
-                         [--json]
-                         [--json-only]
-                         [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
-                         [-v|--verbose]
-                         [--pretty]
-          codexbar config <validate|dump> [--format text|json]
-                                        [--json]
-                                        [--json-only]
-                                        [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
-                                        [-v|--verbose]
-                                        [--pretty]
+          clawbar [--format text|json]
+                   [--json]
+                   [--json-only]
+                   [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
+                   [--provider \(ProviderHelp.list)]
+                   [--account <label>] [--account-index <index>] [--all-accounts]
+                   [--no-credits] [--no-color] [--pretty] [--status] [--source <auto|web|cli|oauth|api>]
+                   [--web-timeout <seconds>] [--web-debug-dump-html] [--antigravity-plan-debug] [--augment-debug]
+          clawbar cost [--format text|json]
+                        [--json]
+                        [--json-only]
+                        [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
+                        [--provider \(ProviderHelp.list)] [--no-color] [--pretty] [--refresh]
+          clawbar models [--provider theclawbay]
+                          [--format text|json]
+                          [--json]
+                          [--json-only]
+                          [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
+                          [-v|--verbose]
+                          [--pretty]
+          clawbar config <validate|dump> [--format text|json]
+                                         [--json]
+                                         [--json-only]
+                                         [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
+                                         [-v|--verbose]
+                                         [--pretty]
 
         Global flags:
           -h, --help      Show help
@@ -163,13 +163,13 @@ extension CodexBarCLI {
           --json-output   Emit machine-readable logs (JSONL) to stderr
 
         Examples:
-          codexbar
-          codexbar --format json --provider all --pretty
-          codexbar --provider all --json
-          codexbar --provider gemini
-          codexbar cost --provider claude --format json --pretty
-          codexbar models --format json --pretty
-          codexbar config validate --format json --pretty
+          clawbar
+          clawbar --format json --provider all --pretty
+          clawbar --provider all --json
+          clawbar --provider gemini
+          clawbar cost --provider claude --format json --pretty
+          clawbar models --format json --pretty
+          clawbar config validate --format json --pretty
         """
     }
 }

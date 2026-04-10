@@ -72,7 +72,7 @@ extension CodexBarCLI {
         else {
             Self.exit(
                 code: .failure,
-                message: "Error: TheClawBay API key not found in ~/.codexbar/config.json.",
+                message: "Error: theclawbay API key not found in ~/.codexbar/config.json.",
                 output: output,
                 kind: .config)
         }
@@ -85,9 +85,9 @@ extension CodexBarCLI {
             case .text:
                 let ids = response.data.map(\.id).sorted()
                 if ids.isEmpty {
-                    print("The Claw Bay: keine Models gefunden")
+                    print("theclawbay: keine Models gefunden")
                 } else {
-                    print("The Claw Bay Models (\(ids.count))")
+                    print("theclawbay models (\(ids.count))")
                     for id in ids {
                         print("- \(id)")
                     }
@@ -102,7 +102,7 @@ extension CodexBarCLI {
 
     static func fetchTheClawBayModels(apiKey: String) async throws -> TheClawBayModelsResponse {
         guard let url = URL(string: "https://api.theclawbay.com/v1/models") else {
-            throw CLIArgumentError("Invalid TheClawBay models URL")
+            throw CLIArgumentError("Invalid theclawbay models URL")
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -112,11 +112,11 @@ extension CodexBarCLI {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else {
-            throw CLIArgumentError("Invalid response from TheClawBay")
+            throw CLIArgumentError("Invalid response from theclawbay")
         }
         guard http.statusCode == 200 else {
             let message = String(data: data, encoding: .utf8) ?? "HTTP \(http.statusCode)"
-            throw CLIArgumentError("TheClawBay models request failed: \(message)")
+            throw CLIArgumentError("theclawbay models request failed: \(message)")
         }
         return try JSONDecoder().decode(TheClawBayModelsResponse.self, from: data)
     }

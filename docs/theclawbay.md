@@ -1,11 +1,11 @@
-# The Claw Bay
+# theclawbay
 
 ## Overview
-The Claw Bay is a unified API proxy that routes requests to multiple underlying AI providers (OpenRouter, OpenAI, Anthropic, etc.) through a single API key and endpoint.
+theclawbay is a unified API proxy that routes requests to multiple underlying AI providers (OpenRouter, OpenAI, Anthropic, etc.) through a single API key and endpoint.
 
 ## Authentication
 - **API Key**: Get your key from [theclawbay.com](https://theclawbay.com).
-- **Config**: Add to `~/.codexbar/config.json`:
+- **Config**: Add to `~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json)`:
   ```json
   {
     "id": "theclawbay",

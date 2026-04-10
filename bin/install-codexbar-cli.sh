@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP="/Applications/CodexBar.app"
-HELPER="$APP/Contents/Helpers/CodexBarCLI"
-TARGETS=("/usr/local/bin/codexbar" "/opt/homebrew/bin/codexbar")
+APP="/Applications/Clawbar.app"
+HELPER="$APP/Contents/Helpers/clawbar"
+TARGETS=("/usr/local/bin/clawbar" "/opt/homebrew/bin/clawbar")
 
 if [[ ! -x "$HELPER" ]]; then
-  echo "CodexBarCLI helper not found at $HELPER. Please reinstall CodexBar." >&2
+  echo "clawbar helper not found at $HELPER. Please reinstall Clawbar." >&2
   exit 1
 fi
 
@@ -15,7 +15,7 @@ cat > "$install_script" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 HELPER="__HELPER__"
-TARGETS=("/usr/local/bin/codexbar" "/opt/homebrew/bin/codexbar")
+TARGETS=("/usr/local/bin/clawbar" "/opt/homebrew/bin/clawbar")
 
 for t in "${TARGETS[@]}"; do
   mkdir -p "$(dirname "$t")"
@@ -29,4 +29,4 @@ perl -pi -e "s#__HELPER__#$HELPER#g" "$install_script"
 osascript -e "do shell script \"bash '$install_script'\" with administrator privileges"
 rm -f "$install_script"
 
-echo "CodexBar CLI installed. Try: codexbar usage"
+echo "Clawbar CLI installed. Try: clawbar usage"

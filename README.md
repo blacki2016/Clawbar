@@ -1,8 +1,8 @@
-# CodexBar 🎚️ – Mögen deine Tokens niemals ausgehen.
+# Clawbar 🎚️ – Mögen deine Tokens niemals ausgehen.
 
-Schlanke macOS 14+ Menüleisten-App, die deine Limits für Codex, Claude, Cursor, Gemini, Antigravity, Droid (Factory), Copilot, z.ai, Kiro, Vertex AI, Augment, Amp, JetBrains AI, OpenRouter, Perplexity und The Claw Bay im Blick behält (Sitzung + wöchentlich, wo verfügbar) und anzeigt, wann jedes Fenster zurückgesetzt wird. Ein Status-Item pro Anbieter (oder der Modus „Icons zusammenführen" mit einem Anbieter-Wechsler und optionaler Übersicht); aktiviere in den Einstellungen, was du nutzt. Kein Dock-Symbol, minimale UI, dynamische Menüleisten-Symbole.
+Schlanke macOS 14+ Menüleisten-App, die deine Limits für Codex, Claude, Cursor, Gemini, Antigravity, Droid (Factory), Copilot, z.ai, Kiro, Vertex AI, Augment, Amp, JetBrains AI, OpenRouter, Perplexity und theclawbay im Blick behält (Sitzung + wöchentlich, wo verfügbar) und anzeigt, wann jedes Fenster zurückgesetzt wird. Ein Status-Item pro Anbieter (oder der Modus „Icons zusammenführen" mit einem Anbieter-Wechsler und optionaler Übersicht); aktiviere in den Einstellungen, was du nutzt. Kein Dock-Symbol, minimale UI, dynamische Menüleisten-Symbole.
 
-<img src="codexbar.png" alt="CodexBar Menü-Screenshot" width="520" />
+<img src="codexbar.png" alt="Clawbar Menü-Screenshot" width="520" />
 
 ## Installation
 
@@ -47,7 +47,7 @@ Linux-Unterstützung über Omarchy: Community Waybar-Modul und TUI, gesteuert du
 - [Amp](docs/amp.md) — Browser-Cookie-basierte Authentifizierung mit Amp-Free-Nutzungsverfolgung.
 - [JetBrains AI](docs/jetbrains.md) — Lokales XML-basiertes Kontingent aus der JetBrains-IDE-Konfiguration; monatliche Credits-Verfolgung.
 - [OpenRouter](docs/openrouter.md) — API-Token für kreditbasierte Nutzungsverfolgung über mehrere KI-Anbieter.
-- [The Claw Bay](docs/theclawbay.md) — API-Token für einheitliche Nutzungsverfolgung über mehrere KI-Anbieter über einen einzigen Proxy-Endpunkt (5h + Wochenfenster).
+- [theclawbay](docs/theclawbay.md) — API-Token für einheitliche Nutzungsverfolgung über mehrere KI-Anbieter über einen einzigen Proxy-Endpunkt (5h + Wochenfenster).
 - Neue Anbieter willkommen: [Anbieter-Autorenanleitung](docs/provider.md).
 
 ## Symbol & Screenshot
@@ -64,7 +64,7 @@ Das Menüleisten-Symbol ist ein kleines Zwei-Leisten-Meter:
 - Anbieter-Status-Abfrage mit Vorfall-Badges im Menü und Symbol-Overlay.
 - Modus „Icons zusammenführen" zum Kombinieren von Anbietern in ein Status-Item + Wechsler, mit optionaler Übersicht für bis zu drei Anbieter.
 - Aktualisierungsintervalle (Manuell, 1 Min., 2 Min., 5 Min., 15 Min.).
-- Gebündelte CLI (`codexbar`) für Skripte und CI (inkl. `codexbar cost --provider codex|claude` für lokale Kosten und `codexbar models` für verfügbare Provider-Modelle); Linux-CLI-Builds verfügbar.
+- Gebündelte CLI (`clawbar`) für Skripte und CI (inkl. `clawbar cost --provider codex|claude` für lokale Kosten und `clawbar models` für verfügbare Provider-Modelle); Linux-CLI-Builds verfügbar.
 - WidgetKit-Widget bildet die Menükarten-Schnappschüsse ab.
 - Privatsphäre zuerst: Verarbeitung standardmäßig auf dem Gerät; Browser-Cookies sind Opt-in und werden wiederverwendet (keine Passwörter gespeichert).
 
@@ -79,14 +79,14 @@ Fragt sich, ob CodexBar deine Festplatte durchsucht? Es durchkriecht nicht dein 
   - z.ai-API-Token wird im Keychain über Einstellungen → Anbieter gespeichert; Copilot speichert seinen API-Token während des Device-Flows im Keychain.
   - **Wie verhindere ich diese Keychain-Warnungen?**
     - Öffne **Keychain-Zugriff.app** → Anmeldungsschlüsselbund → suche nach dem Eintrag (z. B. „Claude Code-credentials").
-    - Öffne den Eintrag → **Zugriffskontrolle** → füge `CodexBar.app` unter „Immer den Zugriff durch diese Programme erlauben" hinzu.
-    - Bevorzuge, nur CodexBar hinzuzufügen (vermeide „Allen Anwendungen erlauben", es sei denn, du willst es weit öffnen).
-    - Starte CodexBar nach dem Speichern neu.
+    - Öffne den Eintrag → **Zugriffskontrolle** → füge `Clawbar.app` unter „Immer den Zugriff durch diese Programme erlauben" hinzu.
+    - Bevorzuge, nur Clawbar hinzuzufügen (vermeide „Allen Anwendungen erlauben", es sei denn, du willst es weit öffnen).
+    - Starte Clawbar nach dem Speichern neu.
     - Referenz-Screenshot: ![Keychain-Zugriffskontrolle](docs/keychain-allow.png)
   - **Wie mache ich dasselbe für den Browser?**
     - Finde den „Safe Storage"-Schlüssel des Browsers (z. B. „Chrome Safe Storage", „Brave Safe Storage", „Firefox", „Microsoft Edge Safe Storage").
-    - Öffne den Eintrag → **Zugriffskontrolle** → füge `CodexBar.app` unter „Immer den Zugriff durch diese Programme erlauben" hinzu.
-    - Dadurch wird die Eingabeaufforderung entfernt, wenn CodexBar Cookies für diesen Browser entschlüsselt.
+    - Öffne den Eintrag → **Zugriffskontrolle** → füge `Clawbar.app` unter „Immer den Zugriff durch diese Programme erlauben" hinzu.
+    - Dadurch wird die Eingabeaufforderung entfernt, wenn Clawbar Cookies für diesen Browser entschlüsselt.
 - **Dateien & Ordner-Eingabeaufforderungen (Ordner-/Volume-Zugriff)**: CodexBar startet Anbieter-CLIs (codex/claude/gemini/antigravity). Wenn diese CLIs ein Projektverzeichnis oder ein externes Laufwerk lesen, fragt macOS möglicherweise nach diesem Ordner/Volume (z. B. Desktop oder ein externes Volume). Dies wird durch das Arbeitsverzeichnis der CLI gesteuert, nicht durch Hintergrundausführung.
 - **Was wir nicht anfordern**: Keine Bildschirmaufzeichnung, Barrierefreiheit oder Automatisierungsrechte; keine Passwörter werden gespeichert (Browser-Cookies werden auf Wunsch wiederverwendet).
 
@@ -110,9 +110,9 @@ Fragt sich, ob CodexBar deine Festplatte durchsucht? Es durchkriecht nicht dein 
 ## Aus Quellcode bauen
 ```bash
 swift build -c release          # oder debug für Entwicklung
-./Scripts/package_app.sh        # baut CodexBar.app an Ort und Stelle
+./Scripts/package_app.sh        # baut Clawbar.app an Ort und Stelle
 CODEXBAR_SIGNING=adhoc ./Scripts/package_app.sh  # Ad-hoc-Signatur (kein Apple-Entwicklerkonto)
-open CodexBar.app
+open Clawbar.app
 ```
 
 Entwicklungszyklus:

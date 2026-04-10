@@ -60,7 +60,7 @@ Usage source picker:
 ## Web API (cookies)
 - Preferences → Providers → Claude → Cookie source (Automatic or Manual).
 - Manual mode accepts a `Cookie:` header from a claude.ai request.
-- Multi-account manual tokens: add entries to `~/.codexbar/config.json` (`tokenAccounts`) and set Claude cookies to
+- Multi-account manual tokens: add entries to `~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json)` (`tokenAccounts`) and set Claude cookies to
   Manual. The menu can show all accounts stacked or a switcher bar (Preferences → Advanced → Display).
 - Claude token accounts accept either `sessionKey` cookies or OAuth access tokens (`sk-ant-oat...`). OAuth-token
   accounts route to the OAuth path and disable cookie mode; session-key or cookie-header accounts stay in manual

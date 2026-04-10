@@ -31,7 +31,7 @@ enum ProviderChoice: String, AppEnum {
         .kilo: DisplayRepresentation(title: "Kilo"),
         .opencode: DisplayRepresentation(title: "OpenCode"),
         .opencodego: DisplayRepresentation(title: "OpenCode Go"),
-        .theclawbay: DisplayRepresentation(title: "The Claw Bay"),
+        .theclawbay: DisplayRepresentation(title: "theclawbay"),
     ]
 
     var provider: UsageProvider {

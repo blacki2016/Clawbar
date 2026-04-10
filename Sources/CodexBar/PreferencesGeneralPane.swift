@@ -103,7 +103,7 @@ struct GeneralPane: View {
                 SettingsSection(contentSpacing: 12) {
                     HStack {
                         Spacer()
-                        Button("Quit CodexBar") { NSApp.terminate(nil) }
+                        Button("Quit Clawbar") { NSApp.terminate(nil) }
                             .buttonStyle(.borderedProminent)
                             .controlSize(.large)
                     }

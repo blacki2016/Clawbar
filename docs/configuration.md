@@ -12,7 +12,7 @@ CodexBar reads a single JSON config file for CLI and app settings.
 Secrets (API keys, cookies, tokens) live here; Keychain is not used.
 
 ## Location
-- `~/.codexbar/config.json`
+- `~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json)`
 - The directory is created if missing.
 - Permissions are forced to `0600` on macOS and Linux.
 

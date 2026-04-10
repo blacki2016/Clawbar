@@ -31,14 +31,14 @@ struct TheClawBayProviderImplementation: ProviderImplementation {
             ProviderSettingsFieldDescriptor(
                 id: "theclawbay-api-key",
                 title: "API key",
-                subtitle: "Stored in ~/.codexbar/config.json. Paste your The Claw Bay API key.",
+                subtitle: "Stored in ~/.codexbar/config.json. Paste your theclawbay API key.",
                 kind: .secure,
                 placeholder: "ca_v1...",
                 binding: context.stringBinding(\.theClawBayAPIToken),
                 actions: [
                     ProviderSettingsActionDescriptor(
                         id: "theclawbay-open-docs",
-                        title: "Open The Claw Bay Docs",
+                        title: "Open theclawbay Docs",
                         style: .link,
                         isVisible: nil,
                         perform: {

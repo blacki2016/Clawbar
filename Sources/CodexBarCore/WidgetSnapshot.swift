@@ -114,7 +114,7 @@ public struct WidgetSnapshot: Codable, Sendable {
 }
 
 public enum WidgetSnapshotStore {
-    public static let appGroupID = "group.com.steipete.codexbar"
+    public static let appGroupID = "group.com.steipete.clawbar"
     private static let filename = "widget-snapshot.json"
 
     public static func load(bundleID: String? = Bundle.main.bundleIdentifier) -> WidgetSnapshot? {
@@ -144,7 +144,7 @@ public enum WidgetSnapshotStore {
 
         let base = fm.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
             ?? fm.temporaryDirectory
-        let dir = base.appendingPathComponent("CodexBar", isDirectory: true)
+        let dir = base.appendingPathComponent("Clawbar", isDirectory: true)
         try? fm.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir.appendingPathComponent(self.filename, isDirectory: false)
     }
@@ -156,7 +156,7 @@ public enum WidgetSnapshotStore {
     private static func groupID(for bundleID: String?) -> String? {
         guard let bundleID, !bundleID.isEmpty else { return self.appGroupID }
         if bundleID.contains(".debug") {
-            return "group.com.steipete.codexbar.debug"
+            return "group.com.steipete.clawbar.debug"
         }
         return self.appGroupID
     }

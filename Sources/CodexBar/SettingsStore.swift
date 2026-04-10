@@ -63,7 +63,7 @@ enum MenuBarMetricPreference: String, CaseIterable, Identifiable {
 @MainActor
 @Observable
 final class SettingsStore {
-    static let sharedDefaults = UserDefaults(suiteName: "group.com.steipete.codexbar")
+    static let sharedDefaults = UserDefaults(suiteName: "group.com.steipete.clawbar")
     static let mergedOverviewProviderLimit = 3
     static let isRunningTests: Bool = {
         let env = ProcessInfo.processInfo.environment

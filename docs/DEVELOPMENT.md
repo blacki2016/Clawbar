@@ -27,7 +27,7 @@ read_when:
 
 1. **Make code changes** in `Sources/CodexBar/`
 2. **Run** `./Scripts/compile_and_run.sh` to rebuild and launch
-3. **Check logs** in Console.app (filter by "codexbar")
+3. **Check logs** in Console.app (filter by "clawbar")
 4. **Optional file log**: enable Debug → Logging → "Enable file logging" to write
    `~/Library/Logs/CodexBar/CodexBar.log` (verbosity defaults to "Verbose")
 
@@ -47,7 +47,7 @@ You'll see **one keychain prompt per stored credential** on the first launch. Th
 
 ### Reset Migration (Testing)
 ```bash
-defaults delete com.steipete.codexbar KeychainMigrationV1Completed
+defaults delete com.steipete.clawbar KeychainMigrationV1Completed
 ```
 
 ## Auto-Refresh for Augment Cookies
@@ -114,7 +114,7 @@ export CODEXBAR_LOG_LEVEL=debug
 ./Scripts/compile_and_run.sh
 
 # Check logs in Console.app
-# Filter: subsystem:com.steipete.codexbar category:augment-cookie
+# Filter: subsystem:com.steipete.clawbar category:augment-cookie
 ```
 
 ### Run Tests Only
@@ -133,7 +133,7 @@ swiftlint --strict
 ### Local Development Build
 ```bash
 ./Scripts/package_app.sh
-# Creates: CodexBar.app (ad-hoc signed)
+# Creates: Clawbar.app (ad-hoc signed)
 ```
 
 ### Release Build (Notarized)
@@ -158,7 +158,7 @@ ls -lt ~/Library/Logs/DiagnosticReports/CodexBar* | head -5
 ### Keychain Prompts Keep Appearing
 ```bash
 # Verify migration completed
-defaults read com.steipete.codexbar KeychainMigrationV1Completed
+defaults read com.steipete.clawbar KeychainMigrationV1Completed
 # Should output: 1
 
 # Check migration logs

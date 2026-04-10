@@ -27,8 +27,17 @@ public struct CodexBarConfigStore: @unchecked Sendable {
     }
 
     public func load() throws -> CodexBarConfig? {
-        guard self.fileManager.fileExists(atPath: self.fileURL.path) else { return nil }
-        let data = try Data(contentsOf: self.fileURL)
+        let preferredURL = self.fileURL
+        let legacyURL = Self.legacyURL(home: FileManager.default.homeDirectoryForCurrentUser)
+        let resolvedURL: URL
+        if self.fileManager.fileExists(atPath: preferredURL.path) {
+            resolvedURL = preferredURL
+        } else if self.fileManager.fileExists(atPath: legacyURL.path) {
+            resolvedURL = legacyURL
+        } else {
+            return nil
+        }
+        let data = try Data(contentsOf: resolvedURL)
         let decoder = JSONDecoder()
         do {
             let decoded = try decoder.decode(CodexBarConfig.self, from: data)
@@ -71,6 +80,12 @@ public struct CodexBarConfigStore: @unchecked Sendable {
     }
 
     public static func defaultURL(home: URL = FileManager.default.homeDirectoryForCurrentUser) -> URL {
+        home
+            .appendingPathComponent(".clawbar", isDirectory: true)
+            .appendingPathComponent("config.json")
+    }
+
+    public static func legacyURL(home: URL = FileManager.default.homeDirectoryForCurrentUser) -> URL {
         home
             .appendingPathComponent(".codexbar", isDirectory: true)
             .appendingPathComponent("config.json")

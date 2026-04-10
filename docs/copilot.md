@@ -18,7 +18,7 @@ Copilot uses GitHub OAuth device flow and the Copilot internal usage API. No bro
      - `POST https://github.com/login/oauth/access_token`
    - Scope: `read:user`.
    - Token stored in config:
-     - `~/.codexbar/config.json` → `providers[].apiKey` for `copilot`
+     - `~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json)` → `providers[].apiKey` for `copilot`
 
 2) **Usage fetch**
    - `GET https://api.github.com/copilot_internal/user`

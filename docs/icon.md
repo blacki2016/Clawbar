@@ -35,3 +35,42 @@ Why this approach:
 Notes:
 - If Xcode is in a nonstandard location, set `XCODE_APP=/path/to/Xcode.app` before running.
 - Script is CI-friendly; no Xcode project needed.
+
+## Clawbar rebrand logo brief
+
+For the Clawbar rebrand, the app/provider icon direction should be guided by this brief:
+
+### Goal
+Create a new **Clawbar** logo that feels native to the existing app and provider ecosystem.
+
+### Inspiration sources
+Use small parts of these as inspiration only:
+- **theclawbay** logo / mascot
+- **CodexBar** icon language
+- **OpenClaw** brand language
+
+Do **not** make a collage or literal mashup. The result should feel like one coherent mark.
+
+### Style constraints
+- **Monochrome-first** appearance for UI/provider usage
+- Prefer **light white / translucent white / subtle glassy white** over colorful artwork
+- Must work at **very small sizes** in settings sidebars, menus, widgets, and compact macOS surfaces
+- Clean silhouette, strong negative space, minimal detail
+- Avoid cartoon-heavy rendering in the final app/provider symbol
+- Avoid saturated colors in the final icon treatment
+
+### Visual direction
+- “Claw” / crustacean / pincer energy is welcome
+- Should still feel like a **software utility / developer tool**, not a children’s mascot
+- Can borrow the compact geometry and clarity of provider icons already used in the app
+- Should harmonize with existing provider icon treatment (small, crisp, understated)
+
+### Deliverables
+- Primary app icon concept for **Clawbar**
+- Matching monochrome/provider-style mark usable in provider lists and small UI slots
+- Asset pipeline should preserve compatibility with `Icon.icon` → `Icon.icns`
+
+### Non-goals
+- No overly colorful mascot art as the final shipped symbol
+- No text baked into the icon
+- No busy gradients or tiny details that disappear at small sizes

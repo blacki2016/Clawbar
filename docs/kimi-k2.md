@@ -13,7 +13,7 @@ so CodexBar only needs a valid API key to pull your remaining balance and usage.
 
 ## Data sources + fallback order
 
-1) **API key** stored in `~/.codexbar/config.json` or supplied via `KIMI_K2_API_KEY` / `KIMI_API_KEY` / `KIMI_KEY`.
+1) **API key** stored in `~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json)` or supplied via `KIMI_K2_API_KEY` / `KIMI_API_KEY` / `KIMI_KEY`.
    CodexBar stores the key in config after you paste it in Preferences → Providers → Kimi K2.
 2) **Credit endpoint**
    - `GET https://kimi-k2.ai/api/user/credits`

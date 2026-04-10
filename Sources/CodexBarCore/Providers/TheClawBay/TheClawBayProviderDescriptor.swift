@@ -9,14 +9,14 @@ public enum TheClawBayProviderDescriptor {
             id: .theclawbay,
             metadata: ProviderMetadata(
                 id: .theclawbay,
-                displayName: "The Claw Bay",
+                displayName: "theclawbay",
                 sessionLabel: "5h",
                 weeklyLabel: "Weekly",
                 opusLabel: nil,
                 supportsOpus: false,
                 supportsCredits: false,
                 creditsHint: "",
-                toggleTitle: "Show The Claw Bay usage",
+                toggleTitle: "Show theclawbay usage",
                 cliName: "theclawbay",
                 defaultEnabled: false,
                 isPrimaryProvider: false,
@@ -30,7 +30,7 @@ public enum TheClawBayProviderDescriptor {
                 color: ProviderColor(red: 16 / 255, green: 163 / 255, blue: 127 / 255)),
             tokenCost: ProviderTokenCostConfig(
                 supportsTokenCost: false,
-                noDataMessage: { "The Claw Bay cost summary is not yet supported." }),
+                noDataMessage: { "theclawbay cost summary is not yet supported." }),
             fetchPlan: ProviderFetchPlan(
                 sourceModes: [.auto, .api],
                 pipeline: ProviderFetchPipeline(resolveStrategies: { _ in [TheClawBayAPIFetchStrategy()] })),
@@ -74,7 +74,7 @@ public enum TheClawBaySettingsError: LocalizedError, Sendable {
     public var errorDescription: String? {
         switch self {
         case .missingToken:
-            "The Claw Bay API token not configured. Set THECLAWBAY_API_KEY or configure it in Settings."
+            "theclawbay API token not configured. Set THECLAWBAY_API_KEY or configure it in Settings."
         }
     }
 }

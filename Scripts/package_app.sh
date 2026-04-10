@@ -108,7 +108,7 @@ for ARCH in "${ARCH_LIST[@]}"; do
   swift build -c "$CONF" --arch "$ARCH"
 done
 
-APP="$ROOT/CodexBar.app"
+APP="$ROOT/Clawbar.app"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Frameworks"
 mkdir -p "$APP/Contents/Helpers" "$APP/Contents/PlugIns"
@@ -120,12 +120,12 @@ if [[ -f "$ICON_SOURCE" ]]; then
   iconutil --convert icns --output "$ICON_TARGET" "$ICON_SOURCE"
 fi
 
-BUNDLE_ID="com.steipete.codexbar"
-FEED_URL="https://raw.githubusercontent.com/steipete/CodexBar/main/appcast.xml"
+BUNDLE_ID="com.steipete.clawbar"
+FEED_URL=""
 AUTO_CHECKS=true
 LOWER_CONF=$(printf "%s" "$CONF" | tr '[:upper:]' '[:lower:]')
 if [[ "$LOWER_CONF" == "debug" ]]; then
-  BUNDLE_ID="com.steipete.codexbar.debug"
+  BUNDLE_ID="com.steipete.clawbar.debug"
   FEED_URL=""
   AUTO_CHECKS=false
 fi
@@ -134,13 +134,13 @@ if [[ "$SIGNING_MODE" == "adhoc" ]]; then
   AUTO_CHECKS=false
 fi
 WIDGET_BUNDLE_ID="${BUNDLE_ID}.widget"
-APP_GROUP_ID="group.com.steipete.codexbar"
+APP_GROUP_ID="group.com.steipete.clawbar"
 if [[ "$BUNDLE_ID" == *".debug"* ]]; then
-  APP_GROUP_ID="group.com.steipete.codexbar.debug"
+  APP_GROUP_ID="group.com.steipete.clawbar.debug"
 fi
 ENTITLEMENTS_DIR="$ROOT/.build/entitlements"
-APP_ENTITLEMENTS="${ENTITLEMENTS_DIR}/CodexBar.entitlements"
-WIDGET_ENTITLEMENTS="${ENTITLEMENTS_DIR}/CodexBarWidget.entitlements"
+APP_ENTITLEMENTS="${ENTITLEMENTS_DIR}/Clawbar.entitlements"
+WIDGET_ENTITLEMENTS="${ENTITLEMENTS_DIR}/ClawbarWidget.entitlements"
 mkdir -p "$ENTITLEMENTS_DIR"
 if [[ "$ALLOW_LLDB" == "1" && "$LOWER_CONF" != "debug" ]]; then
   echo "ERROR: CODEXBAR_ALLOW_LLDB requires debug configuration" >&2
@@ -181,10 +181,10 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key><string>CodexBar</string>
-    <key>CFBundleDisplayName</key><string>CodexBar</string>
+    <key>CFBundleName</key><string>Clawbar</string>
+    <key>CFBundleDisplayName</key><string>Clawbar</string>
     <key>CFBundleIdentifier</key><string>${BUNDLE_ID}</string>
-    <key>CFBundleExecutable</key><string>CodexBar</string>
+    <key>CFBundleExecutable</key><string>Clawbar</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>${MARKETING_VERSION}</string>
     <key>CFBundleVersion</key><string>${BUILD_NUMBER}</string>
@@ -267,27 +267,27 @@ install_binary() {
   verify_binary_arches "$dest" "${ARCH_LIST[@]}"
 }
 
-install_binary "CodexBar" "$APP/Contents/MacOS/CodexBar"
-# Ship CodexBarCLI alongside the app for easy symlinking.
+install_binary "CodexBar" "$APP/Contents/MacOS/Clawbar"
+# Ship CLI alongside the app for easy symlinking.
 if [[ -n "$(resolve_binary_path "CodexBarCLI" "${ARCH_LIST[0]}")" ]]; then
-  install_binary "CodexBarCLI" "$APP/Contents/Helpers/CodexBarCLI"
+  install_binary "CodexBarCLI" "$APP/Contents/Helpers/clawbar"
 fi
-# Watchdog helper: ensures `claude` probes die when CodexBar crashes/gets killed.
+# Watchdog helper: ensures `claude` probes die when Clawbar crashes/gets killed.
 if [[ -n "$(resolve_binary_path "CodexBarClaudeWatchdog" "${ARCH_LIST[0]}")" ]]; then
-  install_binary "CodexBarClaudeWatchdog" "$APP/Contents/Helpers/CodexBarClaudeWatchdog"
+  install_binary "CodexBarClaudeWatchdog" "$APP/Contents/Helpers/ClawbarClaudeWatchdog"
 fi
 if [[ -n "$(resolve_binary_path "CodexBarWidget" "${ARCH_LIST[0]}")" ]]; then
-  WIDGET_APP="$APP/Contents/PlugIns/CodexBarWidget.appex"
+  WIDGET_APP="$APP/Contents/PlugIns/ClawbarWidget.appex"
   mkdir -p "$WIDGET_APP/Contents/MacOS" "$WIDGET_APP/Contents/Resources"
   cat > "$WIDGET_APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleName</key><string>CodexBarWidget</string>
-    <key>CFBundleDisplayName</key><string>CodexBar</string>
+    <key>CFBundleName</key><string>ClawbarWidget</string>
+    <key>CFBundleDisplayName</key><string>Clawbar</string>
     <key>CFBundleIdentifier</key><string>${WIDGET_BUNDLE_ID}</string>
-    <key>CFBundleExecutable</key><string>CodexBarWidget</string>
+    <key>CFBundleExecutable</key><string>ClawbarWidget</string>
     <key>CFBundlePackageType</key><string>XPC!</string>
     <key>CFBundleShortVersionString</key><string>${MARKETING_VERSION}</string>
     <key>CFBundleVersion</key><string>${BUILD_NUMBER}</string>
@@ -300,13 +300,13 @@ if [[ -n "$(resolve_binary_path "CodexBarWidget" "${ARCH_LIST[0]}")" ]]; then
 </dict>
 </plist>
 PLIST
-  install_binary "CodexBarWidget" "$WIDGET_APP/Contents/MacOS/CodexBarWidget"
+  install_binary "CodexBarWidget" "$WIDGET_APP/Contents/MacOS/ClawbarWidget"
 fi
 # Embed Sparkle.framework
 if [[ -d ".build/$CONF/Sparkle.framework" ]]; then
   cp -R ".build/$CONF/Sparkle.framework" "$APP/Contents/Frameworks/"
   chmod -R a+rX "$APP/Contents/Frameworks/Sparkle.framework"
-  install_name_tool -add_rpath "@executable_path/../Frameworks" "$APP/Contents/MacOS/CodexBar"
+  install_name_tool -add_rpath "@executable_path/../Frameworks" "$APP/Contents/MacOS/Clawbar"
   # Re-sign Sparkle and all nested components with Developer ID + timestamp
   SPARKLE="$APP/Contents/Frameworks/Sparkle.framework"
 if [[ "$SIGNING_MODE" == "adhoc" ]]; then
@@ -374,21 +374,21 @@ xattr -cr "$APP"
 find "$APP" -name '._*' -delete
 
 # Sign helper binaries if present
-if [[ -f "${APP}/Contents/Helpers/CodexBarCLI" ]]; then
-  codesign "${CODESIGN_ARGS[@]}" "${APP}/Contents/Helpers/CodexBarCLI"
+if [[ -f "${APP}/Contents/Helpers/clawbar" ]]; then
+  codesign "${CODESIGN_ARGS[@]}" "${APP}/Contents/Helpers/clawbar"
 fi
-if [[ -f "${APP}/Contents/Helpers/CodexBarClaudeWatchdog" ]]; then
-  codesign "${CODESIGN_ARGS[@]}" "${APP}/Contents/Helpers/CodexBarClaudeWatchdog"
+if [[ -f "${APP}/Contents/Helpers/ClawbarClaudeWatchdog" ]]; then
+  codesign "${CODESIGN_ARGS[@]}" "${APP}/Contents/Helpers/ClawbarClaudeWatchdog"
 fi
 
 # Sign widget extension if present
-if [[ -d "${APP}/Contents/PlugIns/CodexBarWidget.appex" ]]; then
+if [[ -d "${APP}/Contents/PlugIns/ClawbarWidget.appex" ]]; then
   codesign "${CODESIGN_ARGS[@]}" \
     --entitlements "$WIDGET_ENTITLEMENTS" \
-    "$APP/Contents/PlugIns/CodexBarWidget.appex/Contents/MacOS/CodexBarWidget"
+    "$APP/Contents/PlugIns/ClawbarWidget.appex/Contents/MacOS/ClawbarWidget"
   codesign "${CODESIGN_ARGS[@]}" \
     --entitlements "$WIDGET_ENTITLEMENTS" \
-    "$APP/Contents/PlugIns/CodexBarWidget.appex"
+    "$APP/Contents/PlugIns/ClawbarWidget.appex"
 fi
 
 # Finally sign the app bundle itself

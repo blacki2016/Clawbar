@@ -156,6 +156,8 @@ extension CodexBarCLI {
 
     static func resetTimeDisplayStyleFromDefaults() -> ResetTimeDisplayStyle {
         let domains = [
+            "com.steipete.clawbar",
+            "com.steipete.clawbar.debug",
             "com.steipete.codexbar",
             "com.steipete.codexbar.debug",
         ]

@@ -16,7 +16,7 @@ read_when:
 
 ## Bundle contents
 - `CodexBarWidget.appex` bundled with app-group entitlements.
-- `CodexBarCLI` copied to `CodexBar.app/Contents/Helpers/` for symlinking.
+- `CodexBarCLI` copied to `Clawbar.app/Contents/Helpers/` for symlinking.
 - SwiftPM resource bundles (e.g. `KeyboardShortcuts_KeyboardShortcuts.bundle`) copied into `Contents/Resources` (required for `KeyboardShortcuts.Recorder`).
 
 ## Releases
