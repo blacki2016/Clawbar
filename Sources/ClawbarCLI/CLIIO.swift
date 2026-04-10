@@ -5,6 +5,8 @@ import Glibc
 #endif
 import Foundation
 
+private let cliVersion = "1.0.0"
+
 extension ClawbarCLI {
     static func writeStderr(_ string: String) {
         guard let data = string.data(using: .utf8) else { return }
@@ -15,13 +17,13 @@ extension ClawbarCLI {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             print("Clawbar \(version)")
         } else {
-            print("Clawbar")
+            print("Clawbar \(cliVersion)")
         }
         Self.platformExit(0)
     }
 
     static func printHelp(for command: String?) -> Never {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? cliVersion
         switch command {
         case "usage":
             print(Self.usageHelp(version: version))
