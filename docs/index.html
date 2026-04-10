@@ -3,22 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CodexBar</title>
+    <title>Clawbar</title>
     <meta
       name="description"
-      content="Tiny macOS menu bar app that keeps your Codex, Claude Code, Cursor, Gemini, Antigravity, Droid (Factory), Copilot, and z.ai limits visible."
+      content="Tiny macOS menu bar app that keeps your CodeX, Claude Code, Cursor, Gemini, TheClawBay, and 20+ AI provider limits visible."
     />
     <meta name="theme-color" content="#0b1016" />
     <link rel="canonical" href="https://clawbar.app/" />
 
-    <meta property="og:title" content="CodexBar" />
+    <meta property="og:title" content="Clawbar" />
     <meta
       property="og:description"
-      content="Tiny macOS menu bar app that keeps your Codex, Claude Code, Cursor, Gemini, Antigravity, Droid (Factory), Copilot, and z.ai limits visible."
+      content="Tiny macOS menu bar app that keeps your CodeX, Claude Code, Cursor, Gemini, TheClawBay, and 20+ AI provider limits visible."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://clawbar.app/" />
-    <meta property="og:image" content="https://clawbar.app/clawbar.png" />
+    <meta property="og:image" content="https://clawbar.app/clawbar-logo.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="./icon.png" type="image/png" />
@@ -28,15 +28,15 @@
   <body>
     <main class="wrap">
       <header class="top" data-animate="1">
-        <a class="brand" href="https://github.com/steipete/CodexBar" aria-label="CodexBar on GitHub">
+        <a class="brand" href="https://github.com/blacki2016/Clawbar" aria-label="Clawbar on GitHub">
           <span class="name">
-            <h1 class="title">CodexBar</h1>
-            <p class="tagline">Codex, Claude Code, Cursor, Gemini, Antigravity, Droid, Copilot, z.ai limits.</p>
+            <h1 class="title">Clawbar 🦞</h1>
+            <p class="tagline">Token Usage Monitor for Claude, Codex, TheClawBay, Gemini, Cursor & 20+ providers.</p>
           </span>
         </a>
         <nav class="links" aria-label="Links">
-          <a class="btn primary" href="https://github.com/steipete/CodexBar/releases/latest">Download</a>
-          <a class="btn ghost" href="https://github.com/steipete/CodexBar">Source</a>
+          <a class="btn primary" href="https://github.com/blacki2016/Clawbar/releases/latest">Download</a>
+          <a class="btn ghost" href="https://github.com/blacki2016/Clawbar">Source</a>
         </nav>
       </header>
 
@@ -44,7 +44,7 @@
         <div class="copy" data-animate="2">
           <div class="badges" aria-label="Highlights">
             <span class="badge">macOS 14+</span>
-            <span class="badge">Apple Silicon + Intel</span>
+            <span class="badge">Apple Silicon</span>
             <span class="badge">Free &amp; open source</span>
             <span class="badge">No passwords stored</span>
           </div>
@@ -53,17 +53,17 @@
             <div>
               <h2>Stay ahead of resets.</h2>
               <p>
-                CodexBar keeps session + weekly limits (and credits) in the menu bar, so you know when you're safe to ship.
+                Clawbar keeps session + weekly limits (and credits) in the menu bar, so you know when you're safe to ship.
               </p>
             </div>
           </div>
-          <p class="requirement">Requirements: macOS 14+ (Apple Silicon + Intel).</p>
+          <p class="requirement">Requirements: macOS 14+ (Apple Silicon).</p>
           <div class="cta">
-            <a class="btn primary" href="https://github.com/steipete/CodexBar/releases/latest">Download latest</a>
-            <a class="btn" href="https://github.com/steipete/CodexBar">View on GitHub</a>
+            <a class="btn primary" href="https://github.com/blacki2016/Clawbar/releases/latest">Download latest</a>
+            <a class="btn" href="https://github.com/blacki2016/Clawbar">View on GitHub</a>
           </div>
           <p class="brew-line">
-            Homebrew: <code id="brew-cmd">brew install --cask steipete/tap/codexbar</code>
+            Homebrew: <code id="brew-cmd">brew install blacki2016/tap/clawbar</code>
             <button class="copy-btn" onclick="copyBrew()" aria-label="Copy to clipboard" title="Copy to clipboard">
               <svg class="icon-copy" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="5" y="5" width="9" height="9" rx="1.5"/>
@@ -74,7 +74,6 @@
               </svg>
             </button>
           </p>
-          <p class="brew-line">Linuxbrew (CLI only): <code>brew install steipete/tap/codexbar</code></p>
           <p class="note">
             GitHub Releases builds update via Sparkle. Homebrew installs update via <code>brew upgrade</code>.
           </p>
@@ -88,15 +87,15 @@
             }
           </script>
           <ul class="bullets" aria-label="What it does">
-            <li>One status item per provider (Codex, Claude, Cursor, Gemini, Antigravity, Droid, Copilot, z.ai, Kilo).</li>
-            <li>Session + weekly bars with reset times and optional credits.</li>
-            <li>Web-backed limits via browser cookies (Codex, Claude, Cursor, Droid).</li>
+            <li>One status item per provider (CodeX, Claude, TheClawBay, Gemini, Cursor, and 20+ more).</li>
+            <li>Session + weekly bars with reset times and credits.</li>
+            <li>Web-backed limits via browser cookies (CodeX, Claude, Cursor).</li>
             <li>Two-bar icon: session on top, weekly on bottom, dimmed on errors.</li>
             <li>Minimal UI, no Dock icon.</li>
           </ul>
         </div>
         <figure class="shot hero-shot" data-animate="3">
-          <img src="./codexbar.png" alt="CodexBar menu bar popover showing session and weekly usage." />
+          <img src="./clawbar-logo.png" alt="Clawbar menu bar popover showing session and weekly usage." />
           <figcaption>Menu card shows session + weekly usage, resets, and credits when available.</figcaption>
         </figure>
       </section>
@@ -111,16 +110,16 @@
         <div class="card">
           <h3>Providers</h3>
           <p>
-            Codex · Claude Code · Cursor · Gemini · Antigravity · Droid · Copilot · z.ai · Kilo<br />
-            Open to new providers — see the <a href="https://github.com/steipete/CodexBar/blob/main/docs/provider.md">provider guide</a>.
+            CodeX · Claude Code · TheClawBay · Cursor · Gemini · Antigravity · Minimax · Kimi · Kilo · Kiro · and more.<br />
+            Open to new providers — see the <a href="https://github.com/blacki2016/Clawbar/blob/main/docs/provider.md">provider guide</a>.
           </p>
         </div>
         <div class="card">
           <h3>Privacy</h3>
           <p>
             Reuses existing browser cookies (Safari/Chrome/Firefox) for dashboard access — no passwords stored. When cookies
-            are missing, CodexBar falls back to local CLI output. Audit notes in
-            <a href="https://github.com/steipete/CodexBar/issues/12">issue #12</a>.
+            are missing, Clawbar falls back to local CLI output. Audit notes in
+            <a href="https://github.com/blacki2016/Clawbar/issues/12">issue #12</a>.
           </p>
         </div>
       </section>
@@ -141,7 +140,7 @@
         <div class="card">
           <h3>CLI + automation</h3>
           <p>
-            Bundled <code>codexbar</code> CLI for scripts and CI, with Linux CLI builds on GitHub Releases.
+            Bundled <code>clawbar</code> CLI for scripts and CI.
           </p>
         </div>
       </section>
@@ -157,18 +156,17 @@
       </section>
 
       <section class="links-row" aria-label="Docs links" data-animate="7">
-        <a class="link-pill" href="https://github.com/steipete/CodexBar/blob/main/docs/providers.md">Docs</a>
-        <a class="link-pill" href="https://github.com/steipete/CodexBar/blob/main/docs/cli.md">CLI</a>
-        <a class="link-pill" href="https://github.com/steipete/CodexBar/blob/main/docs/provider.md">Provider guide</a>
+        <a class="link-pill" href="https://github.com/blacki2016/Clawbar/blob/main/docs/providers.md">Docs</a>
+        <a class="link-pill" href="https://github.com/blacki2016/Clawbar/blob/main/docs/cli.md">CLI</a>
+        <a class="link-pill" href="https://github.com/blacki2016/Clawbar/blob/main/docs/provider.md">Provider guide</a>
       </section>
 
       <footer class="foot" data-animate="8">
         <p>
-          Built by <a href="https://steipete.me">Peter Steinberger</a> •
-          <a href="https://github.com/steipete/CodexBar/blob/main/CHANGELOG.md">Changelog</a> •
-          <a href="https://github.com/steipete/CodexBar/blob/main/LICENSE">MIT</a> •
-          <a href="https://clawbar.app">clawbar.app</a> •
-          <a href="https://trimmy.app">trimmy.app</a>
+          Built by <a href="https://github.com/blacki2016">@blacki2016</a> •
+          <a href="https://github.com/blacki2016/Clawbar/blob/main/CHANGELOG.md">Changelog</a> •
+          <a href="https://github.com/blacki2016/Clawbar/blob/main/LICENSE">MIT</a> •
+          <a href="https://clawbar.netlify.app">clawbar.netlify.app</a>
         </p>
       </footer>
     </main>
