@@ -20,21 +20,38 @@ macOS 14+ Menüleisten-App + CLI zur Echtzeit-Überwachung deiner KI-Token-Konti
 - macOS 14+ (Sonoma)
 - Apple Silicon (ARM64)
 
+### Homebrew
+```bash
+brew install blacki2016/tap/clawbar
+```
+
+Installiert `Clawbar.app` nach `/Applications` und verlinkt die CLI als `clawbar`.
+
+### Shell-Install
+```bash
+curl -fsSL https://raw.githubusercontent.com/blacki2016/Clawbar/main/install.sh | bash
+```
+
+Das bestehende Install-Script lädt das aktuelle Release, installiert die App nach `/Applications` und richtet den CLI-Symlink ein.
+
+### Manuell
+- Lade `Clawbar-macOS.zip` von den [GitHub Releases](https://github.com/blacki2016/Clawbar/releases) herunter.
+- Entpacke `Clawbar.app` und verschiebe die App nach `/Applications`.
+- Optional: Verlinke die CLI manuell mit `ln -sf "/Applications/Clawbar.app/Contents/Helpers/clawbar" /opt/homebrew/bin/clawbar`.
+
+### CLI-Only-Install
+```bash
+curl -fsSL https://raw.githubusercontent.com/blacki2016/Clawbar/main/install-cli.sh | bash
+```
+
+Installiert nur die CLI ohne Root nach `~/.local/share/clawbar` und verlinkt sie unter `~/.local/bin/clawbar`. Das Script unterstützt macOS und Linux.
+
 ### Lokaler Build
 ```bash
 git clone https://github.com/blacki2016/Clawbar.git
 cd Clawbar
 ./Scripts/compile_and_run.sh
 ```
-
-### GitHub Releases
-Download: <https://github.com/blacki2016/Clawbar/releases>
-
-### CLI单独 (Linux/macOS)
-```bash
-brew install blacki2016/tap/clawbar
-```
-oder `ClawbarCLI-v<tag>-linux-<arch>.tar.gz` von den GitHub Releases.
 
 ## Quick Start
 
