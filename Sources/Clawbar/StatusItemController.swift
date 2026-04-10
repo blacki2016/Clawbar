@@ -245,13 +245,13 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.handleDebugBlinkNotification),
-            name: .codexbarDebugBlinkNow,
+            name: .clawbarDebugBlinkNow,
             object: nil)
         if observeProviderConfigNotifications {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(self.handleProviderConfigDidChange),
-                name: .codexbarProviderConfigDidChange,
+                name: .clawbarProviderConfigDidChange,
                 object: nil)
         }
     }

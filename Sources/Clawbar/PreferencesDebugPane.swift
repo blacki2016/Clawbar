@@ -89,7 +89,7 @@ struct DebugPane: View {
                     .keyboardShortcut(.defaultAction)
 
                     Button {
-                        NotificationCenter.default.post(name: .codexbarDebugBlinkNow, object: nil)
+                        NotificationCenter.default.post(name: .clawbarDebugBlinkNow, object: nil)
                     } label: {
                         Label("Blink now", systemImage: "eyes")
                     }

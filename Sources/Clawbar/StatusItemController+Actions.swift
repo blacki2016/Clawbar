@@ -203,7 +203,7 @@ extension StatusItemController {
             self.preferencesSelection.tab = tab
             NSApp.activate(ignoringOtherApps: true)
             NotificationCenter.default.post(
-                name: .codexbarOpenSettings,
+                name: .clawbarOpenSettings,
                 object: nil,
                 userInfo: ["tab": tab.rawValue])
         }

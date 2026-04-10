@@ -6,7 +6,7 @@ struct HiddenWindowView: View {
     var body: some View {
         Color.clear
             .frame(width: 20, height: 20)
-            .onReceive(NotificationCenter.default.publisher(for: .codexbarOpenSettings)) { _ in
+            .onReceive(NotificationCenter.default.publisher(for: .clawbarOpenSettings)) { _ in
                 Task { @MainActor in
                     self.openSettings()
                 }
