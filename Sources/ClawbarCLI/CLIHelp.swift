@@ -76,8 +76,7 @@ extension ClawbarCLI {
         Clawbar \(version)
 
         Usage:
-          clawbar models [--provider theclawbay]
-                         [--format text|json]
+          clawbar models [--format text|json]
                          [--json]
                          [--json-only]
                          [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]
@@ -85,12 +84,13 @@ extension ClawbarCLI {
                          [--pretty]
 
         Description:
-          List available models for a provider. Currently supports theclawbay.
-          Reads the API key from ~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json).
+          List all configured providers and their available models.
+          Shows enabled/disabled status for each provider.
+          Only providers with a models API (currently: theclawbay) show model lists.
+          Reads API keys from ~/.clawbar/config.json (legacy fallback: ~/.codexbar/config.json).
 
         Examples:
           clawbar models
-          clawbar models --provider theclawbay
           clawbar models --format json --pretty
         """
     }
@@ -140,8 +140,7 @@ extension ClawbarCLI {
                         [--json-only]
                         [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>] [-v|--verbose]
                         [--provider \(ProviderHelp.list)] [--no-color] [--pretty] [--refresh]
-          clawbar models [--provider theclawbay]
-                          [--format text|json]
+          clawbar models [--format text|json]
                           [--json]
                           [--json-only]
                           [--json-output] [--log-level <trace|verbose|debug|info|warning|error|critical>]

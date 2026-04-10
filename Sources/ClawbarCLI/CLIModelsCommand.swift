@@ -29,9 +29,6 @@ struct ModelsOptions: CommanderParsable {
 
     @Flag(name: .long("no-color"), help: "Disable ANSI colors in text output")
     var noColor: Bool = false
-
-    @Option(name: .long("provider"), help: "Provider to query: theclawbay")
-    var provider: String?
 }
 
 struct TheClawBayModel: Codable, Sendable {
@@ -53,50 +50,92 @@ struct TheClawBayModelsResponse: Codable, Sendable {
     let data: [TheClawBayModel]
 }
 
+struct ProviderModelsPayload: Codable, Sendable {
+    let provider: String
+    let enabled: Bool
+    let modelsAvailable: Bool
+    let models: [String]?
+    let modelCount: Int?
+    let error: String?
+}
+
 extension ClawbarCLI {
     static func runModels(_ values: ParsedValues) async {
         let output = CLIOutputPreferences.from(values: values)
         let config = Self.loadConfig(output: output)
-        let provider = (values.options["provider"]?.last ?? "theclawbay").lowercased()
 
-        guard provider == "theclawbay" || provider == "tcb" else {
-            Self.exit(
-                code: .failure,
-                message: "Error: models currently supports only theclawbay.",
-                output: output,
-                kind: .args)
-        }
+        // Build list of all configured providers
+        let allProviders = config.providers.map(\.id)
+        let enabledSet = Set(config.enabledProviders())
 
-        guard let apiKey = config.providerConfig(for: .theclawbay)?.sanitizedAPIKey,
-              !apiKey.isEmpty
-        else {
-            Self.exit(
-                code: .failure,
-                message: "Error: theclawbay API key not found in ~/.clawbar/config.json.",
-                output: output,
-                kind: .config)
-        }
+        // Providers that have a models API
+        let modelsAPIProviders: Set<UsageProvider> = [.theclawbay]
 
-        do {
-            let response = try await Self.fetchTheClawBayModels(apiKey: apiKey)
-            switch output.format {
-            case .json:
-                Self.printJSON(response, pretty: output.pretty)
-            case .text:
-                let ids = response.data.map(\.id).sorted()
-                if ids.isEmpty {
-                    print("theclawbay: keine Models gefunden")
-                } else {
-                    print("theclawbay models (\(ids.count))")
-                    for id in ids {
-                        print("- \(id)")
-                    }
+        // Fetch models for providers that support it
+        var payloads: [ProviderModelsPayload] = []
+
+        for provider in allProviders {
+            let isEnabled = enabledSet.contains(provider)
+            let hasModelsAPI = modelsAPIProviders.contains(provider)
+
+            if hasModelsAPI, let apiKey = config.providerConfig(for: provider)?.sanitizedAPIKey, !apiKey.isEmpty {
+                do {
+                    let response = try await Self.fetchTheClawBayModels(apiKey: apiKey)
+                    let ids = response.data.map(\.id).sorted()
+                    payloads.append(ProviderModelsPayload(
+                        provider: provider.rawValue,
+                        enabled: isEnabled,
+                        modelsAvailable: true,
+                        models: ids,
+                        modelCount: ids.count,
+                        error: nil))
+                } catch {
+                    payloads.append(ProviderModelsPayload(
+                        provider: provider.rawValue,
+                        enabled: isEnabled,
+                        modelsAvailable: false,
+                        models: nil,
+                        modelCount: nil,
+                        error: error.localizedDescription))
                 }
+            } else {
+                payloads.append(ProviderModelsPayload(
+                    provider: provider.rawValue,
+                    enabled: isEnabled,
+                    modelsAvailable: hasModelsAPI,
+                    models: nil,
+                    modelCount: hasModelsAPI ? 0 : nil,
+                    error: hasModelsAPI ? "no API key" : nil))
             }
-            Self.exit(code: .success, output: output, kind: .runtime)
-        } catch {
-            Self.printError(error, output: output, kind: .provider)
-            Self.exit(code: .failure, output: output, kind: .provider)
+        }
+
+        switch output.format {
+        case .json:
+            Self.printJSON(payloads, pretty: output.pretty)
+        case .text:
+            Self.printProvidersTable(payloads)
+        }
+
+        Self.exit(code: .success, output: output, kind: .runtime)
+    }
+
+    private static func printProvidersTable(_ payloads: [ProviderModelsPayload]) {
+        // Header
+        print("Provider            Enabled   Models")
+        print("────────────────── ──────── ───────────────────")
+
+        for p in payloads {
+            let name = p.provider.padding(toLength: 19, withPad: " ", startingAt: 0)
+            let enabledStr = p.enabled ? "  yes" : "   no"
+            let modelsStr: String
+            if let count = p.modelCount, count > 0 {
+                modelsStr = "\(count) available"
+            } else if p.modelsAvailable {
+                modelsStr = "no API key"
+            } else {
+                modelsStr = "–"
+            }
+            print("\(name) \(enabledStr)   \(modelsStr)")
         }
     }
 
