@@ -267,16 +267,16 @@ install_binary() {
   verify_binary_arches "$dest" "${ARCH_LIST[@]}"
 }
 
-install_binary "CodexBar" "$APP/Contents/MacOS/Clawbar"
+install_binary "ClawbarApp" "$APP/Contents/MacOS/Clawbar"
 # Ship CLI alongside the app for easy symlinking.
-if [[ -n "$(resolve_binary_path "CodexBarCLI" "${ARCH_LIST[0]}")" ]]; then
-  install_binary "CodexBarCLI" "$APP/Contents/Helpers/clawbar"
+if [[ -n "$(resolve_binary_path "ClawbarCLI" "${ARCH_LIST[0]}")" ]]; then
+  install_binary "ClawbarCLI" "$APP/Contents/Helpers/clawbar"
 fi
 # Watchdog helper: ensures `claude` probes die when Clawbar crashes/gets killed.
-if [[ -n "$(resolve_binary_path "CodexBarClaudeWatchdog" "${ARCH_LIST[0]}")" ]]; then
-  install_binary "CodexBarClaudeWatchdog" "$APP/Contents/Helpers/ClawbarClaudeWatchdog"
+if [[ -n "$(resolve_binary_path "ClawbarClaudeWatchdog" "${ARCH_LIST[0]}")" ]]; then
+  install_binary "ClawbarClaudeWatchdog" "$APP/Contents/Helpers/ClawbarClaudeWatchdog"
 fi
-if [[ -n "$(resolve_binary_path "CodexBarWidget" "${ARCH_LIST[0]}")" ]]; then
+if [[ -n "$(resolve_binary_path "ClawbarWidget" "${ARCH_LIST[0]}")" ]]; then
   WIDGET_APP="$APP/Contents/PlugIns/ClawbarWidget.appex"
   mkdir -p "$WIDGET_APP/Contents/MacOS" "$WIDGET_APP/Contents/Resources"
   cat > "$WIDGET_APP/Contents/Info.plist" <<PLIST
@@ -295,12 +295,12 @@ if [[ -n "$(resolve_binary_path "CodexBarWidget" "${ARCH_LIST[0]}")" ]]; then
     <key>NSExtension</key>
     <dict>
         <key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string>
-        <key>NSExtensionPrincipalClass</key><string>CodexBarWidget.CodexBarWidgetBundle</string>
+        <key>NSExtensionPrincipalClass</key><string>ClawbarWidget.ClawbarWidgetBundle</string>
     </dict>
 </dict>
 </plist>
 PLIST
-  install_binary "CodexBarWidget" "$WIDGET_APP/Contents/MacOS/ClawbarWidget"
+  install_binary "ClawbarWidget" "$WIDGET_APP/Contents/MacOS/ClawbarWidget"
 fi
 # Embed Sparkle.framework
 if [[ -d ".build/$CONF/Sparkle.framework" ]]; then
@@ -339,7 +339,7 @@ if [[ -f "$ICON_TARGET" ]]; then
 fi
 
 # Bundle app resources (provider icons, etc.).
-APP_RESOURCES_DIR="$ROOT/Sources/CodexBar/Resources"
+APP_RESOURCES_DIR="$ROOT/Sources/Clawbar/Resources"
 if [[ -d "$APP_RESOURCES_DIR" ]]; then
   cp -R "$APP_RESOURCES_DIR/." "$APP/Contents/Resources/"
 fi
@@ -349,8 +349,8 @@ if [[ ! -f "$APP/Contents/Resources/Icon-classic.icns" ]]; then
 fi
 
 # SwiftPM resource bundles (e.g. KeyboardShortcuts) are emitted next to the built binary.
-CODEXBAR_BINARY="$(resolve_binary_path "CodexBar" "${ARCH_LIST[0]}")"
-PREFERRED_BUILD_DIR="$(dirname "${CODEXBAR_BINARY:-$(build_product_path "CodexBar" "${ARCH_LIST[0]}")}")"
+CODEXBAR_BINARY="$(resolve_binary_path "ClawbarApp" "${ARCH_LIST[0]}")"
+PREFERRED_BUILD_DIR="$(dirname "${CODEXBAR_BINARY:-$(build_product_path "ClawbarApp" "${ARCH_LIST[0]}")}")"
 shopt -s nullglob
 SWIFTPM_BUNDLES=("${PREFERRED_BUILD_DIR}/"*.bundle)
 shopt -u nullglob

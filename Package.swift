@@ -12,7 +12,7 @@ let sweetCookieKitDependency: Package.Dependency =
     : .package(url: "https://github.com/steipete/SweetCookieKit", from: "0.4.0")
 
 let package = Package(
-    name: "CodexBar",
+    name: "ClawbarApp",
     platforms: [
         .macOS(.v14),
     ],
@@ -27,9 +27,9 @@ let package = Package(
     targets: {
         var targets: [Target] = [
             .target(
-                name: "CodexBarCore",
+                name: "ClawbarCore",
                 dependencies: [
-                    "CodexBarMacroSupport",
+                    "ClawbarMacroSupport",
                     .product(name: "Logging", package: "swift-log"),
                     .product(name: "SweetCookieKit", package: "SweetCookieKit"),
                 ],
@@ -37,30 +37,30 @@ let package = Package(
                     .enableUpcomingFeature("StrictConcurrency"),
                 ]),
             .macro(
-                name: "CodexBarMacros",
+                name: "ClawbarMacros",
                 dependencies: [
                     .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
                     .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
                     .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 ]),
             .target(
-                name: "CodexBarMacroSupport",
+                name: "ClawbarMacroSupport",
                 dependencies: [
-                    "CodexBarMacros",
+                    "ClawbarMacros",
                 ]),
             .executableTarget(
-                name: "CodexBarCLI",
+                name: "ClawbarCLI",
                 dependencies: [
-                    "CodexBarCore",
+                    "ClawbarCore",
                     .product(name: "Commander", package: "Commander"),
                 ],
-                path: "Sources/CodexBarCLI",
+                path: "Sources/ClawbarCLI",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
                 ]),
             .testTarget(
-                name: "CodexBarLinuxTests",
-                dependencies: ["CodexBarCore", "CodexBarCLI"],
+                name: "ClawbarLinuxTests",
+                dependencies: ["ClawbarCore", "ClawbarCLI"],
                 path: "TestsLinux",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
@@ -71,21 +71,21 @@ let package = Package(
         #if os(macOS)
         targets.append(contentsOf: [
             .executableTarget(
-                name: "CodexBarClaudeWatchdog",
+                name: "ClawbarClaudeWatchdog",
                 dependencies: [],
-                path: "Sources/CodexBarClaudeWatchdog",
+                path: "Sources/ClawbarClaudeWatchdog",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
                 ]),
             .executableTarget(
-                name: "CodexBar",
+                name: "ClawbarApp",
                 dependencies: [
                     .product(name: "Sparkle", package: "Sparkle"),
                     .product(name: "KeyboardShortcuts", package: "KeyboardShortcuts"),
-                    "CodexBarMacroSupport",
-                    "CodexBarCore",
+                    "ClawbarMacroSupport",
+                    "ClawbarCore",
                 ],
-                path: "Sources/CodexBar",
+                path: "Sources/Clawbar",
                 resources: [
                     .process("Resources"),
                 ],
@@ -95,27 +95,27 @@ let package = Package(
                     .define("ENABLE_SPARKLE"),
                 ]),
             .executableTarget(
-                name: "CodexBarWidget",
-                dependencies: ["CodexBarCore"],
-                path: "Sources/CodexBarWidget",
+                name: "ClawbarWidget",
+                dependencies: ["ClawbarCore"],
+                path: "Sources/ClawbarWidget",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
                 ]),
             .executableTarget(
-                name: "CodexBarClaudeWebProbe",
-                dependencies: ["CodexBarCore"],
-                path: "Sources/CodexBarClaudeWebProbe",
+                name: "ClawbarClaudeWebProbe",
+                dependencies: ["ClawbarCore"],
+                path: "Sources/ClawbarClaudeWebProbe",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
                 ]),
         ])
 
         targets.append(.testTarget(
-            name: "CodexBarTests",
-            dependencies: ["CodexBar", "CodexBarCore", "CodexBarCLI", "CodexBarWidget"],
+            name: "ClawbarTests",
+            dependencies: ["ClawbarApp", "ClawbarCore", "ClawbarCLI", "ClawbarWidget"],
             path: "Tests",
             resources: [
-                .copy("CodexBarTests/Fixtures"),
+                .copy("ClawbarTests/Fixtures"),
             ],
             swiftSettings: [
                 .enableUpcomingFeature("StrictConcurrency"),

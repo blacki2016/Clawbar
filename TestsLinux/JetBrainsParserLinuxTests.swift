@@ -1,4 +1,4 @@
-import CodexBarCore
+import ClawbarCore
 import Foundation
 import Testing
 

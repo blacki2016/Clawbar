@@ -1,0 +1,101 @@
+import Foundation
+
+public enum ClawbarConfigStoreError: LocalizedError {
+    case invalidURL
+    case decodeFailed(String)
+    case encodeFailed(String)
+
+    public var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            "Invalid CodexBar config path."
+        case let .decodeFailed(details):
+            "Failed to decode CodexBar config: \(details)"
+        case let .encodeFailed(details):
+            "Failed to encode CodexBar config: \(details)"
+        }
+    }
+}
+
+public struct ClawbarConfigStore: @unchecked Sendable {
+    public let fileURL: URL
+    private let fileManager: FileManager
+
+    public init(fileURL: URL = Self.defaultURL(), fileManager: FileManager = .default) {
+        self.fileURL = fileURL
+        self.fileManager = fileManager
+    }
+
+    public func load() throws -> ClawbarConfig? {
+        let preferredURL = self.fileURL
+        let legacyURL = Self.legacyURL(home: FileManager.default.homeDirectoryForCurrentUser)
+        let resolvedURL: URL
+        if self.fileManager.fileExists(atPath: preferredURL.path) {
+            resolvedURL = preferredURL
+        } else if self.fileManager.fileExists(atPath: legacyURL.path) {
+            resolvedURL = legacyURL
+        } else {
+            return nil
+        }
+        let data = try Data(contentsOf: resolvedURL)
+        let decoder = JSONDecoder()
+        do {
+            let decoded = try decoder.decode(ClawbarConfig.self, from: data)
+            return decoded.normalized()
+        } catch {
+            throw ClawbarConfigStoreError.decodeFailed(error.localizedDescription)
+        }
+    }
+
+    public func loadOrCreateDefault() throws -> ClawbarConfig {
+        if let existing = try self.load() {
+            return existing
+        }
+        let config = ClawbarConfig.makeDefault()
+        try self.save(config)
+        return config
+    }
+
+    public func save(_ config: ClawbarConfig) throws {
+        let normalized = config.normalized()
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data: Data
+        do {
+            data = try encoder.encode(normalized)
+        } catch {
+            throw ClawbarConfigStoreError.encodeFailed(error.localizedDescription)
+        }
+        let directory = self.fileURL.deletingLastPathComponent()
+        if !self.fileManager.fileExists(atPath: directory.path) {
+            try self.fileManager.createDirectory(at: directory, withIntermediateDirectories: true)
+        }
+        try data.write(to: self.fileURL, options: [.atomic])
+        try self.applySecurePermissionsIfNeeded()
+    }
+
+    public func deleteIfPresent() throws {
+        guard self.fileManager.fileExists(atPath: self.fileURL.path) else { return }
+        try self.fileManager.removeItem(at: self.fileURL)
+    }
+
+    public static func defaultURL(home: URL = FileManager.default.homeDirectoryForCurrentUser) -> URL {
+        home
+            .appendingPathComponent(".clawbar", isDirectory: true)
+            .appendingPathComponent("config.json")
+    }
+
+    public static func legacyURL(home: URL = FileManager.default.homeDirectoryForCurrentUser) -> URL {
+        home
+            .appendingPathComponent(".codexbar", isDirectory: true)
+            .appendingPathComponent("config.json")
+    }
+
+    private func applySecurePermissionsIfNeeded() throws {
+        #if os(macOS) || os(Linux)
+        try self.fileManager.setAttributes([
+            .posixPermissions: NSNumber(value: Int16(0o600)),
+        ], ofItemAtPath: self.fileURL.path)
+        #endif
+    }
+}

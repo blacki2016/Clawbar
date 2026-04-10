@@ -47,9 +47,9 @@ if [[ -f "$APP_BUNDLE/Contents/Helpers/clawbar" ]]; then
   codesign --force --timestamp --options runtime --sign "$APP_IDENTITY" \
     "$APP_BUNDLE/Contents/Helpers/clawbar"
 fi
-if [[ -f "$APP_BUNDLE/Contents/Helpers/CodexBarClaudeWatchdog" ]]; then
+if [[ -f "$APP_BUNDLE/Contents/Helpers/ClawbarClaudeWatchdog" ]]; then
   codesign --force --timestamp --options runtime --sign "$APP_IDENTITY" \
-    "$APP_BUNDLE/Contents/Helpers/CodexBarClaudeWatchdog"
+    "$APP_BUNDLE/Contents/Helpers/ClawbarClaudeWatchdog"
 fi
 if [[ -d "$APP_BUNDLE/Contents/PlugIns/ClawbarWidget.appex" ]]; then
   codesign --force --timestamp --options runtime --sign "$APP_IDENTITY" \
