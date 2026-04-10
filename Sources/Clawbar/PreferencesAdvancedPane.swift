@@ -9,12 +9,8 @@ struct AdvancedPane: View {
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
-            VStack(alignment: .leading, spacing: 16) {
-                SettingsSection(contentSpacing: 8) {
-                    Text("Keyboard shortcut")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+            VStack(alignment: .leading, spacing: 18) {
+                SettingsSection(title: "Keyboard control", caption: "Jump into Clawbar without touching the pointer.") {
                     HStack(alignment: .center, spacing: 12) {
                         Text("Open menu")
                             .font(.body)
@@ -26,9 +22,7 @@ struct AdvancedPane: View {
                         .foregroundStyle(.tertiary)
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 10) {
+                SettingsSection(title: "CLI handoff", caption: "Install the bundled helper so scripts can read the same provider state.") {
                     HStack(spacing: 12) {
                         Button {
                             Task { await self.installCLI() }
@@ -53,9 +47,7 @@ struct AdvancedPane: View {
                         .foregroundStyle(.tertiary)
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 10) {
+                SettingsSection(title: "Diagnostics", caption: "Reveal troubleshooting tools and optional visual behavior.") {
                     PreferenceToggleRow(
                         title: "Show Debug Settings",
                         subtitle: "Expose troubleshooting tools in the Debug tab.",
@@ -66,16 +58,12 @@ struct AdvancedPane: View {
                         binding: self.$settings.randomBlinkEnabled)
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 10) {
+                SettingsSection(title: "Privacy", caption: "Reduce on-screen personal data when you demo or record the app.") {
                     PreferenceToggleRow(
                         title: "Hide personal information",
                         subtitle: "Obscure email addresses in the menu bar and menu UI.",
                         binding: self.$settings.hidePersonalInfo)
                 }
-
-                Divider()
 
                 SettingsSection(
                     title: "Keychain access",

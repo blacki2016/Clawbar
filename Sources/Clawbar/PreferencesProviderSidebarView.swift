@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 
 @MainActor
 struct ProviderSidebarListView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let providers: [UsageProvider]
     @Bindable var store: UsageStore
     let isEnabled: (UsageProvider) -> Binding<Bool>
@@ -13,15 +14,23 @@ struct ProviderSidebarListView: View {
     @State private var draggingProvider: UsageProvider?
 
     var body: some View {
-        List(selection: self.$selection) {
-            ForEach(self.providers, id: \.self) { provider in
-                ProviderSidebarRowView(
-                    provider: provider,
-                    store: self.store,
-                    isEnabled: self.isEnabled(provider),
-                    subtitle: self.subtitle(provider),
-                    draggingProvider: self.$draggingProvider)
-                    .tag(provider)
+        ScrollView(.vertical, showsIndicators: true) {
+            VStack(alignment: .leading, spacing: 10) {
+                ClawbarSectionEyebrow(text: "Provider roster")
+                ForEach(self.providers, id: \.self) { provider in
+                    Button {
+                        self.selection = provider
+                    } label: {
+                        ProviderSidebarRowView(
+                            provider: provider,
+                            store: self.store,
+                            isEnabled: self.isEnabled(provider),
+                            subtitle: self.subtitle(provider),
+                            isSelected: self.selection == provider,
+                            draggingProvider: self.$draggingProvider)
+                    }
+                    .buttonStyle(.plain)
+                    .contentShape(Rectangle())
                     .onDrop(
                         of: [UTType.plainText],
                         delegate: ProviderSidebarDropDelegate(
@@ -29,16 +38,16 @@ struct ProviderSidebarListView: View {
                             providers: self.providers,
                             dragging: self.$draggingProvider,
                             moveProviders: self.moveProviders))
+                }
             }
+            .padding(14)
         }
-        .listStyle(.sidebar)
-        .scrollContentBackground(.hidden)
         .background(
             RoundedRectangle(cornerRadius: ProviderSettingsMetrics.sidebarCornerRadius, style: .continuous)
-                .fill(Color(nsColor: .controlBackgroundColor).opacity(0.8)))
+                .fill(ClawbarTheme.panelBackground(for: self.colorScheme)))
         .overlay(
             RoundedRectangle(cornerRadius: ProviderSettingsMetrics.sidebarCornerRadius, style: .continuous)
-                .stroke(Color(nsColor: .separatorColor).opacity(0.7), lineWidth: 1))
+                .stroke(ClawbarTheme.panelStroke(for: self.colorScheme), lineWidth: 1))
         .clipShape(RoundedRectangle(cornerRadius: ProviderSettingsMetrics.sidebarCornerRadius, style: .continuous))
         .frame(minWidth: ProviderSettingsMetrics.sidebarWidth, maxWidth: ProviderSettingsMetrics.sidebarWidth)
     }
@@ -46,10 +55,12 @@ struct ProviderSidebarListView: View {
 
 @MainActor
 private struct ProviderSidebarRowView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let provider: UsageProvider
     @Bindable var store: UsageStore
     @Binding var isEnabled: Bool
     let subtitle: String
+    let isSelected: Bool
     @Binding var draggingProvider: UsageProvider?
 
     var body: some View {
@@ -57,50 +68,71 @@ private struct ProviderSidebarRowView: View {
         let showStatus = self.store.statusChecksEnabled
         let statusText = self.statusText
 
-        HStack(alignment: .center, spacing: 10) {
-            ProviderSidebarReorderHandle()
-                .contentShape(Rectangle())
-                .padding(.vertical, 4)
-                .padding(.horizontal, 2)
-                .help("Drag to reorder")
-                .onDrag {
-                    self.draggingProvider = self.provider
-                    return NSItemProvider(object: self.provider.rawValue as NSString)
+        HStack(alignment: .top, spacing: 10) {
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(self.isSelected ? ClawbarTheme.accent : ClawbarTheme.sea.opacity(0.16))
+                .frame(width: 5)
+
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .center, spacing: 10) {
+                    ProviderSidebarReorderHandle()
+                        .contentShape(Rectangle())
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 2)
+                        .help("Drag to reorder")
+                        .onDrag {
+                            self.draggingProvider = self.provider
+                            return NSItemProvider(object: self.provider.rawValue as NSString)
+                        }
+
+                    ProviderSidebarBrandIcon(provider: self.provider)
+
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(spacing: 6) {
+                            Text(self.store.metadata(for: self.provider).displayName)
+                                .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                                .foregroundStyle(.primary)
+
+                            if showStatus {
+                                ProviderStatusDot(indicator: self.store.statusIndicator(for: self.provider))
+                            }
+
+                            if isRefreshing {
+                                ProgressView()
+                                    .controlSize(.mini)
+                            }
+                        }
+                        Text(self.statusHeadline)
+                            .font(.caption)
+                            .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
+                    }
+                    Spacer(minLength: 8)
+                    Toggle("", isOn: self.$isEnabled)
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                        .controlSize(.mini)
                 }
 
-            ProviderSidebarBrandIcon(provider: self.provider)
-
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 6) {
-                    Text(self.store.metadata(for: self.provider).displayName)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.primary)
-
-                    if showStatus {
-                        ProviderStatusDot(indicator: self.store.statusIndicator(for: self.provider))
-                    }
-
-                    if isRefreshing {
-                        ProgressView()
-                            .controlSize(.mini)
-                    }
-                }
                 Text(statusText)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+                    .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                     .lineLimit(2)
                     .frame(height: ProviderSettingsMetrics.sidebarSubtitleHeight, alignment: .topLeading)
             }
-
-            Spacer(minLength: 8)
-
-            Toggle("", isOn: self.$isEnabled)
-                .labelsHidden()
-                .toggleStyle(.checkbox)
-                .controlSize(.small)
         }
-        .contentShape(Rectangle())
-        .padding(.vertical, 2)
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(self.isSelected
+                    ? ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)
+                    : ClawbarTheme.windowBackground(for: self.colorScheme).opacity(0.52)))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(self.isSelected ? ClawbarTheme.accent.opacity(0.28) : Color.clear, lineWidth: 1))
+    }
+
+    private var statusHeadline: String {
+        self.isEnabled ? "Active feed" : "Paused"
     }
 
     private var statusText: String {
@@ -134,7 +166,7 @@ private struct ProviderSidebarReorderHandle: View {
         .frame(
             width: ProviderSettingsMetrics.reorderHandleSize,
             height: ProviderSettingsMetrics.reorderHandleSize)
-        .foregroundStyle(.tertiary)
+        .foregroundStyle(.secondary)
         .accessibilityLabel("Reorder")
     }
 }

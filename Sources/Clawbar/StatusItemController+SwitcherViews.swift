@@ -26,10 +26,10 @@ final class ProviderSwitcherView: NSView {
     private var weeklyIndicators: [ObjectIdentifier: WeeklyIndicator] = [:]
     private var hoverTrackingArea: NSTrackingArea?
     private var segmentWidths: [CGFloat] = []
-    private let selectedBackground = NSColor.controlAccentColor.cgColor
+    private let selectedBackground = ClawbarTheme.switcherSelectedBackground()
     private let unselectedBackground = NSColor.clear.cgColor
-    private let selectedTextColor = NSColor.white
-    private let unselectedTextColor = NSColor.secondaryLabelColor
+    private let selectedTextColor = ClawbarTheme.switcherSelectionText()
+    private let unselectedTextColor = ClawbarTheme.switcherText()
     private let stackedIcons: Bool
     private let rowCount: Int
     private let rowSpacing: CGFloat
@@ -546,14 +546,11 @@ final class ProviderSwitcherView: NSView {
             return
         }
         // The menu card background is very bright in light mode; add a subtle neutral wash to ground the switcher.
-        self.lightModeOverlayLayer.backgroundColor = NSColor.black.withAlphaComponent(0.035).cgColor
+        self.lightModeOverlayLayer.backgroundColor = ClawbarTheme.seaNSColor.withAlphaComponent(0.05).cgColor
     }
 
     private func hoverPlateColor() -> CGColor {
-        if self.isLightMode() {
-            return NSColor.black.withAlphaComponent(0.095).cgColor
-        }
-        return NSColor.labelColor.withAlphaComponent(0.06).cgColor
+        ClawbarTheme.switcherHoverBackground(lightMode: self.isLightMode())
     }
 
     /// Cache for button width measurements to avoid repeated layout passes.
@@ -732,7 +729,7 @@ final class ProviderSwitcherView: NSView {
 
         let track = NSView()
         track.wantsLayer = true
-        track.layer?.backgroundColor = NSColor.tertiaryLabelColor.withAlphaComponent(0.22).cgColor
+        track.layer?.backgroundColor = ClawbarTheme.seaNSColor.withAlphaComponent(0.16).cgColor
         track.layer?.cornerRadius = 2
         track.layer?.masksToBounds = true
         track.translatesAutoresizingMaskIntoConstraints = false
@@ -799,10 +796,10 @@ final class TokenAccountSwitcherView: NSView {
     private var buttons: [NSButton] = []
     private let rowSpacing: CGFloat = 4
     private let rowHeight: CGFloat = 26
-    private let selectedBackground = NSColor.controlAccentColor.cgColor
+    private let selectedBackground = ClawbarTheme.switcherSelectedBackground()
     private let unselectedBackground = NSColor.clear.cgColor
-    private let selectedTextColor = NSColor.white
-    private let unselectedTextColor = NSColor.secondaryLabelColor
+    private let selectedTextColor = ClawbarTheme.switcherSelectionText()
+    private let unselectedTextColor = ClawbarTheme.switcherText()
 
     init(accounts: [ProviderTokenAccount], selectedIndex: Int, width: CGFloat, onSelect: @escaping (Int) -> Void) {
         self.accounts = accounts
@@ -903,10 +900,10 @@ final class CodexAccountSwitcherView: NSView {
     private var buttons: [NSButton] = []
     private let rowSpacing: CGFloat = 4
     private let rowHeight: CGFloat = 26
-    private let selectedBackground = NSColor.controlAccentColor.cgColor
+    private let selectedBackground = ClawbarTheme.switcherSelectedBackground()
     private let unselectedBackground = NSColor.clear.cgColor
-    private let selectedTextColor = NSColor.white
-    private let unselectedTextColor = NSColor.secondaryLabelColor
+    private let selectedTextColor = ClawbarTheme.switcherSelectionText()
+    private let unselectedTextColor = ClawbarTheme.switcherText()
     private let buttonFont = NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
     private let buttonHorizontalPadding: CGFloat = 14
     private let buttonSideInset: CGFloat = 6

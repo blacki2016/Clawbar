@@ -11,12 +11,8 @@ struct DisplayPane: View {
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
-            VStack(alignment: .leading, spacing: 16) {
-                SettingsSection(contentSpacing: 12) {
-                    Text("Menu bar")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+            VStack(alignment: .leading, spacing: 18) {
+                SettingsSection(title: "Signal in the menubar", caption: "Define how compact or expressive the live menubar presence should feel.") {
                     PreferenceToggleRow(
                         title: "Merge Icons",
                         subtitle: "Use a single menu bar icon with a provider switcher.",
@@ -59,13 +55,7 @@ struct DisplayPane: View {
                     .opacity(self.settings.menuBarShowsBrandIconWithPercent ? 1 : 0.5)
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 12) {
-                    Text("Menu content")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+                SettingsSection(title: "Popover content", caption: "Shape the information density inside the Clawbar menu.") {
                     PreferenceToggleRow(
                         title: "Show usage as used",
                         subtitle: "Progress bars fill as you consume quota (instead of showing remaining).",

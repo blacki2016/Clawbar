@@ -109,6 +109,7 @@ struct UsageMenuCardView: View {
     let model: Model
     let width: CGFloat
     @Environment(\.menuItemHighlighted) private var isHighlighted
+    @Environment(\.colorScheme) private var colorScheme
 
     static func popupMetricTitle(provider: UsageProvider, metric: Model.Metric) -> String {
         if provider == .openrouter, metric.id == "primary" {
@@ -118,99 +119,110 @@ struct UsageMenuCardView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 10) {
             UsageMenuCardHeaderView(model: self.model)
 
             if self.hasDetails {
                 Divider()
+                    .overlay(ClawbarTheme.menuCardStroke(highlighted: self.isHighlighted, darkMode: self.colorScheme == .dark))
             }
 
-            if self.model.metrics.isEmpty {
-                if !self.model.usageNotes.isEmpty {
-                    UsageNotesContent(notes: self.model.usageNotes)
-                } else if let placeholder = self.model.placeholder {
-                    Text(placeholder)
-                        .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
-                        .font(.subheadline)
-                }
-            } else {
-                let hasUsage = !self.model.metrics.isEmpty || !self.model.usageNotes.isEmpty
-                let hasCredits = self.model.creditsText != nil
-                let hasProviderCost = self.model.providerCost != nil
-                let hasCost = self.model.tokenUsage != nil || hasProviderCost
-
-                VStack(alignment: .leading, spacing: 12) {
-                    if hasUsage {
-                        VStack(alignment: .leading, spacing: 12) {
-                            ForEach(self.model.metrics, id: \.id) { metric in
-                                MetricRow(
-                                    metric: metric,
-                                    title: Self.popupMetricTitle(provider: self.model.provider, metric: metric),
-                                    progressColor: self.model.progressColor)
-                            }
-                            if !self.model.usageNotes.isEmpty {
-                                UsageNotesContent(notes: self.model.usageNotes)
-                            }
-                        }
-                    }
-                    if hasUsage, hasCredits || hasCost {
-                        Divider()
-                    }
-                    if let credits = self.model.creditsText {
-                        CreditsBarContent(
-                            creditsText: credits,
-                            creditsRemaining: self.model.creditsRemaining,
-                            hintText: self.model.creditsHintText,
-                            hintCopyText: self.model.creditsHintCopyText,
-                            progressColor: self.model.progressColor)
-                    }
-                    if hasCredits, hasCost {
-                        Divider()
-                    }
-                    if let providerCost = self.model.providerCost {
-                        ProviderCostContent(
-                            section: providerCost,
-                            progressColor: self.model.progressColor)
-                    }
-                    if hasProviderCost, self.model.tokenUsage != nil {
-                        Divider()
-                    }
-                    if let tokenUsage = self.model.tokenUsage {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("Cost")
-                                .font(.body)
-                                .fontWeight(.medium)
-                            Text(tokenUsage.sessionLine)
-                                .font(.footnote)
-                            Text(tokenUsage.monthLine)
-                                .font(.footnote)
-                            if let hint = tokenUsage.hintLine, !hint.isEmpty {
-                                Text(hint)
-                                    .font(.footnote)
-                                    .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
-                                    .lineLimit(4)
-                                    .fixedSize(horizontal: false, vertical: true)
-                            }
-                            if let error = tokenUsage.errorLine, !error.isEmpty {
-                                Text(error)
-                                    .font(.footnote)
-                                    .foregroundStyle(MenuHighlightStyle.error(self.isHighlighted))
-                                    .lineLimit(4)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .overlay {
-                                        ClickToCopyOverlay(copyText: tokenUsage.errorCopyText ?? error)
-                                    }
-                            }
-                        }
-                    }
-                }
-                .padding(.bottom, self.model.creditsText == nil ? 6 : 0)
-            }
+            self.contentBlock
         }
         .padding(.horizontal, 16)
-        .padding(.top, 2)
-        .padding(.bottom, 2)
+        .padding(.vertical, 14)
         .frame(width: self.width, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(ClawbarTheme.menuCardBackground(highlighted: self.isHighlighted, darkMode: self.colorScheme == .dark)))
+        .overlay(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(
+                    ClawbarTheme.menuCardStroke(highlighted: self.isHighlighted, darkMode: self.colorScheme == .dark),
+                    lineWidth: 1))
+    }
+
+    @ViewBuilder
+    private var contentBlock: some View {
+        if self.model.metrics.isEmpty {
+            if !self.model.usageNotes.isEmpty {
+                UsageNotesContent(notes: self.model.usageNotes)
+            } else if let placeholder = self.model.placeholder {
+                Text(placeholder)
+                    .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                    .font(.subheadline)
+            }
+        } else {
+            let hasUsage = !self.model.metrics.isEmpty || !self.model.usageNotes.isEmpty
+            let hasCredits = self.model.creditsText != nil
+            let hasProviderCost = self.model.providerCost != nil
+            let hasCost = self.model.tokenUsage != nil || hasProviderCost
+
+            VStack(alignment: .leading, spacing: 12) {
+                if hasUsage {
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(self.model.metrics, id: \.id) { metric in
+                            MetricRow(
+                                metric: metric,
+                                title: Self.popupMetricTitle(provider: self.model.provider, metric: metric),
+                                progressColor: self.model.progressColor)
+                        }
+                        if !self.model.usageNotes.isEmpty {
+                            UsageNotesContent(notes: self.model.usageNotes)
+                        }
+                    }
+                }
+                if hasUsage, hasCredits || hasCost {
+                    Divider()
+                }
+                if let credits = self.model.creditsText {
+                    CreditsBarContent(
+                        creditsText: credits,
+                        creditsRemaining: self.model.creditsRemaining,
+                        hintText: self.model.creditsHintText,
+                        hintCopyText: self.model.creditsHintCopyText,
+                        progressColor: self.model.progressColor)
+                }
+                if hasCredits, hasCost {
+                    Divider()
+                }
+                if let providerCost = self.model.providerCost {
+                    ProviderCostContent(
+                        section: providerCost,
+                        progressColor: self.model.progressColor)
+                }
+                if hasProviderCost, self.model.tokenUsage != nil {
+                    Divider()
+                }
+                if let tokenUsage = self.model.tokenUsage {
+                    VStack(alignment: .leading, spacing: 6) {
+                        ClawbarSectionEyebrow(text: "Cost trace")
+                        Text(tokenUsage.sessionLine)
+                            .font(.footnote)
+                        Text(tokenUsage.monthLine)
+                            .font(.footnote)
+                        if let hint = tokenUsage.hintLine, !hint.isEmpty {
+                            Text(hint)
+                                .font(.footnote)
+                                .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                                .lineLimit(4)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        if let error = tokenUsage.errorLine, !error.isEmpty {
+                            Text(error)
+                                .font(.footnote)
+                                .foregroundStyle(MenuHighlightStyle.error(self.isHighlighted))
+                                .lineLimit(4)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .overlay {
+                                    ClickToCopyOverlay(copyText: tokenUsage.errorCopyText ?? error)
+                                }
+                        }
+                    }
+                }
+            }
+            .padding(.bottom, self.model.creditsText == nil ? 4 : 0)
+        }
     }
 
     private var hasDetails: Bool {
@@ -223,37 +235,53 @@ struct UsageMenuCardView: View {
 private struct UsageMenuCardHeaderView: View {
     let model: UsageMenuCardView.Model
     @Environment(\.menuItemHighlighted) private var isHighlighted
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(self.model.providerName)
-                    .font(.headline)
-                    .fontWeight(.semibold)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .center) {
+                ClawbarSectionEyebrow(text: "Live usage")
                 Spacer()
-                Text(self.model.email)
-                    .font(.subheadline)
-                    .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                if let plan = self.model.planText {
+                    Text(plan)
+                        .font(.system(size: 11, weight: .semibold, design: .rounded))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(
+                            Capsule()
+                                .fill(ClawbarTheme.sea.opacity(self.colorScheme == .dark ? 0.16 : 0.12)))
+                        .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                        .lineLimit(1)
+                }
             }
-            let subtitleAlignment: VerticalAlignment = self.model.subtitleStyle == .error ? .top : .firstTextBaseline
-            HStack(alignment: subtitleAlignment) {
+
+            HStack(alignment: .top, spacing: 8) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(self.model.providerName)
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                    if !self.model.email.isEmpty {
+                        Text(self.model.email)
+                            .font(.caption)
+                            .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(Color.primary.opacity(self.colorScheme == .dark ? 0.09 : 0.06)))
+                    }
+                }
+
+                Spacer()
+
                 Text(self.model.subtitleText)
                     .font(.footnote)
                     .foregroundStyle(self.subtitleColor)
-                    .lineLimit(self.model.subtitleStyle == .error ? 4 : 1)
-                    .multilineTextAlignment(.leading)
+                    .lineLimit(self.model.subtitleStyle == .error ? 4 : 2)
+                    .multilineTextAlignment(.trailing)
                     .fixedSize(horizontal: false, vertical: true)
-                    .layoutPriority(1)
-                    .padding(.bottom, self.model.subtitleStyle == .error ? 4 : 0)
-                Spacer()
+                    .frame(maxWidth: 132, alignment: .trailing)
                 if self.model.subtitleStyle == .error, !self.model.subtitleText.isEmpty {
                     CopyIconButton(copyText: self.model.subtitleText, isHighlighted: self.isHighlighted)
-                }
-                if let plan = self.model.planText {
-                    Text(plan)
-                        .font(.footnote)
-                        .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
-                        .lineLimit(1)
                 }
             }
         }

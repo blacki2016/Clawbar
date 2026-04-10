@@ -9,26 +9,15 @@ struct GeneralPane: View {
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
-            VStack(alignment: .leading, spacing: 16) {
-                SettingsSection(contentSpacing: 12) {
-                    Text("System")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+            VStack(alignment: .leading, spacing: 18) {
+                SettingsSection(title: "System", caption: "Launch behavior and app-wide automation.") {
                     PreferenceToggleRow(
                         title: "Start at Login",
                         subtitle: "Automatically opens Clawbar when you start your Mac.",
                         binding: self.$settings.launchAtLogin)
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 12) {
-                    Text("Usage")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
-
+                SettingsSection(title: "Usage intelligence", caption: "Decide how much local cost context Clawbar should keep visible.") {
                     VStack(alignment: .leading, spacing: 10) {
                         VStack(alignment: .leading, spacing: 4) {
                             Toggle(isOn: self.$settings.costUsageEnabled) {
@@ -54,13 +43,7 @@ struct GeneralPane: View {
                     }
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 12) {
-                    Text("Automation")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .textCase(.uppercase)
+                SettingsSection(title: "Automation", caption: "Background refreshes, provider health checks and session alerts.") {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(alignment: .top, spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
@@ -98,9 +81,7 @@ struct GeneralPane: View {
                         binding: self.$settings.sessionQuotaNotificationsEnabled)
                 }
 
-                Divider()
-
-                SettingsSection(contentSpacing: 12) {
+                SettingsSection(title: "Session", caption: "Quit the app directly from the control room.") {
                     HStack {
                         Spacer()
                         Button("Quit Clawbar") { NSApp.terminate(nil) }

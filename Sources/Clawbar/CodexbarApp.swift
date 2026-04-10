@@ -90,6 +90,7 @@ struct ClawbarApp: App {
                 selection: self.preferencesSelection,
                 managedCodexAccountCoordinator: self.managedCodexAccountCoordinator,
                 codexAccountPromotionCoordinator: self.codexAccountPromotionCoordinator)
+                .tint(ClawbarTheme.accent)
         }
         .defaultSize(width: PreferencesTab.general.preferredWidth, height: PreferencesTab.general.preferredHeight)
         .windowResizability(.contentSize)
@@ -248,6 +249,7 @@ private func makeUpdaterController() -> UpdaterProviding {
     if InstallOrigin.isHomebrewCask(appBundleURL: bundleURL) {
         return DisabledUpdaterController(
             unavailableReason: "Updates managed by Homebrew. Run: brew upgrade --cask steipete/tap/clawbar")
+            
     }
 
     guard isDeveloperIDSigned(bundleURL: bundleURL) else {

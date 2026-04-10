@@ -19,6 +19,7 @@ struct UsageProgressBar: View {
     let paceOnTop: Bool
     @Environment(\.menuItemHighlighted) private var isHighlighted
     @Environment(\.displayScale) private var displayScale
+    @Environment(\.colorScheme) private var colorScheme
 
     init(
         percent: Double,
@@ -49,7 +50,7 @@ struct UsageProgressBar: View {
             let showTip = self.pacePercent != nil && tipWidth > 0.5
             let needsPunchCompositing = showTip
             let bar = ZStack(alignment: .leading) {
-                Capsule()
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
                     .fill(MenuHighlightStyle.progressTrack(self.isHighlighted))
                 self.actualBar(width: fillWidth)
                 if showTip {
@@ -68,14 +69,21 @@ struct UsageProgressBar: View {
                 bar
             }
         }
-        .frame(height: 6)
+        .frame(height: 8)
         .accessibilityLabel(self.accessibilityLabel)
         .accessibilityValue("\(Int(self.clamped)) percent")
     }
 
     private func actualBar(width: CGFloat) -> some View {
-        Capsule()
-            .fill(MenuHighlightStyle.progressTint(self.isHighlighted, fallback: self.tint))
+        RoundedRectangle(cornerRadius: 6, style: .continuous)
+            .fill(
+                LinearGradient(
+                    colors: [
+                        MenuHighlightStyle.progressTint(self.isHighlighted, fallback: self.tint),
+                        self.tint.opacity(self.colorScheme == .dark ? 0.74 : 0.88),
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing))
             .frame(width: width)
             .contentShape(Rectangle())
             .allowsHitTesting(false)

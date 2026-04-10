@@ -18,11 +18,11 @@ enum MenuHighlightStyle {
     }
 
     static func error(_ highlighted: Bool) -> Color {
-        highlighted ? self.selectionText : Color(nsColor: .systemRed)
+        highlighted ? self.selectionText : ClawbarTheme.warning
     }
 
     static func progressTrack(_ highlighted: Bool) -> Color {
-        highlighted ? self.selectionText.opacity(0.22) : Color(nsColor: .tertiaryLabelColor).opacity(0.22)
+        highlighted ? self.selectionText.opacity(0.18) : ClawbarTheme.sea.opacity(0.14)
     }
 
     static func progressTint(_ highlighted: Bool, fallback: Color) -> Color {
@@ -30,6 +30,6 @@ enum MenuHighlightStyle {
     }
 
     static func selectionBackground(_ highlighted: Bool) -> Color {
-        highlighted ? Color(nsColor: .selectedContentBackgroundColor) : .clear
+        highlighted ? ClawbarTheme.accent.opacity(0.16) : .clear
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 
 @MainActor
 struct ProviderDetailView<SupplementaryContent: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     let provider: UsageProvider
     @Bindable var store: UsageStore
     @Binding var isEnabled: Bool
@@ -82,20 +83,24 @@ struct ProviderDetailView<SupplementaryContent: View>: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 let labelWidth = self.detailLabelWidth
-                ProviderDetailHeaderView(
-                    provider: self.provider,
-                    store: self.store,
-                    isEnabled: self.$isEnabled,
-                    subtitle: self.subtitle,
-                    model: self.model,
-                    labelWidth: labelWidth,
-                    onRefresh: self.onRefresh)
+                ClawbarPanel {
+                    ProviderDetailHeaderView(
+                        provider: self.provider,
+                        store: self.store,
+                        isEnabled: self.$isEnabled,
+                        subtitle: self.subtitle,
+                        model: self.model,
+                        labelWidth: labelWidth,
+                        onRefresh: self.onRefresh)
+                }
 
-                ProviderMetricsInlineView(
-                    provider: self.provider,
-                    model: self.model,
-                    isEnabled: self.isEnabled,
-                    labelWidth: labelWidth)
+                ClawbarPanel {
+                    ProviderMetricsInlineView(
+                        provider: self.provider,
+                        model: self.model,
+                        isEnabled: self.isEnabled,
+                        labelWidth: labelWidth)
+                }
 
                 if let errorDisplay {
                     ProviderErrorView(
@@ -138,6 +143,7 @@ struct ProviderDetailView<SupplementaryContent: View>: View {
             .padding(.horizontal, 8)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .background(ClawbarTheme.windowBackground(for: self.colorScheme))
     }
 
     private var hasSettings: Bool {
@@ -183,6 +189,7 @@ struct ProviderDetailView<SupplementaryContent: View>: View {
 
 @MainActor
 private struct ProviderDetailHeaderView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let provider: UsageProvider
     @Bindable var store: UsageStore
     @Binding var isEnabled: Bool
@@ -197,12 +204,13 @@ private struct ProviderDetailHeaderView: View {
                 ProviderDetailBrandIcon(provider: self.provider)
 
                 VStack(alignment: .leading, spacing: 4) {
+                    ClawbarSectionEyebrow(text: "Provider deck")
                     Text(self.store.metadata(for: self.provider).displayName)
-                        .font(.title3.weight(.semibold))
+                        .font(.system(size: 24, weight: .bold, design: .rounded))
 
                     Text(self.detailSubtitle)
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 }
 
                 Spacer(minLength: 12)
@@ -244,6 +252,7 @@ private struct ProviderDetailHeaderView: View {
 
 @MainActor
 private struct ProviderDetailBrandIcon: View {
+    @Environment(\.colorScheme) private var colorScheme
     let provider: UsageProvider
 
     var body: some View {
@@ -251,7 +260,11 @@ private struct ProviderDetailBrandIcon: View {
             Image(nsImage: brand)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 28, height: 28)
+                .frame(width: 30, height: 30)
+                .padding(10)
+                .background(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)))
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
         } else {
@@ -347,9 +360,9 @@ struct ProviderMetricsInlineView: View {
         let hasProviderCost = self.model.providerCost != nil
         let hasTokenUsage = self.model.tokenUsage != nil
         ProviderSettingsSection(
-            title: "Usage",
+            title: "Usage radar",
             spacing: 8,
-            verticalPadding: 6,
+            verticalPadding: 10,
             horizontalPadding: 0)
         {
             if !hasMetrics, !hasUsageNotes, !hasProviderCost, !hasCredits, !hasTokenUsage {

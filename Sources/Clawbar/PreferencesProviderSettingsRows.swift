@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ProviderSettingsSection<Content: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     let title: String
     let spacing: CGFloat
     let verticalPadding: CGFloat
@@ -23,18 +24,24 @@ struct ProviderSettingsSection<Content: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: self.spacing) {
-            Text(self.title)
-                .font(.headline)
+            ClawbarSectionEyebrow(text: self.title)
             self.content()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, self.verticalPadding)
-        .padding(.horizontal, self.horizontalPadding)
+        .padding(.vertical, self.verticalPadding + 4)
+        .padding(.horizontal, self.horizontalPadding + 12)
+        .background(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .fill(ClawbarTheme.panelBackground(for: self.colorScheme)))
+        .overlay(
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
+                .stroke(ClawbarTheme.panelStroke(for: self.colorScheme), lineWidth: 1))
     }
 }
 
 @MainActor
 struct ProviderSettingsToggleRowView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let toggle: ProviderSettingsToggleDescriptor
 
     var body: some View {
@@ -79,6 +86,10 @@ struct ProviderSettingsToggleRowView: View {
                 }
             }
         }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)))
         .onChange(of: self.toggle.binding.wrappedValue) { _, enabled in
             guard let onChange = self.toggle.onChange else { return }
             Task { @MainActor in
@@ -95,6 +106,7 @@ struct ProviderSettingsToggleRowView: View {
 
 @MainActor
 struct ProviderSettingsPickerRowView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let picker: ProviderSettingsPickerDescriptor
 
     var body: some View {
@@ -135,6 +147,10 @@ struct ProviderSettingsPickerRowView: View {
             }
         }
         .disabled(!isEnabled)
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)))
         .onChange(of: self.picker.binding.wrappedValue) { _, selection in
             guard let onChange = self.picker.onChange else { return }
             Task { @MainActor in
@@ -146,6 +162,7 @@ struct ProviderSettingsPickerRowView: View {
 
 @MainActor
 struct ProviderSettingsFieldRowView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let field: ProviderSettingsFieldDescriptor
 
     var body: some View {
@@ -172,13 +189,23 @@ struct ProviderSettingsFieldRowView: View {
             switch self.field.kind {
             case .plain:
                 TextField(self.field.placeholder ?? "", text: self.field.binding)
-                    .textFieldStyle(.roundedBorder)
+                    .textFieldStyle(.plain)
                     .font(.footnote)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(ClawbarTheme.windowBackground(for: self.colorScheme)))
                     .onTapGesture { self.field.onActivate?() }
             case .secure:
                 SecureField(self.field.placeholder ?? "", text: self.field.binding)
-                    .textFieldStyle(.roundedBorder)
+                    .textFieldStyle(.plain)
                     .font(.footnote)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(ClawbarTheme.windowBackground(for: self.colorScheme)))
                     .onTapGesture { self.field.onActivate?() }
             }
 
@@ -197,11 +224,16 @@ struct ProviderSettingsFieldRowView: View {
                 }
             }
         }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)))
     }
 }
 
 @MainActor
 struct ProviderSettingsTokenAccountsRowView: View {
+    @Environment(\.colorScheme) private var colorScheme
     let descriptor: ProviderSettingsTokenAccountsDescriptor
     @State private var newLabel: String = ""
     @State private var newToken: String = ""
@@ -279,6 +311,10 @@ struct ProviderSettingsTokenAccountsRowView: View {
                 .controlSize(.small)
             }
         }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)))
     }
 }
 

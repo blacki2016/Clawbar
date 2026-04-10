@@ -3,6 +3,7 @@ import SwiftUI
 
 @MainActor
 struct AboutPane: View {
+    @Environment(\.colorScheme) private var colorScheme
     let updater: UpdaterProviding
     @State private var iconHover = false
     @AppStorage("autoUpdateEnabled") private var autoUpdateEnabled: Bool = true
@@ -49,28 +50,29 @@ struct AboutPane: View {
             }
 
             VStack(spacing: 2) {
-                Text("ClawbarApp")
-                    .font(.title3).bold()
+                ClawbarSectionEyebrow(text: "About Clawbar")
+                Text("Clawbar")
+                    .font(.system(size: 26, weight: .bold, design: .rounded))
                 Text("Version \(self.versionString)")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 if let buildTimestamp {
                     Text("Built \(buildTimestamp)")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 }
-                Text("May your tokens never run out—keep agent limits in view.")
+                Text("A dedicated token radar for multi-provider AI workflows.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
             }
 
             VStack(alignment: .center, spacing: 10) {
                 AboutLinkRow(
                     icon: "chevron.left.slash.chevron.right",
                     title: "GitHub",
-                    url: "https://github.com/steipete/Clawbar")
-                AboutLinkRow(icon: "globe", title: "Website", url: "https://steipete.me")
-                AboutLinkRow(icon: "bird", title: "Twitter", url: "https://twitter.com/steipete")
-                AboutLinkRow(icon: "envelope", title: "Email", url: "mailto:peter@steipete.me")
+                    url: "https://github.com/blacki2016/Clawbar")
+                AboutLinkRow(icon: "arrow.down.circle", title: "Releases", url: "https://github.com/blacki2016/Clawbar/releases")
+                AboutLinkRow(icon: "book", title: "Documentation", url: "https://github.com/blacki2016/Clawbar#installation")
+                AboutLinkRow(icon: "ladybug", title: "Report issue", url: "https://github.com/blacki2016/Clawbar/issues")
             }
             .padding(.top, 8)
             .frame(maxWidth: .infinity)
@@ -111,7 +113,7 @@ struct AboutPane: View {
 
             Text("© 2026 Peter Steinberger. MIT License.")
                 .font(.footnote)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 .padding(.top, 4)
 
             Spacer(minLength: 0)
@@ -147,7 +149,7 @@ struct AboutPane: View {
     }
 
     private func openProjectHome() {
-        guard let url = URL(string: "https://github.com/steipete/Clawbar") else { return }
+        guard let url = URL(string: "https://github.com/blacki2016/Clawbar") else { return }
         NSWorkspace.shared.open(url)
     }
 }

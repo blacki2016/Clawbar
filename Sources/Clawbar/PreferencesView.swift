@@ -24,6 +24,7 @@ enum PreferencesTab: String, Hashable {
 
 @MainActor
 struct PreferencesView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Bindable var settings: SettingsStore
     @Bindable var store: UsageStore
     let updater: UpdaterProviding
@@ -54,39 +55,45 @@ struct PreferencesView: View {
     }
 
     var body: some View {
-        TabView(selection: self.$selection.tab) {
-            GeneralPane(settings: self.settings, store: self.store)
-                .tabItem { Label("General", systemImage: "gearshape") }
-                .tag(PreferencesTab.general)
+        VStack(alignment: .leading, spacing: 18) {
+            PreferencesHeroCard()
 
-            ProvidersPane(
-                settings: self.settings,
-                store: self.store,
-                managedCodexAccountCoordinator: self.managedCodexAccountCoordinator,
-                codexAccountPromotionCoordinator: self.codexAccountPromotionCoordinator)
-                .tabItem { Label("Providers", systemImage: "square.grid.2x2") }
-                .tag(PreferencesTab.providers)
+            TabView(selection: self.$selection.tab) {
+                GeneralPane(settings: self.settings, store: self.store)
+                    .tabItem { Label("Overview", systemImage: "sparkles.rectangle.stack") }
+                    .tag(PreferencesTab.general)
 
-            DisplayPane(settings: self.settings, store: self.store)
-                .tabItem { Label("Display", systemImage: "eye") }
-                .tag(PreferencesTab.display)
+                ProvidersPane(
+                    settings: self.settings,
+                    store: self.store,
+                    managedCodexAccountCoordinator: self.managedCodexAccountCoordinator,
+                    codexAccountPromotionCoordinator: self.codexAccountPromotionCoordinator)
+                    .tabItem { Label("Providers", systemImage: "point.3.connected.trianglepath.dotted") }
+                    .tag(PreferencesTab.providers)
 
-            AdvancedPane(settings: self.settings)
-                .tabItem { Label("Advanced", systemImage: "slider.horizontal.3") }
-                .tag(PreferencesTab.advanced)
+                DisplayPane(settings: self.settings, store: self.store)
+                    .tabItem { Label("Menubar", systemImage: "capsule.portrait") }
+                    .tag(PreferencesTab.display)
 
-            AboutPane(updater: self.updater)
-                .tabItem { Label("About", systemImage: "info.circle") }
-                .tag(PreferencesTab.about)
+                AdvancedPane(settings: self.settings)
+                    .tabItem { Label("Tools", systemImage: "wrench.and.screwdriver") }
+                    .tag(PreferencesTab.advanced)
 
-            if self.settings.debugMenuEnabled {
-                DebugPane(settings: self.settings, store: self.store)
-                    .tabItem { Label("Debug", systemImage: "ladybug") }
-                    .tag(PreferencesTab.debug)
+                AboutPane(updater: self.updater)
+                    .tabItem { Label("About", systemImage: "squareshape.split.2x2") }
+                    .tag(PreferencesTab.about)
+
+                if self.settings.debugMenuEnabled {
+                    DebugPane(settings: self.settings, store: self.store)
+                        .tabItem { Label("Debug", systemImage: "ladybug") }
+                        .tag(PreferencesTab.debug)
+                }
             }
         }
+        .tint(ClawbarTheme.accent)
         .padding(.horizontal, 24)
-        .padding(.vertical, 16)
+        .padding(.vertical, 18)
+        .background(ClawbarTheme.windowBackground(for: self.colorScheme).ignoresSafeArea())
         .frame(width: self.contentWidth, height: self.contentHeight)
         .onAppear {
             self.updateLayout(for: self.selection.tab, animate: false)
@@ -117,5 +124,44 @@ struct PreferencesView: View {
             self.selection.tab = .general
             self.updateLayout(for: .general, animate: true)
         }
+    }
+}
+
+private struct PreferencesHeroCard: View {
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 14) {
+            Image(nsImage: NSApplication.shared.applicationIconImage)
+                .resizable()
+                .frame(width: 52, height: 52)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+
+            VStack(alignment: .leading, spacing: 4) {
+                ClawbarSectionEyebrow(text: "Clawbar control room")
+                Text("Keep quota pressure visible.")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                Text("Tune the menubar, refresh rhythm and provider setup from one branded surface.")
+                    .font(.footnote)
+                    .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(18)
+        .background(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            ClawbarTheme.panelBackground(for: self.colorScheme),
+                            ClawbarTheme.panelSecondaryBackground(for: self.colorScheme),
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing)))
+        .overlay(
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(ClawbarTheme.panelStroke(for: self.colorScheme), lineWidth: 1))
     }
 }

@@ -22,13 +22,13 @@ func showAbout() {
     }
 
     let credits = NSMutableAttributedString(string: "Peter Steinberger — MIT License\n")
-    credits.append(makeLink("GitHub", urlString: "https://github.com/steipete/Clawbar"))
+    credits.append(makeLink("GitHub", urlString: "https://github.com/blacki2016/Clawbar"))
     credits.append(separator)
-    credits.append(makeLink("Website", urlString: "https://clawbar.app"))
+    credits.append(makeLink("Releases", urlString: "https://github.com/blacki2016/Clawbar/releases"))
     credits.append(separator)
-    credits.append(makeLink("Twitter", urlString: "https://twitter.com/steipete"))
+    credits.append(makeLink("Documentation", urlString: "https://github.com/blacki2016/Clawbar#installation"))
     credits.append(separator)
-    credits.append(makeLink("Email", urlString: "mailto:peter@steipete.me"))
+    credits.append(makeLink("Issues", urlString: "https://github.com/blacki2016/Clawbar/issues"))
     if let buildTimestamp, let formatted = formattedBuildTimestamp(buildTimestamp) {
         var builtLine = "Built \(formatted)"
         if let gitCommit, !gitCommit.isEmpty, gitCommit != "unknown" {
@@ -45,7 +45,7 @@ func showAbout() {
     }
 
     let options: [NSApplication.AboutPanelOptionKey: Any] = [
-        .applicationName: "ClawbarApp",
+        .applicationName: "Clawbar",
         .applicationVersion: versionString,
         .version: versionString,
         .credits: credits,
