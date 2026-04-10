@@ -6,8 +6,8 @@ enum ProviderBrandIcon {
 
     /// Lazy-loaded resource bundle for provider icons.
     private static let resourceBundle: Bundle? = {
-        // SwiftPM creates a CodexBar_CodexBar.bundle for resources in the CodexBar target.
-        if let bundleURL = Bundle.main.url(forResource: "CodexBar_CodexBar", withExtension: "bundle"),
+        // SwiftPM creates a Clawbar_Clawbar.bundle for resources in the Clawbar target.
+        if let bundleURL = Bundle.main.url(forResource: "Clawbar_Clawbar", withExtension: "bundle"),
            let bundle = Bundle(url: bundleURL)
         {
             return bundle

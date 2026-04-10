@@ -31,7 +31,7 @@ struct TheClawBayProviderImplementation: ProviderImplementation {
             ProviderSettingsFieldDescriptor(
                 id: "theclawbay-api-key",
                 title: "API key",
-                subtitle: "Stored in ~/.codexbar/config.json. Paste your theclawbay API key.",
+                subtitle: "Stored in ~/.clawbar/config.json. Paste your theclawbay API key.",
                 kind: .secure,
                 placeholder: "ca_v1...",
                 binding: context.stringBinding(\.theClawBayAPIToken),

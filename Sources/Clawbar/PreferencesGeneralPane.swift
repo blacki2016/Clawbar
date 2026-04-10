@@ -17,7 +17,7 @@ struct GeneralPane: View {
                         .textCase(.uppercase)
                     PreferenceToggleRow(
                         title: "Start at Login",
-                        subtitle: "Automatically opens CodexBar when you start your Mac.",
+                        subtitle: "Automatically opens Clawbar when you start your Mac.",
                         binding: self.$settings.launchAtLogin)
                 }
 
@@ -66,7 +66,7 @@ struct GeneralPane: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text("Refresh cadence")
                                     .font(.body)
-                                Text("How often CodexBar polls providers in the background.")
+                                Text("How often Clawbar polls providers in the background.")
                                     .font(.footnote)
                                     .foregroundStyle(.tertiary)
                             }

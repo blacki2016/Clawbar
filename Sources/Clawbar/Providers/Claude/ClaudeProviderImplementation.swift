@@ -67,7 +67,7 @@ struct ClaudeProviderImplementation: ProviderImplementation {
         let subtitle = if context.settings.debugDisableKeychainAccess {
             "Inactive while \"Disable Keychain access\" is enabled in Advanced."
         } else {
-            "Use /usr/bin/security to read Claude credentials and avoid CodexBar keychain prompts."
+            "Use /usr/bin/security to read Claude credentials and avoid Clawbar keychain prompts."
         }
 
         let promptFreeBinding = Binding(

@@ -19,28 +19,28 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			hjAUksYuKDelAdnFqvyJk29Lghg=
+			JHhdiPa+C0EMhrrQ/6BRvIqsHv0=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"86301492c62e2837a501d9c5aafc89936f4b8218"</string>
+			<string>cdhash H"24785d88f6be0b410c86bad0ffa051bc8aac1efd"</string>
 		</dict>
 		<key>Helpers/clawbar</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			p8sJIXFQ04brspSzi1+QKipWIu0=
+			TI8/lD/cAFyF+sTpg4ZheYTCvmk=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"a7cb09217150d386ebb294b38b5f902a2a5622ed"</string>
+			<string>cdhash H"4c8f3f943fdc005c85fac4e98386617984c2be69"</string>
 		</dict>
 		<key>PlugIns/ClawbarWidget.appex</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			AlvhCL+YqvmA1FEwj4LR0vCh1Qs=
+			UJxhvCR4T5v9sLzf9YPZoXn1KJE=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"025be108bf98aaf980d451308f82d1d2f0a1d50b"</string>
+			<string>cdhash H"509c61bc24784f9bfdb0bcdff583d9a179f52891"</string>
 		</dict>
 	</dict>
 	<key>rules</key>

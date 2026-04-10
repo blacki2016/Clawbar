@@ -300,7 +300,7 @@ struct ProvidersPane: View {
         guard let accountID = account.storedAccountID else { return }
         self.activeConfirmation = ProviderSettingsConfirmationState(
             title: "Remove Codex account?",
-            message: "Remove \(account.email) from CodexBar? Its managed Codex home will be deleted.",
+            message: "Remove \(account.email) from Clawbar? Its managed Codex home will be deleted.",
             confirmTitle: "Remove",
             onConfirm: {
                 Task { @MainActor in
@@ -592,7 +592,7 @@ struct ProvidersPane: View {
                 "Codex login completed, but no account email was available. Try again after confirming "
                     + "the account is fully signed in."
             case let .unsafeManagedHome(path):
-                "CodexBar refused to modify an unexpected managed home path: \(path)"
+                "Clawbar refused to modify an unexpected managed home path: \(path)"
             }
             return CodexAccountsSectionNotice(text: message, tone: .warning)
         }

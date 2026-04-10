@@ -67,7 +67,7 @@ struct AboutPane: View {
                 AboutLinkRow(
                     icon: "chevron.left.slash.chevron.right",
                     title: "GitHub",
-                    url: "https://github.com/steipete/CodexBar")
+                    url: "https://github.com/steipete/Clawbar")
                 AboutLinkRow(icon: "globe", title: "Website", url: "https://steipete.me")
                 AboutLinkRow(icon: "bird", title: "Twitter", url: "https://twitter.com/steipete")
                 AboutLinkRow(icon: "envelope", title: "Email", url: "mailto:peter@steipete.me")
@@ -147,7 +147,7 @@ struct AboutPane: View {
     }
 
     private func openProjectHome() {
-        guard let url = URL(string: "https://github.com/steipete/CodexBar") else { return }
+        guard let url = URL(string: "https://github.com/steipete/Clawbar") else { return }
         NSWorkspace.shared.open(url)
     }
 }

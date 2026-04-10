@@ -3,7 +3,7 @@ import ClawbarCore
 /// Source of truth for app-side provider implementations.
 ///
 /// Keep provider registration centralized here. The rest of the app should *not* have to be updated when a new
-/// provider is added, aside from enum/metadata work in `CodexBarCore`.
+/// provider is added, aside from enum/metadata work in `ClawbarCore`.
 enum ProviderCatalog {
     /// All provider implementations shipped in the app.
     static let all: [any ProviderImplementation] = ProviderImplementationRegistry.all

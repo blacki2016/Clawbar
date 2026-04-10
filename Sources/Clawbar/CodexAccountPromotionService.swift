@@ -54,7 +54,7 @@ struct DefaultCodexLiveAuthSwapper: CodexLiveAuthSwapping {
 
         let liveAuthURL = CodexAccountPromotionService.authFileURL(for: liveHomeURL)
         let stagedAuthURL = liveHomeURL.appendingPathComponent(
-            "auth.json.codexbar-staged-\(UUID().uuidString)",
+            "auth.json.clawbar-staged-\(UUID().uuidString)",
             isDirectory: false)
 
         do {

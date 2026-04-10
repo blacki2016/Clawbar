@@ -172,7 +172,7 @@ struct IconView: View {
             }
         }
         .onDisappear { self.displayLink.stop() }
-        .onReceive(NotificationCenter.default.publisher(for: .codexbarDebugReplayAllAnimations)) { notification in
+        .onReceive(NotificationCenter.default.publisher(for: .clawbarDebugReplayAllAnimations)) { notification in
             if let raw = notification.userInfo?["pattern"] as? String,
                let selected = LoadingPattern(rawValue: raw)
             {

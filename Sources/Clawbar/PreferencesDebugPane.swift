@@ -414,7 +414,7 @@ struct DebugPane: View {
             userInfo["pattern"] = pattern.rawValue
         }
         NotificationCenter.default.post(
-            name: .codexbarDebugReplayAllAnimations,
+            name: .clawbarDebugReplayAllAnimations,
             object: nil,
             userInfo: userInfo.isEmpty ? nil : userInfo)
         self.store.replayLoadingAnimation(duration: 4)

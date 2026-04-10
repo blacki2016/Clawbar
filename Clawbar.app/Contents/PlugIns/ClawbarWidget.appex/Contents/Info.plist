@@ -4,7 +4,7 @@
 <dict>
     <key>CFBundleName</key><string>ClawbarWidget</string>
     <key>CFBundleDisplayName</key><string>Clawbar</string>
-    <key>CFBundleIdentifier</key><string>com.steipete.clawbar.debug.widget</string>
+    <key>CFBundleIdentifier</key><string>com.steipete.clawbar.widget</string>
     <key>CFBundleExecutable</key><string>ClawbarWidget</string>
     <key>CFBundlePackageType</key><string>XPC!</string>
     <key>CFBundleShortVersionString</key><string>0.21</string>
