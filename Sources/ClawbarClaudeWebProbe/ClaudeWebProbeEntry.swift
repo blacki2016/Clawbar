@@ -2,7 +2,7 @@ import ClawbarCore
 import Foundation
 
 @main
-enum CodexBarClaudeWebProbe {
+enum ClawbarClaudeWebProbe {
     private static let defaultEndpoints: [String] = [
         "https://claude.ai/api/organizations",
         "https://claude.ai/api/organizations/{orgId}/usage",

@@ -158,8 +158,8 @@ extension ClawbarCLI {
         let domains = [
             "com.steipete.clawbar",
             "com.steipete.clawbar.debug",
-            "com.steipete.codexbar",
-            "com.steipete.codexbar.debug",
+            
+            
         ]
         for domain in domains {
             if let value = UserDefaults(suiteName: domain)?.object(forKey: "resetTimesShowAbsolute") as? Bool {

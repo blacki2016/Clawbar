@@ -5,15 +5,15 @@ import WebKit
 @MainActor
 final class OpenAICreditsPurchaseWindowController: NSWindowController, WKNavigationDelegate, WKScriptMessageHandler {
     private static let defaultSize = NSSize(width: 980, height: 760)
-    private static let logHandlerName = "codexbarLog"
+    private static let logHandlerName = "clawbarLog"
     private static let debugLogURL = URL(fileURLWithPath: NSTemporaryDirectory())
-        .appendingPathComponent("codexbar-buy-credits.log")
+        .appendingPathComponent("clawbar-buy-credits.log")
     private static let autoStartScript = """
     (() => {
-      if (window.__codexbarAutoBuyCreditsStarted) return 'already';
+      if (window.__clawbarAutoBuyCreditsStarted) return 'already';
       const log = (...args) => {
         try {
-          window.webkit?.messageHandlers?.codexbarLog?.postMessage(args);
+          window.webkit?.messageHandlers?.clawbarLog?.postMessage(args);
         } catch {}
       };
       const buttonSelector = 'button, a, [role="button"], input[type="button"], input[type="submit"]';
@@ -229,8 +229,8 @@ final class OpenAICreditsPurchaseWindowController: NSWindowController, WKNavigat
         return forceClickElement(nextButton);
       };
       const startNextPolling = (initialDelay = 500, interval = 500, maxAttempts = 90) => {
-        if (window.__codexbarNextPolling) return;
-        window.__codexbarNextPolling = true;
+        if (window.__clawbarNextPolling) return;
+        window.__clawbarNextPolling = true;
         log('start_next_poll', { initialDelay, interval, maxAttempts });
         setTimeout(() => {
           let attempts = 0;
@@ -251,15 +251,15 @@ final class OpenAICreditsPurchaseWindowController: NSWindowController, WKNavigat
         }, initialDelay);
       };
       const observeNextButton = () => {
-        if (window.__codexbarNextObserver || !window.MutationObserver) return;
+        if (window.__clawbarNextObserver || !window.MutationObserver) return;
         const observer = new MutationObserver(() => {
           if (clickNextIfReady(1)) {
             observer.disconnect();
-            window.__codexbarNextObserver = null;
+            window.__clawbarNextObserver = null;
           }
         });
         observer.observe(document.body, { subtree: true, childList: true, attributes: true });
-        window.__codexbarNextObserver = observer;
+        window.__clawbarNextObserver = observer;
       };
       const findCreditsCardButton = () => {
         const nodes = Array.from(document.querySelectorAll('h1,h2,h3,div,span,p'));
@@ -330,7 +330,7 @@ final class OpenAICreditsPurchaseWindowController: NSWindowController, WKNavigat
         log('shadow_roots', { count: shadowHostCount });
       }
       if (findAndClick()) {
-        window.__codexbarAutoBuyCreditsStarted = true;
+        window.__clawbarAutoBuyCreditsStarted = true;
         startNextPolling();
         observeNextButton();
         logDialogButtons();
@@ -353,7 +353,7 @@ final class OpenAICreditsPurchaseWindowController: NSWindowController, WKNavigat
           clearInterval(timer);
         }
       }, 500);
-      window.__codexbarAutoBuyCreditsStarted = true;
+      window.__clawbarAutoBuyCreditsStarted = true;
       return 'scheduled';
     })();
     """

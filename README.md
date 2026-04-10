@@ -34,7 +34,7 @@ Download: <https://github.com/blacki2016/Clawbar/releases>
 ```bash
 brew install blacki2016/tap/clawbar
 ```
-oder `CodexBarCLI-v<tag>-linux-<arch>.tar.gz` von den GitHub Releases.
+oder `ClawbarCLI-v<tag>-linux-<arch>.tar.gz` von den GitHub Releases.
 
 ## Quick Start
 

@@ -15,7 +15,7 @@ WAIT_FOR_LOCK=0
 RUN_TESTS=0
 DEBUG_LLDB=0
 RELEASE_ARCHES=""
-SIGNING_MODE="${CODEXBAR_SIGNING:-}"
+SIGNING_MODE="${CLAWBAR_SIGNING:-}"
 
 log()  { printf '%s\n' "$*"; }
 fail() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
@@ -110,7 +110,7 @@ kill_claude_probes() {
   pkill -9 -f "claude (/status|/usage) --allowed-tools" 2>/dev/null || true
 }
 
-kill_all_codexbar() {
+kill_all_clawbar() {
   is_running() {
     pgrep -f "${APP_PROCESS_PATTERN}" >/dev/null 2>&1 \
       || pgrep -f "${DEBUG_PROCESS_PATTERN}" >/dev/null 2>&1 \
@@ -174,7 +174,7 @@ acquire_lock
 
 # 2) Kill all running Clawbar instances (debug, release, bundled).
 log "==> Killing existing Clawbar instances"
-kill_all_codexbar
+kill_all_clawbar
 kill_claude_probes
 
 # 2.5) Delete keychain entries to avoid permission prompts with adhoc signing
@@ -201,10 +201,10 @@ if [[ -n "${RELEASE_ARCHES}" ]]; then
   ARCHES_VALUE="${RELEASE_ARCHES}"
 fi
 if [[ "${DEBUG_LLDB}" == "1" ]]; then
-  run_step "package app" env CODEXBAR_ALLOW_LLDB=1 ARCHES="${ARCHES_VALUE}" "${ROOT_DIR}/Scripts/package_app.sh" debug
+  run_step "package app" env CLAWBAR_ALLOW_LLDB=1 ARCHES="${ARCHES_VALUE}" "${ROOT_DIR}/Scripts/package_app.sh" debug
 else
   if [[ -n "${SIGNING_MODE}" ]]; then
-    run_step "package app" env CODEXBAR_SIGNING="${SIGNING_MODE}" ARCHES="${ARCHES_VALUE}" "${ROOT_DIR}/Scripts/package_app.sh"
+    run_step "package app" env CLAWBAR_SIGNING="${SIGNING_MODE}" ARCHES="${ARCHES_VALUE}" "${ROOT_DIR}/Scripts/package_app.sh"
   else
     run_step "package app" env ARCHES="${ARCHES_VALUE}" "${ROOT_DIR}/Scripts/package_app.sh"
   fi
