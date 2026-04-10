@@ -302,13 +302,7 @@ if [[ -n "$(resolve_binary_path "ClawbarWidget" "${ARCH_LIST[0]}")" ]]; then
 PLIST
   install_binary "ClawbarWidget" "$WIDGET_APP/Contents/MacOS/ClawbarWidget"
 fi
-# Embed Sparkle.framework
-if [[ -d ".build/$CONF/Sparkle.framework" ]]; then
-  cp -R ".build/$CONF/Sparkle.framework" "$APP/Contents/Frameworks/"
-  chmod -R a+rX "$APP/Contents/Frameworks/Sparkle.framework"
-  install_name_tool -add_rpath "@executable_path/../Frameworks" "$APP/Contents/MacOS/Clawbar"
-  # Re-sign Sparkle and all nested components with Developer ID + timestamp
-  SPARKLE="$APP/Contents/Frameworks/Sparkle.framework"
+# Set up code signing arguments (used for both Sparkle and main app)
 if [[ "$SIGNING_MODE" == "adhoc" ]]; then
   CODESIGN_ID="-"
   CODESIGN_ARGS=(--force --sign "$CODESIGN_ID")
@@ -320,6 +314,16 @@ else
   CODESIGN_ARGS=(--force --timestamp --options runtime --sign "$CODESIGN_ID")
 fi
 function resign() { codesign "${CODESIGN_ARGS[@]}" "$1"; }
+
+# Embed Sparkle.framework
+if [[ -d ".build/$CONF/Sparkle.framework" ]]; then
+  cp -R ".build/$CONF/Sparkle.framework" "$APP/Contents/Frameworks/"
+  chmod -R a+rX "$APP/Contents/Frameworks/Sparkle.framework"
+  install_name_tool -add_rpath "@executable_path/../Frameworks" "$APP/Contents/MacOS/Clawbar"
+  # Re-sign main binary after install_name_tool (it breaks the signature)
+  resign "$APP/Contents/MacOS/Clawbar"
+  # Re-sign Sparkle and all nested components with Developer ID + timestamp
+  SPARKLE="$APP/Contents/Frameworks/Sparkle.framework"
   # Sign innermost binaries first, then the framework root to seal resources
   resign "$SPARKLE"
   resign "$SPARKLE/Versions/B/Sparkle"
