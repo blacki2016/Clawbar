@@ -16,7 +16,7 @@ struct ProviderSidebarListView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 10) {
-                ClawbarSectionEyebrow(text: "Provider roster")
+                ClawbarSectionEyebrow(text: L10n.providerRoster)
                 ForEach(self.providers, id: \.self) { provider in
                     Button {
                         self.selection = provider
@@ -79,7 +79,7 @@ private struct ProviderSidebarRowView: View {
                         .contentShape(Rectangle())
                         .padding(.vertical, 4)
                         .padding(.horizontal, 2)
-                        .help("Drag to reorder")
+                        .help(L10n.dragToReorder)
                         .onDrag {
                             self.draggingProvider = self.provider
                             return NSItemProvider(object: self.provider.rawValue as NSString)
@@ -124,15 +124,28 @@ private struct ProviderSidebarRowView: View {
         .background(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .fill(self.isSelected
-                    ? ClawbarTheme.panelSecondaryBackground(for: self.colorScheme)
-                    : ClawbarTheme.windowBackground(for: self.colorScheme).opacity(0.52)))
+                    ? AnyShapeStyle(LinearGradient(
+                        colors: [
+                            ClawbarTheme.accent.opacity(self.colorScheme == .dark ? 0.20 : 0.12),
+                            ClawbarTheme.accent.opacity(self.colorScheme == .dark ? 0.08 : 0.05),
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing))
+                    : AnyShapeStyle(ClawbarTheme.windowBackground(for: self.colorScheme).opacity(0.52))))
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(self.isSelected ? ClawbarTheme.accent.opacity(0.28) : Color.clear, lineWidth: 1))
+                .stroke(
+                    self.isSelected
+                        ? AnyShapeStyle(LinearGradient(
+                            colors: [ClawbarTheme.accent.opacity(0.45), ClawbarTheme.sea.opacity(0.25)],
+                            startPoint: .leading,
+                            endPoint: .trailing))
+                        : AnyShapeStyle(Color.clear),
+                    lineWidth: 1))
     }
 
     private var statusHeadline: String {
-        self.isEnabled ? "Active feed" : "Paused"
+        self.isEnabled ? L10n.activeFeed : L10n.paused
     }
 
     private var statusText: String {
@@ -141,9 +154,9 @@ private struct ProviderSidebarRowView: View {
         if lines.count >= 2 {
             let first = lines[0]
             let rest = lines.dropFirst().joined(separator: "\n")
-            return "Disabled — \(first)\n\(rest)"
+            return "\(L10n.disabledPrefix(String(first)))\n\(rest)"
         }
-        return "Disabled — \(self.subtitle)"
+        return L10n.disabledPrefix(self.subtitle)
     }
 }
 
@@ -167,7 +180,7 @@ private struct ProviderSidebarReorderHandle: View {
             width: ProviderSettingsMetrics.reorderHandleSize,
             height: ProviderSettingsMetrics.reorderHandleSize)
         .foregroundStyle(.secondary)
-        .accessibilityLabel("Reorder")
+        .accessibilityLabel(L10n.reorder)
     }
 }
 

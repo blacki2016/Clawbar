@@ -2,38 +2,48 @@ import AppKit
 import SwiftUI
 
 enum ClawbarTheme {
-    static let accentNSColor = NSColor(srgbRed: 0.93, green: 0.37, blue: 0.27, alpha: 1)
-    static let seaNSColor = NSColor(srgbRed: 0.10, green: 0.70, blue: 0.67, alpha: 1)
+    // MARK: - Brand Colors (matches website design system)
+    // Primary: #7c3aed (purple)
+    static let accentNSColor = NSColor(srgbRed: 0.486, green: 0.227, blue: 0.929, alpha: 1)
+    // Cyan: #22d3ee
+    static let seaNSColor = NSColor(srgbRed: 0.133, green: 0.827, blue: 0.933, alpha: 1)
+    // Warning: slightly muted purple-red
     static let warningNSColor = NSColor(srgbRed: 0.77, green: 0.29, blue: 0.28, alpha: 1)
+    // Orange: #f97316
+    static let orangeNSColor = NSColor(srgbRed: 0.976, green: 0.451, blue: 0.086, alpha: 1)
 
     static let accent = Color(nsColor: accentNSColor)
     static let sea = Color(nsColor: seaNSColor)
     static let warning = Color(nsColor: warningNSColor)
+    static let orange = Color(nsColor: orangeNSColor)
 
     static func windowBackground(for scheme: ColorScheme) -> Color {
         switch scheme {
         case .dark:
-            Color(red: 0.08, green: 0.09, blue: 0.12)
+            // #06060f — deep near-black from website
+            Color(red: 0.024, green: 0.024, blue: 0.059)
         default:
-            Color(red: 0.95, green: 0.94, blue: 0.90)
+            Color(red: 0.97, green: 0.96, blue: 0.99)
         }
     }
 
     static func panelBackground(for scheme: ColorScheme) -> Color {
         switch scheme {
         case .dark:
-            Color(red: 0.13, green: 0.15, blue: 0.19)
+            // #0d0d22 — dark panel
+            Color(red: 0.051, green: 0.051, blue: 0.133)
         default:
-            Color(red: 0.99, green: 0.98, blue: 0.96)
+            Color(red: 0.99, green: 0.98, blue: 1.00)
         }
     }
 
     static func panelSecondaryBackground(for scheme: ColorScheme) -> Color {
         switch scheme {
         case .dark:
-            Color(red: 0.16, green: 0.18, blue: 0.22)
+            // #131330 — slightly lighter panel
+            Color(red: 0.075, green: 0.075, blue: 0.188)
         default:
-            Color(red: 0.97, green: 0.95, blue: 0.92)
+            Color(red: 0.96, green: 0.95, blue: 0.99)
         }
     }
 
@@ -66,18 +76,19 @@ enum ClawbarTheme {
 
     static func menuCardBackground(highlighted: Bool, darkMode: Bool) -> Color {
         if highlighted {
-            return darkMode ? self.accent.opacity(0.24) : self.accent.opacity(0.16)
+            return darkMode ? self.accent.opacity(0.20) : self.accent.opacity(0.12)
         }
         return darkMode
-            ? Color(red: 0.14, green: 0.16, blue: 0.20)
-            : Color(red: 0.98, green: 0.97, blue: 0.95)
+            // #0d0d22 variant for cards
+            ? Color(red: 0.075, green: 0.075, blue: 0.188)
+            : Color(red: 0.98, green: 0.97, blue: 1.00)
     }
 
     static func menuCardStroke(highlighted: Bool, darkMode: Bool) -> Color {
         if highlighted {
             return darkMode ? self.sea.opacity(0.42) : self.accent.opacity(0.34)
         }
-        return darkMode ? Color.white.opacity(0.08) : Color.black.opacity(0.08)
+        return darkMode ? self.accent.opacity(0.12) : Color.black.opacity(0.07)
     }
 
     static func switcherSelectedBackground() -> CGColor {

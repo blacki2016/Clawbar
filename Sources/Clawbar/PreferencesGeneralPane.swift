@@ -6,33 +6,59 @@ import SwiftUI
 struct GeneralPane: View {
     @Bindable var settings: SettingsStore
     @Bindable var store: UsageStore
+    @ObservedObject private var localizationManager = LocalizationManager.shared
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 18) {
-                SettingsSection(title: "System", caption: "Launch behavior and app-wide automation.") {
+                // Language Section
+                SettingsSection(title: L10n.settings, caption: L10n.languageAndBehaviorCaption) {
+                    HStack(alignment: .top, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(L10n.language)
+                                .font(.body)
+                            Text(L10n.preferredLanguageSubtitle)
+                                .font(.footnote)
+                                .foregroundStyle(.tertiary)
+                        }
+                        Spacer()
+                        Picker(L10n.language, selection: Binding(
+                            get: { self.localizationManager.currentLanguage },
+                            set: { self.localizationManager.currentLanguage = $0 }
+                        )) {
+                            ForEach(AppLanguage.allCases) { lang in
+                                Text(lang.displayName).tag(lang)
+                            }
+                        }
+                        .labelsHidden()
+                        .pickerStyle(.menu)
+                        .frame(maxWidth: 150)
+                    }
+                }
+
+                SettingsSection(title: L10n.systemSectionTitle, caption: L10n.systemSectionCaption) {
                     PreferenceToggleRow(
-                        title: "Start at Login",
-                        subtitle: "Automatically opens Clawbar when you start your Mac.",
+                        title: L10n.startAtLogin,
+                        subtitle: L10n.startAtLoginSubtitle,
                         binding: self.$settings.launchAtLogin)
                 }
 
-                SettingsSection(title: "Usage intelligence", caption: "Decide how much local cost context Clawbar should keep visible.") {
+                SettingsSection(title: L10n.usageIntelligenceTitle, caption: L10n.usageIntelligenceCaption) {
                     VStack(alignment: .leading, spacing: 10) {
                         VStack(alignment: .leading, spacing: 4) {
                             Toggle(isOn: self.$settings.costUsageEnabled) {
-                                Text("Show cost summary")
+                                Text(L10n.showCostSummary)
                                     .font(.body)
                             }
                             .toggleStyle(.checkbox)
 
-                            Text("Reads local usage logs. Shows today + last 30 days cost in the menu.")
+                            Text(L10n.showCostSummarySubtitle)
                                 .font(.footnote)
                                 .foregroundStyle(.tertiary)
                                 .fixedSize(horizontal: false, vertical: true)
 
                             if self.settings.costUsageEnabled {
-                                Text("Auto-refresh: hourly · Timeout: 10m")
+                                Text(L10n.autoRefreshHourlyTimeout)
                                     .font(.footnote)
                                     .foregroundStyle(.tertiary)
 
@@ -43,18 +69,18 @@ struct GeneralPane: View {
                     }
                 }
 
-                SettingsSection(title: "Automation", caption: "Background refreshes, provider health checks and session alerts.") {
+                SettingsSection(title: L10n.automationTitle, caption: L10n.automationCaption) {
                     VStack(alignment: .leading, spacing: 6) {
                         HStack(alignment: .top, spacing: 12) {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Refresh cadence")
+                                Text(L10n.refreshCadence)
                                     .font(.body)
-                                Text("How often Clawbar polls providers in the background.")
+                                Text(L10n.refreshCadenceSubtitle)
                                     .font(.footnote)
                                     .foregroundStyle(.tertiary)
                             }
                             Spacer()
-                            Picker("Refresh cadence", selection: self.$settings.refreshFrequency) {
+                            Picker(L10n.refreshCadence, selection: self.$settings.refreshFrequency) {
                                 ForEach(RefreshFrequency.allCases) { option in
                                     Text(option.label).tag(option)
                                 }
@@ -64,27 +90,25 @@ struct GeneralPane: View {
                             .frame(maxWidth: 200)
                         }
                         if self.settings.refreshFrequency == .manual {
-                            Text("Auto-refresh is off; use the menu's Refresh command.")
+                            Text(L10n.autoRefreshOff)
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
                         }
                     }
                     PreferenceToggleRow(
-                        title: "Check provider status",
-                        subtitle: "Polls OpenAI/Claude status pages and Google Workspace for " +
-                            "Gemini/Antigravity, surfacing incidents in the icon and menu.",
+                        title: L10n.checkProviderStatus,
+                        subtitle: L10n.checkProviderStatusSubtitle,
                         binding: self.$settings.statusChecksEnabled)
                     PreferenceToggleRow(
-                        title: "Session quota notifications",
-                        subtitle: "Notifies when the 5-hour session quota hits 0% and when it becomes " +
-                            "available again.",
+                        title: L10n.sessionQuotaNotifications,
+                        subtitle: L10n.sessionQuotaNotificationsSubtitle,
                         binding: self.$settings.sessionQuotaNotificationsEnabled)
                 }
 
-                SettingsSection(title: "Session", caption: "Quit the app directly from the control room.") {
+                SettingsSection(title: L10n.sessionSectionTitle, caption: L10n.sessionSectionCaption) {
                     HStack {
                         Spacer()
-                        Button("Quit Clawbar") { NSApp.terminate(nil) }
+                        Button(L10n.quit) { NSApp.terminate(nil) }
                             .buttonStyle(.borderedProminent)
                             .controlSize(.large)
                     }
@@ -100,7 +124,7 @@ struct GeneralPane: View {
         let name = ProviderDescriptorRegistry.descriptor(for: provider).metadata.displayName
 
         guard provider == .claude || provider == .codex else {
-            return Text("\(name): unsupported")
+            return Text("\(name): \(L10n.unsupported)")
                 .font(.footnote)
                 .foregroundStyle(.tertiary)
         }
@@ -114,7 +138,7 @@ struct GeneralPane: View {
                 formatter.unitsStyle = .abbreviated
                 return formatter.string(from: seconds).map { " (\($0))" } ?? ""
             }()
-            return Text("\(name): fetching…\(elapsed)")
+            return Text("\(name): \(L10n.fetching)…\(elapsed)")
                 .font(.footnote)
                 .foregroundStyle(.tertiary)
         }
@@ -135,11 +159,11 @@ struct GeneralPane: View {
             let rel = RelativeDateTimeFormatter()
             rel.unitsStyle = .abbreviated
             let when = rel.localizedString(for: lastAttempt, relativeTo: Date())
-            return Text("\(name): last attempt \(when)")
+            return Text("\(name): \(L10n.lastAttempt) \(when)")
                 .font(.footnote)
                 .foregroundStyle(.tertiary)
         }
-        return Text("\(name): no data yet")
+        return Text("\(name): \(L10n.noDataYet)")
             .font(.footnote)
             .foregroundStyle(.tertiary)
     }

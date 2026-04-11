@@ -140,6 +140,24 @@ struct UsageMenuCardView: View {
                 .stroke(
                     ClawbarTheme.menuCardStroke(highlighted: self.isHighlighted, darkMode: self.colorScheme == .dark),
                     lineWidth: 1))
+        // Brand gradient accent strip — purple → cyan at top of card
+        .overlay(alignment: .top) {
+            if !self.isHighlighted {
+                LinearGradient(
+                    colors: [ClawbarTheme.accent, ClawbarTheme.sea],
+                    startPoint: .leading,
+                    endPoint: .trailing)
+                    .frame(height: 2)
+                    .clipShape(
+                        UnevenRoundedRectangle(
+                            topLeadingRadius: 18,
+                            bottomLeadingRadius: 0,
+                            bottomTrailingRadius: 0,
+                            topTrailingRadius: 18,
+                            style: .continuous))
+                    .opacity(self.colorScheme == .dark ? 0.9 : 0.7)
+            }
+        }
     }
 
     @ViewBuilder
@@ -244,13 +262,15 @@ private struct UsageMenuCardHeaderView: View {
                 Spacer()
                 if let plan = self.model.planText {
                     Text(plan)
-                        .font(.system(size: 11, weight: .semibold, design: .rounded))
+                        .font(.system(size: 11, weight: .bold, design: .rounded))
                         .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
+                        .padding(.vertical, 3)
                         .background(
                             Capsule()
-                                .fill(ClawbarTheme.sea.opacity(self.colorScheme == .dark ? 0.16 : 0.12)))
-                        .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                                .fill(self.isHighlighted
+                                    ? Color.white.opacity(0.22)
+                                    : ClawbarTheme.accent.opacity(self.colorScheme == .dark ? 0.22 : 0.14)))
+                        .foregroundStyle(self.isHighlighted ? Color.white : ClawbarTheme.accent)
                         .lineLimit(1)
                 }
             }
@@ -258,7 +278,7 @@ private struct UsageMenuCardHeaderView: View {
             HStack(alignment: .top, spacing: 8) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(self.model.providerName)
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .font(.system(size: 22, weight: .bold, design: .rounded))
                     if !self.model.email.isEmpty {
                         Text(self.model.email)
                             .font(.caption)
@@ -382,9 +402,20 @@ private struct MetricRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(self.title)
-                .font(.body)
-                .fontWeight(.medium)
+            // Title row — includes prominent color-coded percentage when data is available
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(self.title)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                Spacer()
+                if self.metric.statusText == nil {
+                    Text(self.metric.percentLabel)
+                        .font(.system(.callout, design: .rounded, weight: .bold))
+                        .foregroundStyle(self.isHighlighted
+                            ? MenuHighlightStyle.selectionText
+                            : self.percentAccentColor)
+                }
+            }
+
             if let statusText = self.metric.statusText {
                 Text(statusText)
                     .font(.footnote)
@@ -397,47 +428,62 @@ private struct MetricRow: View {
                     accessibilityLabel: self.metric.percentStyle.accessibilityLabel,
                     pacePercent: self.metric.pacePercent,
                     paceOnTop: self.metric.paceOnTop)
+                // Detail rows below the bar
                 VStack(alignment: .leading, spacing: 2) {
-                    HStack(alignment: .firstTextBaseline) {
-                        Text(self.metric.percentLabel)
-                            .font(.footnote)
-                            .lineLimit(1)
-                        Spacer()
-                        if let rightLabel = self.metric.resetText {
-                            Text(rightLabel)
-                                .font(.footnote)
-                                .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
-                                .lineLimit(1)
-                        }
-                    }
-                    if self.metric.detailLeftText != nil || self.metric.detailRightText != nil {
+                    // Row 1: left detail + reset/period info
+                    if self.metric.detailLeftText != nil || self.metric.resetText != nil {
                         HStack(alignment: .firstTextBaseline) {
                             if let detailLeft = self.metric.detailLeftText {
                                 Text(detailLeft)
-                                    .font(.footnote)
+                                    .font(.caption)
                                     .foregroundStyle(MenuHighlightStyle.primary(self.isHighlighted))
                                     .lineLimit(1)
                             }
                             Spacer()
-                            if let detailRight = self.metric.detailRightText {
-                                Text(detailRight)
-                                    .font(.footnote)
+                            if let rightLabel = self.metric.resetText {
+                                Text(rightLabel)
+                                    .font(.caption)
                                     .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
                                     .lineLimit(1)
                             }
+                        }
+                    }
+                    // Row 2: right-side secondary detail (e.g. pace)
+                    if let detailRight = self.metric.detailRightText {
+                        HStack(alignment: .firstTextBaseline) {
+                            Spacer()
+                            Text(detailRight)
+                                .font(.caption)
+                                .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
+                                .lineLimit(1)
                         }
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 if let detail = self.metric.detailText {
                     Text(detail)
-                        .font(.footnote)
+                        .font(.caption)
                         .foregroundStyle(MenuHighlightStyle.secondary(self.isHighlighted))
                         .lineLimit(1)
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    /// Color-coded percentage: orange when nearly gone, cyan mid-range, purple when healthy.
+    private var percentAccentColor: Color {
+        let pct = self.metric.percent
+        if self.metric.percentStyle == .left {
+            // "X% left" — low is bad
+            if pct < 15 { return ClawbarTheme.orange }
+            if pct < 40 { return ClawbarTheme.sea }
+        } else {
+            // "X% used" — high is bad
+            if pct > 85 { return ClawbarTheme.orange }
+            if pct > 60 { return ClawbarTheme.sea }
+        }
+        return ClawbarTheme.accent
     }
 }
 

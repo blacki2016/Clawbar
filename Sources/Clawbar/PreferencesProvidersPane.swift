@@ -107,7 +107,7 @@ struct ProvidersPane: View {
                         }
                     })
             } else {
-                Text("Select a provider")
+                Text(L10n.selectAProvider)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
@@ -135,7 +135,7 @@ struct ProvidersPane: View {
                         active.onConfirm()
                         self.activeConfirmation = nil
                     }
-                    Button("Cancel", role: .cancel) { self.activeConfirmation = nil }
+                    Button(L10n.cancel, role: .cancel) { self.activeConfirmation = nil }
                 }
             },
             message: {
@@ -172,9 +172,9 @@ struct ProvidersPane: View {
             let relative = snapshot.updatedAt.relativeDescription()
             usageText = relative
         } else if self.store.isStale(provider: provider) {
-            usageText = "last fetch failed"
+            usageText = L10n.lastFetchFailed
         } else {
-            usageText = "usage not fetched yet"
+            usageText = L10n.usageNotFetchedYet
         }
 
         let presentationContext = ProviderPresentationContext(
@@ -195,8 +195,7 @@ struct ProvidersPane: View {
         let projection = self.settings.codexVisibleAccountProjection
         let degradedNotice: CodexAccountsSectionNotice? = if projection.hasUnreadableAddedAccountStore {
             CodexAccountsSectionNotice(
-                text: "Managed account storage is unreadable. Live account access is still available, "
-                    + "but managed add, re-auth, and remove actions are disabled until the store is recoverable.",
+                text: L10n.managedStoreUnreadableNotice,
                 tone: .warning)
         } else {
             nil
@@ -299,9 +298,9 @@ struct ProvidersPane: View {
     func requestManagedCodexAccountRemoval(_ account: CodexVisibleAccount) {
         guard let accountID = account.storedAccountID else { return }
         self.activeConfirmation = ProviderSettingsConfirmationState(
-            title: "Remove Codex account?",
-            message: "Remove \(account.email) from Clawbar? Its managed Codex home will be deleted.",
-            confirmTitle: "Remove",
+            title: L10n.removeCodexAccountTitle,
+            message: L10n.removeCodexAccountMessage(account.email),
+            confirmTitle: L10n.remove,
             onConfirm: {
                 Task { @MainActor in
                     await self.removeManagedCodexAccount(id: accountID)
@@ -443,10 +442,10 @@ struct ProvidersPane: View {
         let options: [ProviderSettingsPickerOption]
         if provider == .openrouter {
             options = [
-                ProviderSettingsPickerOption(id: MenuBarMetricPreference.automatic.rawValue, title: "Automatic"),
+                ProviderSettingsPickerOption(id: MenuBarMetricPreference.automatic.rawValue, title: L10n.automatic),
                 ProviderSettingsPickerOption(
                     id: MenuBarMetricPreference.primary.rawValue,
-                    title: "Primary (API key limit)"),
+                    title: L10n.primaryAPILimit),
             ]
         } else {
             let metadata = self.store.metadata(for: provider)
@@ -454,31 +453,31 @@ struct ProvidersPane: View {
             let supportsAverage = self.settings.menuBarMetricSupportsAverage(for: provider)
             let supportsTertiary = self.settings.menuBarMetricSupportsTertiary(for: provider, snapshot: snapshot)
             var metricOptions: [ProviderSettingsPickerOption] = [
-                ProviderSettingsPickerOption(id: MenuBarMetricPreference.automatic.rawValue, title: "Automatic"),
+                ProviderSettingsPickerOption(id: MenuBarMetricPreference.automatic.rawValue, title: L10n.automatic),
                 ProviderSettingsPickerOption(
                     id: MenuBarMetricPreference.primary.rawValue,
-                    title: "Primary (\(metadata.sessionLabel))"),
+                    title: L10n.primaryMetric(metadata.sessionLabel)),
                 ProviderSettingsPickerOption(
                     id: MenuBarMetricPreference.secondary.rawValue,
-                    title: "Secondary (\(metadata.weeklyLabel))"),
+                    title: L10n.secondaryMetric(metadata.weeklyLabel)),
             ]
             if supportsTertiary {
                 let tertiaryTitle = metadata.opusLabel ?? MenuBarMetricPreference.tertiary.label
                 metricOptions.append(ProviderSettingsPickerOption(
                     id: MenuBarMetricPreference.tertiary.rawValue,
-                    title: "Tertiary (\(tertiaryTitle))"))
+                    title: L10n.tertiaryMetric(tertiaryTitle)))
             }
             if supportsAverage {
                 metricOptions.append(ProviderSettingsPickerOption(
                     id: MenuBarMetricPreference.average.rawValue,
-                    title: "Average (\(metadata.sessionLabel) + \(metadata.weeklyLabel))"))
+                    title: L10n.averageMetric(metadata.sessionLabel, metadata.weeklyLabel)))
             }
             options = metricOptions
         }
         return ProviderSettingsPickerDescriptor(
             id: "menuBarMetric",
-            title: "Menu bar metric",
-            subtitle: "Choose which window drives the menu bar percent.",
+            title: L10n.menuBarMetric,
+            subtitle: L10n.menuBarMetricSubtitle,
             binding: Binding(
                 get: {
                     self.settings
@@ -579,20 +578,18 @@ struct ProvidersPane: View {
            error == .authenticationInProgress
         {
             return CodexAccountsSectionNotice(
-                text: "A managed Codex login is already running. Wait for it to finish before adding "
-                    + "or re-authenticating another account.",
+                text: L10n.managedLoginAlreadyRunning,
                 tone: .warning)
         }
 
         if let error = error as? ManagedCodexAccountServiceError {
             let message = switch error {
             case .loginFailed:
-                "Managed Codex login did not complete. Try again after finishing the browser login flow."
+                L10n.managedLoginFailed
             case .missingEmail:
-                "Codex login completed, but no account email was available. Try again after confirming "
-                    + "the account is fully signed in."
+                L10n.managedLoginMissingEmail
             case let .unsafeManagedHome(path):
-                "Clawbar refused to modify an unexpected managed home path: \(path)"
+                L10n.unsafeManagedHome(path)
             }
             return CodexAccountsSectionNotice(text: message, tone: .warning)
         }

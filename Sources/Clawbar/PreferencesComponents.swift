@@ -55,7 +55,17 @@ struct SettingsSection<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             if let title, !title.isEmpty {
-                ClawbarSectionEyebrow(text: title)
+                HStack(spacing: 8) {
+                    // Colored left accent line next to section title
+                    RoundedRectangle(cornerRadius: 2, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [ClawbarTheme.accent, ClawbarTheme.sea],
+                                startPoint: .top,
+                                endPoint: .bottom))
+                        .frame(width: 3, height: 14)
+                    ClawbarSectionEyebrow(text: title)
+                }
             }
             if let caption, !caption.isEmpty {
                 Text(caption)

@@ -149,6 +149,7 @@ extension StatusItemController {
         }
 
         menu.removeAllItems()
+        self.addBrandHeader(to: menu, width: menuWidth)
 
         let descriptor = MenuDescriptor.build(
             provider: selectedProvider,
@@ -1349,6 +1350,22 @@ extension StatusItemController {
             let height = view.fittingSize.height
             view.frame = NSRect(origin: .zero, size: NSSize(width: width, height: height))
         }
+    }
+
+    // MARK: - Brand header
+
+    private func addBrandHeader(to menu: NSMenu, width: CGFloat) {
+        let headerView = ClawbarMenuBrandHeaderView(width: width)
+        let hosting = MenuHostingView(rootView: headerView)
+        let controller = NSHostingController(rootView: headerView)
+        let size = controller.sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude))
+        hosting.frame = NSRect(origin: .zero, size: NSSize(width: width, height: size.height))
+
+        let item = NSMenuItem()
+        item.view = hosting
+        item.isEnabled = false
+        item.representedObject = "brandHeader"
+        menu.addItem(item)
     }
 
     func menuCardModel(

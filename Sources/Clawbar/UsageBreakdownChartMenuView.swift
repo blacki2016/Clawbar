@@ -225,14 +225,16 @@ struct UsageBreakdownChartMenuView: View {
     private static func colorForService(_ service: String) -> Color {
         let lower = service.lowercased()
         if lower == "cli" {
-            return Color(red: 0.26, green: 0.55, blue: 0.96)
+            // Brand purple: #7c3aed
+            return ClawbarTheme.accent
         }
         if lower.contains("github"), lower.contains("review") {
-            return Color(red: 0.94, green: 0.53, blue: 0.18)
+            // Brand orange: #f97316
+            return ClawbarTheme.orange
         }
         let palette: [Color] = [
             Color(red: 0.46, green: 0.75, blue: 0.36),
-            Color(red: 0.80, green: 0.45, blue: 0.92),
+            ClawbarTheme.sea,
             Color(red: 0.26, green: 0.78, blue: 0.86),
             Color(red: 0.94, green: 0.74, blue: 0.26),
         ]

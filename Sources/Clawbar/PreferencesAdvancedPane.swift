@@ -10,19 +10,19 @@ struct AdvancedPane: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 18) {
-                SettingsSection(title: "Keyboard control", caption: "Jump into Clawbar without touching the pointer.") {
+                SettingsSection(title: L10n.keyboardControlTitle, caption: L10n.keyboardControlCaption) {
                     HStack(alignment: .center, spacing: 12) {
-                        Text("Open menu")
+                        Text(L10n.openMenuAction)
                             .font(.body)
                         Spacer()
                         KeyboardShortcuts.Recorder(for: .openMenu)
                     }
-                    Text("Trigger the menu bar menu from anywhere.")
+                    Text(L10n.openMenuActionSubtitle)
                         .font(.footnote)
                         .foregroundStyle(.tertiary)
                 }
 
-                SettingsSection(title: "CLI handoff", caption: "Install the bundled helper so scripts can read the same provider state.") {
+                SettingsSection(title: L10n.cliHandoffTitle, caption: L10n.cliHandoffCaption) {
                     HStack(spacing: 12) {
                         Button {
                             Task { await self.installCLI() }
@@ -30,7 +30,7 @@ struct AdvancedPane: View {
                             if self.isInstallingCLI {
                                 ProgressView().controlSize(.small)
                             } else {
-                                Text("Install CLI")
+                                Text(L10n.installCLI)
                             }
                         }
                         .disabled(self.isInstallingCLI)
@@ -42,38 +42,35 @@ struct AdvancedPane: View {
                                 .lineLimit(2)
                         }
                     }
-                    Text("Symlink the bundled clawbar helper to /usr/local/bin and /opt/homebrew/bin.")
+                    Text(L10n.cliHandoffSubtitle)
                         .font(.footnote)
                         .foregroundStyle(.tertiary)
                 }
 
-                SettingsSection(title: "Diagnostics", caption: "Reveal troubleshooting tools and optional visual behavior.") {
+                SettingsSection(title: L10n.diagnosticsTitle, caption: L10n.diagnosticsCaption) {
                     PreferenceToggleRow(
-                        title: "Show Debug Settings",
-                        subtitle: "Expose troubleshooting tools in the Debug tab.",
+                        title: L10n.showDebugSettings,
+                        subtitle: L10n.showDebugSettingsSubtitle,
                         binding: self.$settings.debugMenuEnabled)
                     PreferenceToggleRow(
-                        title: "Surprise me",
-                        subtitle: "Check if you like your agents having some fun up there.",
+                        title: L10n.surpriseMe,
+                        subtitle: L10n.surpriseMeSubtitle,
                         binding: self.$settings.randomBlinkEnabled)
                 }
 
-                SettingsSection(title: "Privacy", caption: "Reduce on-screen personal data when you demo or record the app.") {
+                SettingsSection(title: L10n.privacyTitle, caption: L10n.privacyCaption) {
                     PreferenceToggleRow(
-                        title: "Hide personal information",
-                        subtitle: "Obscure email addresses in the menu bar and menu UI.",
+                        title: L10n.hidePersonalInfo,
+                        subtitle: L10n.hidePersonalInfoSubtitle,
                         binding: self.$settings.hidePersonalInfo)
                 }
 
                 SettingsSection(
-                    title: "Keychain access",
-                    caption: """
-                    Disable all Keychain reads and writes. Browser cookie import is unavailable; paste Cookie \
-                    headers manually in Providers.
-                    """) {
+                    title: L10n.keychainAccessTitle,
+                    caption: L10n.keychainAccessCaption) {
                         PreferenceToggleRow(
-                            title: "Disable Keychain access",
-                            subtitle: "Prevents any Keychain access while enabled.",
+                            title: L10n.disableKeychainAccess,
+                            subtitle: L10n.disableKeychainAccessSubtitle,
                             binding: self.$settings.debugDisableKeychainAccess)
                     }
             }
@@ -93,7 +90,7 @@ extension AdvancedPane {
         let helperURL = Bundle.main.bundleURL.appendingPathComponent("Contents/Helpers/clawbar")
         let fm = FileManager.default
         guard fm.fileExists(atPath: helperURL.path) else {
-            self.cliStatus = "clawbar helper not found in app bundle."
+            self.cliStatus = L10n.cliHelperNotFound
             return
         }
 
@@ -107,29 +104,29 @@ extension AdvancedPane {
             let dir = (dest as NSString).deletingLastPathComponent
             guard fm.fileExists(atPath: dir) else { continue }
             guard fm.isWritableFile(atPath: dir) else {
-                results.append("No write access: \(dir)")
+                results.append(L10n.noWriteAccess(dir))
                 continue
             }
 
             if fm.fileExists(atPath: dest) {
                 if Self.isLink(atPath: dest, pointingTo: helperURL.path) {
-                    results.append("Installed: \(dir)")
+                    results.append(L10n.installedIn(dir))
                 } else {
-                    results.append("Exists: \(dir)")
+                    results.append(L10n.existsIn(dir))
                 }
                 continue
             }
 
             do {
                 try fm.createSymbolicLink(atPath: dest, withDestinationPath: helperURL.path)
-                results.append("Installed: \(dir)")
+                results.append(L10n.installedIn(dir))
             } catch {
-                results.append("Failed: \(dir)")
+                results.append(L10n.failedIn(dir))
             }
         }
 
         self.cliStatus = results.isEmpty
-            ? "No writable bin dirs found."
+            ? L10n.noWritableBinDirs
             : results.joined(separator: " · ")
     }
 

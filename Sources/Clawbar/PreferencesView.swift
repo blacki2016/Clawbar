@@ -25,6 +25,7 @@ enum PreferencesTab: String, Hashable {
 @MainActor
 struct PreferencesView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @ObservedObject private var localizationManager = LocalizationManager.shared
     @Bindable var settings: SettingsStore
     @Bindable var store: UsageStore
     let updater: UpdaterProviding
@@ -60,7 +61,7 @@ struct PreferencesView: View {
 
             TabView(selection: self.$selection.tab) {
                 GeneralPane(settings: self.settings, store: self.store)
-                    .tabItem { Label("Overview", systemImage: "sparkles.rectangle.stack") }
+                    .tabItem { Label(L10n.overviewTab, systemImage: "sparkles.rectangle.stack") }
                     .tag(PreferencesTab.general)
 
                 ProvidersPane(
@@ -68,28 +69,29 @@ struct PreferencesView: View {
                     store: self.store,
                     managedCodexAccountCoordinator: self.managedCodexAccountCoordinator,
                     codexAccountPromotionCoordinator: self.codexAccountPromotionCoordinator)
-                    .tabItem { Label("Providers", systemImage: "point.3.connected.trianglepath.dotted") }
+                    .tabItem { Label(L10n.providers, systemImage: "point.3.connected.trianglepath.dotted") }
                     .tag(PreferencesTab.providers)
 
                 DisplayPane(settings: self.settings, store: self.store)
-                    .tabItem { Label("Menubar", systemImage: "capsule.portrait") }
+                    .tabItem { Label(L10n.menubarTab, systemImage: "capsule.portrait") }
                     .tag(PreferencesTab.display)
 
                 AdvancedPane(settings: self.settings)
-                    .tabItem { Label("Tools", systemImage: "wrench.and.screwdriver") }
+                    .tabItem { Label(L10n.toolsTab, systemImage: "wrench.and.screwdriver") }
                     .tag(PreferencesTab.advanced)
 
                 AboutPane(updater: self.updater)
-                    .tabItem { Label("About", systemImage: "squareshape.split.2x2") }
+                    .tabItem { Label(L10n.about, systemImage: "squareshape.split.2x2") }
                     .tag(PreferencesTab.about)
 
                 if self.settings.debugMenuEnabled {
                     DebugPane(settings: self.settings, store: self.store)
-                        .tabItem { Label("Debug", systemImage: "ladybug") }
+                        .tabItem { Label(L10n.debugTab, systemImage: "ladybug") }
                         .tag(PreferencesTab.debug)
                 }
             }
         }
+        .id(self.localizationManager.currentLanguage)
         .tint(ClawbarTheme.accent)
         .padding(.horizontal, 24)
         .padding(.vertical, 18)
@@ -131,17 +133,21 @@ private struct PreferencesHeroCard: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        HStack(alignment: .center, spacing: 14) {
-            Image(nsImage: NSApplication.shared.applicationIconImage)
-                .resizable()
-                .frame(width: 52, height: 52)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+        HStack(alignment: .center, spacing: 16) {
+            // Clawbar logo with brand-colored glow
+            ClawbarLogoImage(size: 56)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .shadow(
+                    color: ClawbarTheme.accent.opacity(self.colorScheme == .dark ? 0.55 : 0.30),
+                    radius: 14,
+                    x: 0,
+                    y: 4)
 
             VStack(alignment: .leading, spacing: 4) {
-                ClawbarSectionEyebrow(text: "Clawbar control room")
-                Text("Keep quota pressure visible.")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                Text("Tune the menubar, refresh rhythm and provider setup from one branded surface.")
+                ClawbarSectionEyebrow(text: L10n.heroEyebrow)
+                Text(L10n.heroTitle)
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                Text(L10n.heroSubtitle)
                     .font(.footnote)
                     .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                     .fixedSize(horizontal: false, vertical: true)
@@ -149,19 +155,28 @@ private struct PreferencesHeroCard: View {
 
             Spacer(minLength: 0)
         }
-        .padding(18)
+        .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(
                     LinearGradient(
                         colors: [
+                            ClawbarTheme.accent.opacity(self.colorScheme == .dark ? 0.14 : 0.07),
+                            ClawbarTheme.sea.opacity(self.colorScheme == .dark ? 0.07 : 0.04),
                             ClawbarTheme.panelBackground(for: self.colorScheme),
-                            ClawbarTheme.panelSecondaryBackground(for: self.colorScheme),
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing)))
         .overlay(
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(ClawbarTheme.panelStroke(for: self.colorScheme), lineWidth: 1))
+                .stroke(
+                    LinearGradient(
+                        colors: [
+                            ClawbarTheme.accent.opacity(0.40),
+                            ClawbarTheme.sea.opacity(0.22),
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing),
+                    lineWidth: 1))
     }
 }

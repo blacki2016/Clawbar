@@ -36,31 +36,35 @@ struct AboutPane: View {
                 Button(action: self.openProjectHome) {
                     Image(nsImage: image)
                         .resizable()
-                        .frame(width: 92, height: 92)
-                        .cornerRadius(16)
-                        .scaleEffect(self.iconHover ? 1.05 : 1.0)
-                        .shadow(color: self.iconHover ? .accentColor.opacity(0.25) : .clear, radius: 6)
+                        .frame(width: 96, height: 96)
+                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                        .scaleEffect(self.iconHover ? 1.06 : 1.0)
+                        .shadow(
+                            color: ClawbarTheme.accent.opacity(self.iconHover ? 0.55 : 0.20),
+                            radius: self.iconHover ? 20 : 10,
+                            x: 0,
+                            y: self.iconHover ? 6 : 3)
                 }
                 .buttonStyle(.plain)
                 .onHover { hovering in
-                    withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
+                    withAnimation(.spring(response: 0.30, dampingFraction: 0.72)) {
                         self.iconHover = hovering
                     }
                 }
             }
 
             VStack(spacing: 2) {
-                ClawbarSectionEyebrow(text: "About Clawbar")
-                Text("Clawbar")
+                ClawbarSectionEyebrow(text: L10n.aboutEyebrow)
+                Text(L10n.appName)
                     .font(.system(size: 26, weight: .bold, design: .rounded))
-                Text("Version \(self.versionString)")
+                Text(L10n.versionString(self.versionString))
                     .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 if let buildTimestamp {
-                    Text("Built \(buildTimestamp)")
+                    Text(L10n.builtString(buildTimestamp))
                         .font(.footnote)
                         .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 }
-                Text("A dedicated token radar for multi-provider AI workflows.")
+                Text(L10n.aboutSubtitle)
                     .font(.footnote)
                     .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
             }
@@ -68,11 +72,11 @@ struct AboutPane: View {
             VStack(alignment: .center, spacing: 10) {
                 AboutLinkRow(
                     icon: "chevron.left.slash.chevron.right",
-                    title: "GitHub",
+                    title: L10n.github,
                     url: "https://github.com/blacki2016/Clawbar")
-                AboutLinkRow(icon: "arrow.down.circle", title: "Releases", url: "https://github.com/blacki2016/Clawbar/releases")
-                AboutLinkRow(icon: "book", title: "Documentation", url: "https://github.com/blacki2016/Clawbar#installation")
-                AboutLinkRow(icon: "ladybug", title: "Report issue", url: "https://github.com/blacki2016/Clawbar/issues")
+                AboutLinkRow(icon: "arrow.down.circle", title: L10n.releases, url: "https://github.com/blacki2016/Clawbar/releases")
+                AboutLinkRow(icon: "book", title: L10n.documentation, url: "https://github.com/blacki2016/Clawbar#installation")
+                AboutLinkRow(icon: "ladybug", title: L10n.reportIssue, url: "https://github.com/blacki2016/Clawbar/issues")
             }
             .padding(.top, 8)
             .frame(maxWidth: .infinity)
@@ -82,12 +86,12 @@ struct AboutPane: View {
 
             if self.updater.isAvailable {
                 VStack(spacing: 10) {
-                    Toggle("Check for updates automatically", isOn: self.$autoUpdateEnabled)
+                    Toggle(L10n.autoUpdateToggle, isOn: self.$autoUpdateEnabled)
                         .toggleStyle(.checkbox)
                         .frame(maxWidth: .infinity, alignment: .center)
                     VStack(spacing: 6) {
                         HStack(spacing: 12) {
-                            Text("Update Channel")
+                            Text(L10n.updateChannel)
                             Spacer()
                             Picker("", selection: self.updateChannelBinding) {
                                 ForEach(UpdateChannel.allCases) { channel in
@@ -104,14 +108,14 @@ struct AboutPane: View {
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: 280)
                     }
-                    Button("Check for Updates…") { self.updater.checkForUpdates(nil) }
+                    Button(L10n.checkForUpdatesEllipsis) { self.updater.checkForUpdates(nil) }
                 }
             } else {
-                Text(self.updater.unavailableReason ?? "Updates unavailable in this build.")
+                Text(self.updater.unavailableReason ?? L10n.updatesUnavailable)
                     .foregroundStyle(.secondary)
             }
 
-            Text("© 2026 Peter Steinberger. MIT License.")
+            Text(L10n.copyrightLine)
                 .font(.footnote)
                 .foregroundStyle(ClawbarTheme.mutedText(for: self.colorScheme))
                 .padding(.top, 4)

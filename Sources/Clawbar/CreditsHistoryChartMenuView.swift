@@ -121,7 +121,7 @@ struct CreditsHistoryChartMenuView: View {
         let maxCreditsUsed: Double
     }
 
-    private static let barColor = Color(red: 73 / 255, green: 163 / 255, blue: 176 / 255)
+    private static let barColor = ClawbarTheme.sea
     private static let selectionBandColor = Color(nsColor: .labelColor).opacity(0.1)
     private static func capHeight(maxValue: Double) -> Double {
         maxValue * 0.05
