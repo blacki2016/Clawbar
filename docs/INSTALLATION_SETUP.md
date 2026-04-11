@@ -168,7 +168,7 @@ class Clawbar < Cask
   url "https://github.com/blacki2016/Clawbar/releases/download/v#{version}/Clawbar-macOS.zip"
   name "Clawbar"
   desc "Token usage monitor for Codex, Claude, theclawbay and 20+ AI providers"
-  homepage "https://clawbar.netlify.app"
+  homepage "https://clawbar.de"
 
   auto_updates true
   depends_on macos: ">= :sonoma"
@@ -188,6 +188,6 @@ end
 
 - GitHub Releases API: `https://api.github.com/repos/blacki2016/Clawbar/releases/latest`
 - Aktuelles Release: `https://github.com/blacki2016/Clawbar/releases/tag/v0.21.0`
-- Landing Page: `https://clawbar.netlify.app`
+- Landing Page: `https://clawbar.de`
 - Repo: `https://github.com/blacki2016/Clawbar`
 - Bestehendes Install-Script: `https://raw.githubusercontent.com/blacki2016/Clawbar/main/install.sh`
